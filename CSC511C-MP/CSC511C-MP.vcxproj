@@ -127,7 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CommandDispatcher.cpp" />
     <ClCompile Include="CSC511C-MP.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CommandDispatcher.h" />
+    <ClInclude Include="Commands.h" />
+    <ClInclude Include="ICommand.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
