@@ -1,11 +1,15 @@
 #pragma once
 
 #include "ICommand.h"
+#include "CommandDispatcher.h"
 #include <iostream>
 #include <string>
 #include <vector>
 #include <Windows.h>
 #include <cstdlib>
+
+// Forward declaring Command Dispatcher
+class CommandDispatcher;
 
 class ExitCommand : public ICommand {
 public:
@@ -80,13 +84,14 @@ public:
 
 class HelpCommand : public ICommand {
 public:
+	explicit HelpCommand(const CommandDispatcher* dispatcher) : m_dispatcher(dispatcher) {}
+
 	bool Execute(const std::vector<std::string>& args) const override {
-		//m_dispatcher.PrintHelp();
-		std::cout << Name() + " command recognized. Doing something.\n";
+		if (m_dispatcher) m_dispatcher->PrintHelp();
 		return true;
 	}
 	std::string Name() const override { return "help"; }
 	std::string Description() const override { return "Displays the available commands."; }
 private:
-	//const CommandDispatcher* m_dispatcher;
+	const CommandDispatcher* m_dispatcher;
 };

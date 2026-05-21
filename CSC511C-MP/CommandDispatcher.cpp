@@ -28,6 +28,6 @@ bool CommandDispatcher::DispatchCommand(const std::string& input) const {
 void CommandDispatcher::PrintHelp() const {
 	std::cout << "Available commands:\n";
 	for (const auto& pair : m_commands) {
-		std::cout << "  " << pair.first << ": " << pair.second->Description() << "\n";
+		std::cout << "  [" << pair.first << "] " << pair.second->Description() << "\n";
 	}
 }

@@ -3,20 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\David-Mini\\Documents\\GitHub\\CSC511C-MP\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{CC1FE864-6688-445A-AEEB-5283BFB7C973}|CSC511C-MP\\CSC511C-MP.vcxproj|C:\\Users\\David-Mini\\Documents\\GitHub\\CSC511C-MP\\CSC511C-MP\\CommandDispatcher.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{CC1FE864-6688-445A-AEEB-5283BFB7C973}|CSC511C-MP\\CSC511C-MP.vcxproj|solutionrelative:CSC511C-MP\\CommandDispatcher.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{CC1FE864-6688-445A-AEEB-5283BFB7C973}|CSC511C-MP\\CSC511C-MP.vcxproj|C:\\Users\\David-Mini\\Documents\\GitHub\\CSC511C-MP\\CSC511C-MP\\CSC511C-MP.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{CC1FE864-6688-445A-AEEB-5283BFB7C973}|CSC511C-MP\\CSC511C-MP.vcxproj|solutionrelative:CSC511C-MP\\CSC511C-MP.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CC1FE864-6688-445A-AEEB-5283BFB7C973}|CSC511C-MP\\CSC511C-MP.vcxproj|C:\\Users\\David-Mini\\Documents\\GitHub\\CSC511C-MP\\CSC511C-MP\\CommandDispatcher.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{CC1FE864-6688-445A-AEEB-5283BFB7C973}|CSC511C-MP\\CSC511C-MP.vcxproj|solutionrelative:CSC511C-MP\\CommandDispatcher.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{CC1FE864-6688-445A-AEEB-5283BFB7C973}|CSC511C-MP\\CSC511C-MP.vcxproj|C:\\Users\\David-Mini\\Documents\\GitHub\\CSC511C-MP\\CSC511C-MP\\CommandDispatcher.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{CC1FE864-6688-445A-AEEB-5283BFB7C973}|CSC511C-MP\\CSC511C-MP.vcxproj|solutionrelative:CSC511C-MP\\CommandDispatcher.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CC1FE864-6688-445A-AEEB-5283BFB7C973}|CSC511C-MP\\CSC511C-MP.vcxproj|C:\\Users\\David-Mini\\Documents\\GitHub\\CSC511C-MP\\CSC511C-MP\\Commands.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{CC1FE864-6688-445A-AEEB-5283BFB7C973}|CSC511C-MP\\CSC511C-MP.vcxproj|solutionrelative:CSC511C-MP\\Commands.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CC1FE864-6688-445A-AEEB-5283BFB7C973}|CSC511C-MP\\CSC511C-MP.vcxproj|C:\\Users\\David-Mini\\Documents\\GitHub\\CSC511C-MP\\CSC511C-MP\\CommandDispatcher.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{CC1FE864-6688-445A-AEEB-5283BFB7C973}|CSC511C-MP\\CSC511C-MP.vcxproj|solutionrelative:CSC511C-MP\\CommandDispatcher.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CC1FE864-6688-445A-AEEB-5283BFB7C973}|CSC511C-MP\\CSC511C-MP.vcxproj|C:\\Users\\David-Mini\\Documents\\GitHub\\CSC511C-MP\\CSC511C-MP\\ICommand.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -30,17 +30,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "CSC511C-MP.cpp",
               "DocumentMoniker": "C:\\Users\\David-Mini\\Documents\\GitHub\\CSC511C-MP\\CSC511C-MP\\CSC511C-MP.cpp",
               "RelativeDocumentMoniker": "CSC511C-MP\\CSC511C-MP.cpp",
               "ToolTip": "C:\\Users\\David-Mini\\Documents\\GitHub\\CSC511C-MP\\CSC511C-MP\\CSC511C-MP.cpp",
               "RelativeToolTip": "CSC511C-MP\\CSC511C-MP.cpp",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAABoAAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAABsAAABEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2026-05-18T11:21:20.057Z",
               "IsPinned": true,
@@ -52,39 +52,39 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "CommandDispatcher.cpp",
               "DocumentMoniker": "C:\\Users\\David-Mini\\Documents\\GitHub\\CSC511C-MP\\CSC511C-MP\\CommandDispatcher.cpp",
               "RelativeDocumentMoniker": "CSC511C-MP\\CommandDispatcher.cpp",
               "ToolTip": "C:\\Users\\David-Mini\\Documents\\GitHub\\CSC511C-MP\\CSC511C-MP\\CommandDispatcher.cpp",
               "RelativeToolTip": "CSC511C-MP\\CommandDispatcher.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAnAAAAAAAAAA==",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAAAB4AAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2026-05-21T14:32:47.796Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "CommandDispatcher.h",
               "DocumentMoniker": "C:\\Users\\David-Mini\\Documents\\GitHub\\CSC511C-MP\\CSC511C-MP\\CommandDispatcher.h",
               "RelativeDocumentMoniker": "CSC511C-MP\\CommandDispatcher.h",
               "ToolTip": "C:\\Users\\David-Mini\\Documents\\GitHub\\CSC511C-MP\\CSC511C-MP\\CommandDispatcher.h",
               "RelativeToolTip": "CSC511C-MP\\CommandDispatcher.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAZAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2026-05-21T14:27:59.354Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "Commands.h",
               "DocumentMoniker": "C:\\Users\\David-Mini\\Documents\\GitHub\\CSC511C-MP\\CSC511C-MP\\Commands.h",
               "RelativeDocumentMoniker": "CSC511C-MP\\Commands.h",
               "ToolTip": "C:\\Users\\David-Mini\\Documents\\GitHub\\CSC511C-MP\\CSC511C-MP\\Commands.h",
               "RelativeToolTip": "CSC511C-MP\\Commands.h",
-              "ViewState": "AgIAAEIAAAAAAAAAAAAAAFQAAABCAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAMAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2026-05-21T14:05:15.469Z",
               "EditorCaption": ""

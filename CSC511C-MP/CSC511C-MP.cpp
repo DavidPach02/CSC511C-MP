@@ -23,14 +23,14 @@ int main()
     std::cout << "Type 'exit' to quit, 'clear' to clear the screen.\n\n";
 
     CommandDispatcher dispatcher;
-	dispatcher.Register(std::make_unique<ExitCommand>());
-	dispatcher.Register(std::make_unique<ClearCommand>());
-	dispatcher.Register(std::make_unique<InitializeCommand>());
+    dispatcher.Register(std::make_unique<InitializeCommand>());
+    dispatcher.Register(std::make_unique<ClearCommand>());
+    dispatcher.Register(std::make_unique<HelpCommand>(&dispatcher));
 	dispatcher.Register(std::make_unique<ScreenCommand>());
 	dispatcher.Register(std::make_unique<SchedulerStartCommand>());
 	dispatcher.Register(std::make_unique<SchedulerStopCommand>());
-	dispatcher.Register(std::make_unique<HelpCommand>());
 	dispatcher.Register(std::make_unique<ReportUtilCommand>());
+    dispatcher.Register(std::make_unique<ExitCommand>());
 
     bool running = true;
     while (running) {
