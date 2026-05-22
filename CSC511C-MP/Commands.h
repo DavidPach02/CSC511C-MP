@@ -14,8 +14,9 @@ class CommandDispatcher;
 class ExitCommand : public ICommand {
 public:
 	bool Execute(const std::vector<std::string>& args) const override {
+		// Print a shutdown message and wait for a moment before exiting to give the user feedback that the command was recognized.
 		std::cout << "Shutting down system.";
-		Sleep(5);
+		Sleep(2000);
 		return false;
 	}
 	std::string Name() const override{ return "exit"; }
@@ -25,6 +26,7 @@ public:
 class ClearCommand : public ICommand {
 public:
 	bool Execute(const std::vector<std::string>& args) const override {
+		// Clear the console screen using the system command.
 		std::system("cls");
 		return true;
 	}
@@ -84,6 +86,7 @@ public:
 
 class HelpCommand : public ICommand {
 public:
+	// The constructor takes a pointer to the CommandDispatcher so that it can call PrintHelp() when executed.
 	explicit HelpCommand(const CommandDispatcher* dispatcher) : m_dispatcher(dispatcher) {}
 
 	bool Execute(const std::vector<std::string>& args) const override {
@@ -93,5 +96,6 @@ public:
 	std::string Name() const override { return "help"; }
 	std::string Description() const override { return "Displays the available commands."; }
 private:
+	// A pointer to the CommandDispatcher is needed to call PrintHelp() when the help command is executed.
 	const CommandDispatcher* m_dispatcher;
 };

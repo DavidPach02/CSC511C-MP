@@ -20,19 +20,23 @@ int main()
     std::cout << "  `\"Y8888Y\"'    \"Y88888P\"     `\"Y8888Y\"'    \"Y88888P\"    88      88    `\"Y8888Y\"'\n\n";
     std::cout << "====================================================================================\n";
     std::cout << "Welcome to CSC511C Command Line!\n";
-    std::cout << "Type '\033[31mexit\033[0m' to quit, '\033[31mclear\033[0m' to clear the screen, '\033[31mhelp\033[0m' to display other commands.\n\n";
+    std::cout << "Type '\033[33mexit\033[0m' to quit, '\033[33mclear\033[0m' to clear the screen, '\033[33mhelp\033[0m' to display other commands.\n\n";
 
+    // Create command dispatcher object
     CommandDispatcher dispatcher;
+	// Initialize the dispatcher with available commands
 	CommandDispatcher::Initialize(dispatcher);
 
     bool running = true;
+	// Main command loop
     while (running) {
+		// Prompt the user for input
         std::cout << "Enter a command: ";
         std::string command;
         std::getline(std::cin, command);
 
+		// Dispatch the command and update the running state based on the command's return value
 		running = dispatcher.DispatchCommand(command);
-		std::cout << "\n";
     }
     
     return 0;
