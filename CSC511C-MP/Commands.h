@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <Windows.h>
+#include <thread>
 #include <cstdlib>
 
 // Forward declaring Command Dispatcher
@@ -16,7 +16,7 @@ public:
 	bool Execute(const std::vector<std::string>& args) const override {
 		// Print a shutdown message and wait for a moment before exiting to give the user feedback that the command was recognized.
 		std::cout << "Shutting down system.";
-		Sleep(2000);
+		std::this_thread::sleep_for(std::chrono::seconds(2));
 		return false;
 	}
 	std::string Name() const override{ return "exit"; }
@@ -27,7 +27,11 @@ class ClearCommand : public ICommand {
 public:
 	bool Execute(const std::vector<std::string>& args) const override {
 		// Clear the console screen using the system command.
-		std::system("cls");
+        #ifdef _WIN32
+        std::system("cls");     // Windows
+		#else
+        std::system("clear");   // Linux/macOS
+		#endif
 		return true;
 	}
 	std::string Name() const override { return "clear"; }

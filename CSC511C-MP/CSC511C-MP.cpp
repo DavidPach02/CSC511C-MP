@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-#include <Windows.h>
 #include <cstdlib>
 #include "Commands.h"
 #include "CommandDispatcher.h"
