@@ -20,17 +20,10 @@ int main()
     std::cout << "  `\"Y8888Y\"'    \"Y88888P\"     `\"Y8888Y\"'    \"Y88888P\"    88      88    `\"Y8888Y\"'\n\n";
     std::cout << "====================================================================================\n";
     std::cout << "Welcome to CSC511C Command Line!\n";
-    std::cout << "Type 'exit' to quit, 'clear' to clear the screen.\n\n";
+    std::cout << "Type '\033[31mexit\033[0m' to quit, '\033[31mclear\033[0m' to clear the screen, '\033[31mhelp\033[0m' to display other commands.\n\n";
 
     CommandDispatcher dispatcher;
-    dispatcher.Register(std::make_unique<InitializeCommand>());
-    dispatcher.Register(std::make_unique<ClearCommand>());
-    dispatcher.Register(std::make_unique<HelpCommand>(&dispatcher));
-	dispatcher.Register(std::make_unique<ScreenCommand>());
-	dispatcher.Register(std::make_unique<SchedulerStartCommand>());
-	dispatcher.Register(std::make_unique<SchedulerStopCommand>());
-	dispatcher.Register(std::make_unique<ReportUtilCommand>());
-    dispatcher.Register(std::make_unique<ExitCommand>());
+	CommandDispatcher::Initialize(dispatcher);
 
     bool running = true;
     while (running) {

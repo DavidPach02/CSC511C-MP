@@ -8,6 +8,7 @@
 
 class CommandDispatcher {
 public:
+	static void Initialize(CommandDispatcher& dispatcher);
 	void Register(std::unique_ptr<ICommand> command);
 	bool DispatchCommand(const std::string& input) const;
 	void PrintHelp() const;

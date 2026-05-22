@@ -1,5 +1,17 @@
 #include "CommandDispatcher.h"
 #include <iostream>
+#include "Commands.h"
+
+void CommandDispatcher::Initialize(CommandDispatcher& dispatcher) {
+	dispatcher.Register(std::make_unique<InitializeCommand>());
+    dispatcher.Register(std::make_unique<ClearCommand>());
+    dispatcher.Register(std::make_unique<HelpCommand>(&dispatcher));
+	dispatcher.Register(std::make_unique<ScreenCommand>());
+	dispatcher.Register(std::make_unique<SchedulerStartCommand>());
+	dispatcher.Register(std::make_unique<SchedulerStopCommand>());
+	dispatcher.Register(std::make_unique<ReportUtilCommand>());
+    dispatcher.Register(std::make_unique<ExitCommand>());
+}
 
 void CommandDispatcher::Register(std::unique_ptr<ICommand> command) {
 	if (!command) return;
@@ -28,6 +40,6 @@ bool CommandDispatcher::DispatchCommand(const std::string& input) const {
 void CommandDispatcher::PrintHelp() const {
 	std::cout << "Available commands:\n";
 	for (const auto& pair : m_commands) {
-		std::cout << "  [" << pair.first << "] " << pair.second->Description() << "\n";
+		std::cout << "  [ \033[31m" << pair.first << "\033[0m ] " << pair.second->Description() << "\n";
 	}
 }
