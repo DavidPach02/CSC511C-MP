@@ -1,6 +1,12 @@
 #include "CommandDispatcher.h"
 #include <iostream>
 #include "Commands.h"
+#include "ExitCommand.h"
+#include "ClearCommand.h"
+#include "InitializeCommand.h"
+#include "ScreenCommand.h"
+#include "ReportUtilCommand.h"
+#include "HelpCommand.h"
 
 void CommandDispatcher::Initialize(CommandDispatcher& dispatcher) {
 	dispatcher.Register(std::make_unique<InitializeCommand>());

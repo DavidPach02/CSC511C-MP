@@ -127,13 +127,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ClearCommand.cpp" />
     <ClCompile Include="CommandDispatcher.cpp" />
     <ClCompile Include="CSC511C-MP.cpp" />
+    <ClCompile Include="ExitCommand.cpp" />
+    <ClCompile Include="HelpCommand.cpp" />
+    <ClCompile Include="InitializeCommand.cpp" />
+    <ClCompile Include="ReportUtilCommand.cpp" />
+    <ClCompile Include="ScreenCommand.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ClearCommand.h" />
     <ClInclude Include="CommandDispatcher.h" />
     <ClInclude Include="Commands.h" />
+    <ClInclude Include="ExitCommand.h" />
+    <ClInclude Include="HelpCommand.h" />
     <ClInclude Include="ICommand.h" />
+    <ClInclude Include="InitializeCommand.h" />
+    <ClInclude Include="ReportUtilCommand.h" />
+    <ClInclude Include="ScreenCommand.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
