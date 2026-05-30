@@ -32,6 +32,10 @@ void ConsoleManager::Render() {
 	}
 }
 
+void ConsoleManager::Exit() {
+	running = false;
+}
+
 void ConsoleManager::SwitchScreen(const std::string& name) {
     auto screen = screenTable.find(name);
     if (screen == screenTable.end()) {
@@ -57,11 +61,6 @@ void ConsoleManager::RegisterScreen(const std::shared_ptr<BaseScreen> screenRef)
 bool ConsoleManager::GetIsRunnning() const
 {
 	return running;
-}
-
-void ConsoleManager::SetIsRunning(const bool& state)
-{
-	this->running = state;
 }
 
 ConsoleManager::ConsoleManager() {

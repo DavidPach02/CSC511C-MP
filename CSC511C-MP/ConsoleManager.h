@@ -28,7 +28,6 @@ public:
 	void Exit();
 
 	bool GetIsRunnning() const;
-	void SetIsRunning(const bool& state);
 
 private:
 	ConsoleManager();

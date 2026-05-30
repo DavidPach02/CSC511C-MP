@@ -20,12 +20,21 @@ void MainConsole::Process()
 	std::cout << "Enter command: ";
     std::getline(std::cin, command);
 
-    ConsoleManager::GetInstance()->SetIsRunning(commandDispatcher->DispatchCommand(command));
+    if (!commandDispatcher->DispatchCommand(command)) {
+		ConsoleManager::GetInstance()->Exit();
+    }
+
+    if (command == "clear") {
+        refreshed = true;
+	}
 }
 
 void MainConsole::Display()
 {
-    PrintHeader();
+    if (refreshed) {
+        PrintHeader();
+		refreshed = false;
+	}
 }
 
 void MainConsole::PrintHeader() const {
