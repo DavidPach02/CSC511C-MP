@@ -1,12 +1,13 @@
 #pragma once
 
 #include "ICommand.h"
+#include "IHelpDisplayable.h"
 #include <memory>
 #include <string>
 #include <vector>
 #include <unordered_map>
 
-class CommandDispatcher {
+class CommandDispatcher : public IHelpDisplayable {
 public:
 	// Initializes the dispatcher with available commands. This should be called once at the start of the application.
 	void Initialize();
@@ -15,7 +16,7 @@ public:
 	// Dispatches the input command to the appropriate ICommand implementation. Returns false if the command signals to exit the application.
 	bool DispatchCommand(const std::string& input) const;
 	// Prints the help text for all registered commands.
-	void PrintHelp() const;
+	void PrintHelp() const override;
 
 private:
 	// TODO: Extend this to support command arguments in the future. For now, we assume commands have no arguments.

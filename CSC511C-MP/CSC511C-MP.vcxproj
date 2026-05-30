@@ -153,6 +153,7 @@
     <ClInclude Include="ExitCommand.h" />
     <ClInclude Include="HelpCommand.h" />
     <ClInclude Include="ICommand.h" />
+    <ClInclude Include="IHelpDisplayable.h" />
     <ClInclude Include="InitializeCommand.h" />
     <ClInclude Include="MainConsole.h" />
     <ClInclude Include="ReportUtilCommand.h" />

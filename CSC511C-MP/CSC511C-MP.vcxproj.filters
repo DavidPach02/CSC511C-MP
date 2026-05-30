@@ -113,5 +113,8 @@
     <ClInclude Include="CreateScreenCommand.h">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
+    <ClInclude Include="IHelpDisplayable.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
