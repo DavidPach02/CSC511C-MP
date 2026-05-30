@@ -131,6 +131,7 @@
     <ClCompile Include="ClearCommand.cpp" />
     <ClCompile Include="CommandDispatcher.cpp" />
     <ClCompile Include="ConsoleManager.cpp" />
+    <ClCompile Include="CreateScreenCommand.cpp" />
     <ClCompile Include="CSC511C-MP.cpp" />
     <ClCompile Include="ExitCommand.cpp" />
     <ClCompile Include="HelpCommand.cpp" />
@@ -139,6 +140,7 @@
     <ClCompile Include="ReportUtilCommand.cpp" />
     <ClCompile Include="AConsole.cpp" />
     <ClCompile Include="ScreenCommand.cpp" />
+    <ClCompile Include="TextColor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AConsole.h" />
@@ -147,6 +149,7 @@
     <ClInclude Include="CommandDispatcher.h" />
     <ClInclude Include="Commands.h" />
     <ClInclude Include="ConsoleManager.h" />
+    <ClInclude Include="CreateScreenCommand.h" />
     <ClInclude Include="ExitCommand.h" />
     <ClInclude Include="HelpCommand.h" />
     <ClInclude Include="ICommand.h" />
@@ -154,6 +157,7 @@
     <ClInclude Include="MainConsole.h" />
     <ClInclude Include="ReportUtilCommand.h" />
     <ClInclude Include="ScreenCommand.h" />
+    <ClInclude Include="TextColor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

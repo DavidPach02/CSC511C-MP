@@ -1,18 +1,15 @@
 #pragma once
 
 #include "ICommand.h"
-#include "CreateScreenCommand.h"
+#include "ConsoleManager.h"
+#include "BaseScreen.h"
 #include <iostream>
-#include <string>
-#include <unordered_map>
 
-class ScreenCommand : public ICommand {
+class CreateScreenCommand : public ICommand {
 public:
-	ScreenCommand();
+	CreateScreenCommand() = default;
 	bool Execute(const std::vector<std::string>& args) const override;
 	std::string Name() const override;
 	std::string Description() const override;
-
-private:
-	std::unordered_map<std::string, ICommand*> subcommands;
 };
+

@@ -19,7 +19,7 @@ public:
 
 private:
 	// TODO: Extend this to support command arguments in the future. For now, we assume commands have no arguments.
-	std::vector<std::string> Tokenize(const std::string& input);
+	std::vector<std::string> Tokenize(const std::string& input) const;
 	// Maps command names to their corresponding ICommand implementations.
 	std::unordered_map<std::string, std::unique_ptr<ICommand>> m_commands;
 };

@@ -19,6 +19,9 @@
     <Filter Include="Header Files\ConsoleManager">
       <UniqueIdentifier>{a29dc1e9-003a-4828-8b35-47a6e9644e89}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Helper">
+      <UniqueIdentifier>{4a9d187d-1bdb-4bd7-8dfc-cd5e1d6faf76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CSC511C-MP.cpp">
@@ -56,6 +59,12 @@
     </ClCompile>
     <ClCompile Include="MainConsole.cpp">
       <Filter>Header Files\ConsoleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="TextColor.cpp">
+      <Filter>Header Files\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="CreateScreenCommand.cpp">
+      <Filter>Header Files\Command</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -97,6 +106,12 @@
     </ClInclude>
     <ClInclude Include="MainConsole.h">
       <Filter>Header Files\ConsoleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="TextColor.h">
+      <Filter>Header Files\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateScreenCommand.h">
+      <Filter>Header Files\Command</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

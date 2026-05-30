@@ -56,6 +56,8 @@ void ConsoleManager::RegisterScreen(const std::shared_ptr<BaseScreen> screenRef)
 	}
 
 	screenTable[screenRef->GetName()] = screenRef;
+	std::cout << "Added screen: " << screenRef->GetName() << "\n";
+	std::cout << "Current screens: " << screenTable.size() << "\n";
 }
 
 bool ConsoleManager::GetIsRunnning() const
