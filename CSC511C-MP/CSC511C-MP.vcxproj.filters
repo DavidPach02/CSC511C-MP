@@ -16,6 +16,9 @@
     <Filter Include="Header Files\Command">
       <UniqueIdentifier>{6044a844-77bd-4c38-a862-6293e334d460}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ConsoleManager">
+      <UniqueIdentifier>{a29dc1e9-003a-4828-8b35-47a6e9644e89}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CSC511C-MP.cpp">
@@ -41,6 +44,18 @@
     </ClCompile>
     <ClCompile Include="HelpCommand.cpp">
       <Filter>Header Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleManager.cpp">
+      <Filter>Header Files\ConsoleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="AConsole.cpp">
+      <Filter>Header Files\ConsoleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseScreen.cpp">
+      <Filter>Header Files\ConsoleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="MainConsole.cpp">
+      <Filter>Header Files\ConsoleManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +85,18 @@
     </ClInclude>
     <ClInclude Include="HelpCommand.h">
       <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleManager.h">
+      <Filter>Header Files\ConsoleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="AConsole.h">
+      <Filter>Header Files\ConsoleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseScreen.h">
+      <Filter>Header Files\ConsoleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="MainConsole.h">
+      <Filter>Header Files\ConsoleManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

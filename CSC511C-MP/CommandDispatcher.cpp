@@ -8,15 +8,15 @@
 #include "ReportUtilCommand.h"
 #include "HelpCommand.h"
 
-void CommandDispatcher::Initialize(CommandDispatcher& dispatcher) {
-	dispatcher.Register(std::make_unique<InitializeCommand>());
-    dispatcher.Register(std::make_unique<ClearCommand>());
-    dispatcher.Register(std::make_unique<HelpCommand>(&dispatcher));
-	dispatcher.Register(std::make_unique<ScreenCommand>());
-	dispatcher.Register(std::make_unique<SchedulerStartCommand>());
-	dispatcher.Register(std::make_unique<SchedulerStopCommand>());
-	dispatcher.Register(std::make_unique<ReportUtilCommand>());
-    dispatcher.Register(std::make_unique<ExitCommand>());
+void CommandDispatcher::Initialize() {
+	this->Register(std::make_unique<InitializeCommand>());
+	this->Register(std::make_unique<ClearCommand>());
+	this->Register(std::make_unique<HelpCommand>(this));
+	this->Register(std::make_unique<ScreenCommand>());
+	this->Register(std::make_unique<SchedulerStartCommand>());
+	this->Register(std::make_unique<SchedulerStopCommand>());
+	this->Register(std::make_unique<ReportUtilCommand>());
+	this->Register(std::make_unique<ExitCommand>());
 }
 
 void CommandDispatcher::Register(std::unique_ptr<ICommand> command) {

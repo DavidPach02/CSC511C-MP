@@ -127,23 +127,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BaseScreen.cpp" />
     <ClCompile Include="ClearCommand.cpp" />
     <ClCompile Include="CommandDispatcher.cpp" />
+    <ClCompile Include="ConsoleManager.cpp" />
     <ClCompile Include="CSC511C-MP.cpp" />
     <ClCompile Include="ExitCommand.cpp" />
     <ClCompile Include="HelpCommand.cpp" />
     <ClCompile Include="InitializeCommand.cpp" />
+    <ClCompile Include="MainConsole.cpp" />
     <ClCompile Include="ReportUtilCommand.cpp" />
+    <ClCompile Include="AConsole.cpp" />
     <ClCompile Include="ScreenCommand.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AConsole.h" />
+    <ClInclude Include="BaseScreen.h" />
     <ClInclude Include="ClearCommand.h" />
     <ClInclude Include="CommandDispatcher.h" />
     <ClInclude Include="Commands.h" />
+    <ClInclude Include="ConsoleManager.h" />
     <ClInclude Include="ExitCommand.h" />
     <ClInclude Include="HelpCommand.h" />
     <ClInclude Include="ICommand.h" />
     <ClInclude Include="InitializeCommand.h" />
+    <ClInclude Include="MainConsole.h" />
     <ClInclude Include="ReportUtilCommand.h" />
     <ClInclude Include="ScreenCommand.h" />
   </ItemGroup>
