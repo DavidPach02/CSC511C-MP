@@ -70,18 +70,20 @@ bool CommandDispatcher::DispatchCommand(const std::string& input) const {
 		return true;
 	}
 
-	std::cout << "Processing command: " << command << " \n";
+	// For debugging
+	//std::cout << "Processing command: " << command << " \n";
 
 	std::vector<std::string> args; 
 	if (tokens.size() > 1) {
 		args.assign(tokens.begin() + 1, tokens.end());
 
-		std::cout << "Args: ";
+		// For debugging
+		/*std::cout << "Args: ";
 
 		for (size_t i = 0; i < args.size(); i++) {
 			std::cout << args[i] << ", ";
 		}
-		std::cout << "\n";
+		std::cout << "\n";*/
 	}
 	
 	return it->second->Execute(args);
