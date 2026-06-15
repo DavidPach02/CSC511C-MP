@@ -24,7 +24,9 @@ public:
 	std::string GetName() const;
 	std::string GetStatus() const;
 	std::string GetStartTime() const;
+	std::string GetStartDate() const;
 	std::string GetEndTime() const;
+	std::string GetEndDate() const;
 
 private:
 	int id;

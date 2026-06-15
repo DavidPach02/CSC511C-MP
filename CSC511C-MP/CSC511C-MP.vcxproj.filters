@@ -78,6 +78,12 @@
     <ClCompile Include="TimeUtility.cpp">
       <Filter>Header Files\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="CPUManager.cpp">
+      <Filter>Header Files\Process</Filter>
+    </ClCompile>
+    <ClCompile Include="DisplayProcessesCommand.cpp">
+      <Filter>Header Files\Command</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ICommand.h">
@@ -133,6 +139,12 @@
     </ClInclude>
     <ClInclude Include="TimeUtility.h">
       <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="CPUManager.h">
+      <Filter>Header Files\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="DisplayProcessesCommand.h">
+      <Filter>Header Files\Command</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

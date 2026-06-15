@@ -1,6 +1,6 @@
 #include "TimeUtility.h"
 
-std::string TimeUtility::GetCurrentTimeString(const std::string& separator) {
+std::string TimeUtility::GetCurrentTimeString(const bool militaryTime, const std::string& separator) {
 	// Get current time point from system clock
 	auto now = std::chrono::system_clock::now();
 	std::time_t now_time = std::chrono::system_clock::to_time_t(now);
@@ -13,12 +13,21 @@ std::string TimeUtility::GetCurrentTimeString(const std::string& separator) {
 	localtime_r(&now_time, &local_time); // POSIX/Linux safe version
 #endif
 
+	int hour = local_time.tm_hour;
+	std::string timeIndicator = "";
+	if (!militaryTime) {
+		timeIndicator = hour >= 12 ? "PM" : "AM";
+		hour %= 12;
+		if (hour == 0) hour = 12;
+	}
+
 	// Format string to HH:MM:SS (e.g., 14:30:05)
 	std::stringstream ss;
 	ss << std::setfill('0')
-		<< std::setw(2) << local_time.tm_hour << separator
+		<< std::setw(2) << hour << separator
 		<< std::setw(2) << local_time.tm_min << separator
-		<< std::setw(2) << local_time.tm_sec;
+		<< std::setw(2) << local_time.tm_sec
+		<< timeIndicator;
 
 	return ss.str();
 }

@@ -6,7 +6,10 @@ ScreenCommand::ScreenCommand() {
 	this->subcommands.emplace(createScreenCMD->Argument(), std::move(createScreenCMD));
 
 	std::unique_ptr<ICommand> helpCMD = std::make_unique<HelpCommand>(this);
-	this->subcommands.emplace(helpCMD->Name(), std::move(helpCMD));
+	this->subcommands.emplace(helpCMD->Argument(), std::move(helpCMD));
+
+	std::unique_ptr<ICommand> displayProcessesCMD = std::make_unique<DisplayProcessesCommand>();
+	this->subcommands.emplace(displayProcessesCMD->Argument(), std::move(displayProcessesCMD));
 
 	// Subcommand for screen switching
 }

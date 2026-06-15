@@ -1,13 +1,12 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
-#include "Commands.h"
-#include "CommandDispatcher.h"
-#include "ICommand.h"
 #include "ConsoleManager.h"
+#include "CPUManager.h"
 
 int main(){
 	ConsoleManager::Initialize();
+	CPUManager::Initialize(4);
 
     bool running = true;
 	// Main command loop

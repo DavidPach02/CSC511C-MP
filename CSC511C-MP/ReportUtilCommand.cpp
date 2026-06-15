@@ -30,7 +30,7 @@ bool ReportUtilCommand::Execute(const std::vector<std::string>& args) const {
 		// TODO: Get the text from the log
 		
 		// Write the text in a text file
-		logFile << "Sample-" << currentDate << "_" << currentTime << "\n";
+		logFile << CPUManager::GetInstance()->GetSnapshotLog().str();
 		
 		// Save it inside the folder
 		logFile.close();

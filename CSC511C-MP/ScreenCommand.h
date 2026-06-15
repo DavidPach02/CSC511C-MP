@@ -4,6 +4,7 @@
 #include "IHelpDisplayable.h"
 #include "CreateScreenCommand.h"
 #include "HelpCommand.h"
+#include "DisplayProcessesCommand.h"
 #include <iostream>
 #include <string>
 #include <unordered_map>

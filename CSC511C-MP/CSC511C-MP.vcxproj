@@ -132,8 +132,10 @@
     <ClCompile Include="ClearCommand.cpp" />
     <ClCompile Include="CommandDispatcher.cpp" />
     <ClCompile Include="ConsoleManager.cpp" />
+    <ClCompile Include="CPUManager.cpp" />
     <ClCompile Include="CreateScreenCommand.cpp" />
     <ClCompile Include="CSC511C-MP.cpp" />
+    <ClCompile Include="DisplayProcessesCommand.cpp" />
     <ClCompile Include="ExitCommand.cpp" />
     <ClCompile Include="HelpCommand.cpp" />
     <ClCompile Include="InitializeCommand.cpp" />
@@ -152,7 +154,9 @@
     <ClInclude Include="CommandDispatcher.h" />
     <ClInclude Include="Commands.h" />
     <ClInclude Include="ConsoleManager.h" />
+    <ClInclude Include="CPUManager.h" />
     <ClInclude Include="CreateScreenCommand.h" />
+    <ClInclude Include="DisplayProcessesCommand.h" />
     <ClInclude Include="ExitCommand.h" />
     <ClInclude Include="HelpCommand.h" />
     <ClInclude Include="ICommand.h" />
