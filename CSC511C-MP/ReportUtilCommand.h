@@ -1,7 +1,11 @@
 #pragma once
 
 #include "ICommand.h"
+#include "ConsoleManager.h"
+#include "TimeUtility.h"
 #include <iostream>
+#include <fstream>
+#include <filesystem>
 #include <string>
 
 class ReportUtilCommand : public ICommand {

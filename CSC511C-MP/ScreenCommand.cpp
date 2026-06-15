@@ -7,6 +7,8 @@ ScreenCommand::ScreenCommand() {
 
 	std::unique_ptr<ICommand> helpCMD = std::make_unique<HelpCommand>(this);
 	this->subcommands.emplace(helpCMD->Name(), std::move(helpCMD));
+
+	// Subcommand for screen switching
 }
 
 bool ScreenCommand::Execute(const std::vector<std::string>& args) const {

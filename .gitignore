@@ -428,6 +428,14 @@ FodyWeavers.xsd
 *.msm
 *.msp
 
+# Ignore Visual Studio local cache and user-specific configurations
+.vs/
+
+# Optional: If you want to explicitly target the exact files from your image
+*.suo
+*.VC.db
+*DocumentLayout*.json
+
 simpleos
 
 .vs*

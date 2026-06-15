@@ -22,6 +22,12 @@
     <Filter Include="Header Files\Helper">
       <UniqueIdentifier>{4a9d187d-1bdb-4bd7-8dfc-cd5e1d6faf76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Process">
+      <UniqueIdentifier>{b912e02c-5f79-4bbe-a002-6e976bf39bdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utils">
+      <UniqueIdentifier>{4ce1c2df-dc47-4c06-9aba-756d7e193901}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CSC511C-MP.cpp">
@@ -65,6 +71,12 @@
     </ClCompile>
     <ClCompile Include="CreateScreenCommand.cpp">
       <Filter>Header Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Process.cpp">
+      <Filter>Header Files\Process</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeUtility.cpp">
+      <Filter>Header Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +127,12 @@
     </ClInclude>
     <ClInclude Include="IHelpDisplayable.h">
       <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Process.h">
+      <Filter>Header Files\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeUtility.h">
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
