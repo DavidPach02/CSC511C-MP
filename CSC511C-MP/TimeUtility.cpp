@@ -7,7 +7,7 @@ std::string TimeUtility::GetCurrentTimeString(const bool militaryTime, const std
 
 	// Convert to local time structure
 	std::tm local_time;
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) || defined(__MINGW32__) || defined(__MINGW64__)
 	localtime_s(&local_time, &now_time); // Windows safe version
 #else
 	localtime_r(&now_time, &local_time); // POSIX/Linux safe version
@@ -37,7 +37,7 @@ std::string TimeUtility::GetCurrentDateString(const std::string& separator) {
 	std::time_t now_time = std::chrono::system_clock::to_time_t(now);
 
 	std::tm local_time;
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) || defined(__MINGW32__) || defined(__MINGW64__)
 	localtime_s(&local_time, &now_time);
 #else
 	localtime_r(&now_time, &local_time);

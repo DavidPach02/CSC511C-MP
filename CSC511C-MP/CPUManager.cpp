@@ -1,4 +1,5 @@
 #include "CPUManager.h"
+#include "Process.h"
 
 CPUManager* CPUManager::instance = nullptr;
 CPUManager* CPUManager::GetInstance() {
@@ -35,4 +36,41 @@ void CPUManager::DisplaySnapshot() const {
 
 // TODO: Remove default values
 CPUManager::CPUManager() {
+	processList = std::make_unique<ProcessList>();
+}
+
+void CPUManager::AddProcess(std::shared_ptr<Process> process) {
+	processList->AddProcess(process);
+}
+
+const std::vector<std::shared_ptr<Process>>& CPUManager::GetAllProcesses() const {
+	return processList->GetAllProcesses();
+}
+
+std::shared_ptr<Process> CPUManager::GetProcessByID(int processID) const {
+	return processList->GetProcessByID(processID);
+}
+
+std::shared_ptr<Process> CPUManager::GetProcessByName(const std::string& processName) const {
+	return processList->GetProcessByName(processName);
+}
+
+std::vector<std::shared_ptr<Process>> CPUManager::GetProcessesByStatus(ProcessStatus status) const {
+	return processList->GetProcessesByStatus(status);
+}
+
+std::vector<std::shared_ptr<Process>> CPUManager::GetProcessesByCoreID(int coreID) const {
+	return processList->GetProcessesByCoreID(coreID);
+}
+
+int CPUManager::GetProcessCount() const {
+	return processList->GetProcessCount();
+}
+
+int CPUManager::GetRunningProcessCount() const {
+	return processList->GetRunningProcessCount();
+}
+
+int CPUManager::GetTerminatedProcessCount() const {
+	return processList->GetTerminatedProcessCount();
 }

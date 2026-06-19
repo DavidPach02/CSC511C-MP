@@ -30,6 +30,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AppConfig.cpp">
+      <Filter>Header Files\Helper</Filter>
+    </ClCompile>
     <ClCompile Include="CSC511C-MP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -49,6 +52,9 @@
       <Filter>Header Files\Command</Filter>
     </ClCompile>
     <ClCompile Include="ReportUtilCommand.cpp">
+      <Filter>Header Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="PrintCommand.cpp">
       <Filter>Header Files\Command</Filter>
     </ClCompile>
     <ClCompile Include="HelpCommand.cpp">
@@ -81,6 +87,9 @@
     <ClCompile Include="CPUManager.cpp">
       <Filter>Header Files\Process</Filter>
     </ClCompile>
+    <ClCompile Include="Scheduler.cpp">
+      <Filter>Header Files\Process</Filter>
+    </ClCompile>
     <ClCompile Include="DisplayProcessesCommand.cpp">
       <Filter>Header Files\Command</Filter>
     </ClCompile>
@@ -108,6 +117,9 @@
       <Filter>Header Files\Command</Filter>
     </ClInclude>
     <ClInclude Include="ReportUtilCommand.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="PrintCommand.h">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
     <ClInclude Include="HelpCommand.h">
@@ -142,6 +154,12 @@
     </ClInclude>
     <ClInclude Include="CPUManager.h">
       <Filter>Header Files\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="Scheduler.h">
+      <Filter>Header Files\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="AppConfig.h">
+      <Filter>Header Files\Helper</Filter>
     </ClInclude>
     <ClInclude Include="DisplayProcessesCommand.h">
       <Filter>Header Files\Command</Filter>

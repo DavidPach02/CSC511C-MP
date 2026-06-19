@@ -128,6 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AppConfig.cpp" />
     <ClCompile Include="BaseScreen.cpp" />
     <ClCompile Include="ClearCommand.cpp" />
     <ClCompile Include="CommandDispatcher.cpp" />
@@ -140,14 +141,17 @@
     <ClCompile Include="HelpCommand.cpp" />
     <ClCompile Include="InitializeCommand.cpp" />
     <ClCompile Include="MainConsole.cpp" />
+    <ClCompile Include="PrintCommand.cpp" />
     <ClCompile Include="Process.cpp" />
     <ClCompile Include="ReportUtilCommand.cpp" />
+    <ClCompile Include="Scheduler.cpp" />
     <ClCompile Include="AConsole.cpp" />
     <ClCompile Include="ScreenCommand.cpp" />
     <ClCompile Include="TextColor.cpp" />
     <ClCompile Include="TimeUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AppConfig.h" />
     <ClInclude Include="AConsole.h" />
     <ClInclude Include="BaseScreen.h" />
     <ClInclude Include="ClearCommand.h" />
@@ -163,8 +167,10 @@
     <ClInclude Include="IHelpDisplayable.h" />
     <ClInclude Include="InitializeCommand.h" />
     <ClInclude Include="MainConsole.h" />
+    <ClInclude Include="PrintCommand.h" />
     <ClInclude Include="Process.h" />
     <ClInclude Include="ReportUtilCommand.h" />
+    <ClInclude Include="Scheduler.h" />
     <ClInclude Include="ScreenCommand.h" />
     <ClInclude Include="TextColor.h" />
     <ClInclude Include="TimeUtility.h" />

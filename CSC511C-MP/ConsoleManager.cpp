@@ -1,5 +1,6 @@
 #include "ConsoleManager.h"
 #include <iostream>
+#include <cstdlib>
 #include "MainConsole.h"
 
 ConsoleManager* ConsoleManager::instance = nullptr;
@@ -43,7 +44,11 @@ void ConsoleManager::SwitchScreen(const std::string& name) {
         return;
     }
 
-	system("cls");
+	#ifdef _WIN32
+        std::system("cls");     // Windows
+    #else
+        std::system("clear");   // Linux/macOS
+    #endif
     this->previousConsole = currentConsole;
     this->currentConsole = screen->second; // Use .get() to convert shared_ptr to raw pointer
 	this->currentConsole->OnEnabled();
