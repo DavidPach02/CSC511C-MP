@@ -3,6 +3,7 @@
 #include "ICommand.h"
 #include "IHelpDisplayable.h"
 #include "CreateScreenCommand.h"
+#include "SwitchScreenCommand.h"
 #include "HelpCommand.h"
 #include "DisplayProcessesCommand.h"
 #include <iostream>

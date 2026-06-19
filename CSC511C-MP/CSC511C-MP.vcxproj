@@ -76,6 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -90,6 +91,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -119,6 +121,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -135,6 +138,7 @@
     <ClCompile Include="ConsoleManager.cpp" />
     <ClCompile Include="CPUManager.cpp" />
     <ClCompile Include="CreateScreenCommand.cpp" />
+    <ClCompile Include="SwitchScreenCommand.cpp" />
     <ClCompile Include="CSC511C-MP.cpp" />
     <ClCompile Include="DisplayProcessesCommand.cpp" />
     <ClCompile Include="ExitCommand.cpp" />
@@ -151,7 +155,7 @@
     <ClCompile Include="TimeUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AppConfig.h" />
+   <ClInclude Include="AppConfig.h" />
     <ClInclude Include="AConsole.h" />
     <ClInclude Include="BaseScreen.h" />
     <ClInclude Include="ClearCommand.h" />
@@ -160,6 +164,7 @@
     <ClInclude Include="ConsoleManager.h" />
     <ClInclude Include="CPUManager.h" />
     <ClInclude Include="CreateScreenCommand.h" />
+    <ClInclude Include="SwitchScreenCommand.h" />
     <ClInclude Include="DisplayProcessesCommand.h" />
     <ClInclude Include="ExitCommand.h" />
     <ClInclude Include="HelpCommand.h" />

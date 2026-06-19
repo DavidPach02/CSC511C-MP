@@ -1,38 +1,42 @@
 #include "ReportUtilCommand.h"
+#include <cerrno>
+#include <sys/stat.h>
+
+#ifdef _WIN32
+#include <direct.h>
+#endif
+
+namespace {
+	bool ensureDirectoryExists(const std::string& directoryPath) {
+#ifdef _WIN32
+		if (_mkdir(directoryPath.c_str()) == 0) {
+			return true;
+		}
+#else
+		if (mkdir(directoryPath.c_str(), 0755) == 0) {
+			return true;
+		}
+#endif
+		return errno == EEXIST;
+	}
+}
 
 bool ReportUtilCommand::Execute(const std::vector<std::string>& args) const {
-	//std::cout << Name() + " command recognized. Doing something.\n";
-	// Get current screen
-	// Make the screen have a log functionality 
-	//ConsoleManager::GetInstance()->Get
-	
-	// Get the path directory
-	std::string directoryPath = "./logs";
+	const std::string directoryPath = "./logs";
 
-	// Check if it exists
-	if (!std::filesystem::exists(directoryPath)) {
-		// Create a new file directory if it doesn't exist
-		std::filesystem::create_directory(directoryPath);
+	if (!ensureDirectoryExists(directoryPath)) {
+		std::cerr << "Error: Could not create log directory." << std::endl;
+		return true;
 	}
 
-	// Get current date and time
 	std::string currentDate = TimeUtility::GetCurrentDateString();
 	std::string currentTime = TimeUtility::GetCurrentTimeString();
-	// Get the file name
-	std::string filename = "/process_dump_" + currentDate + "_" + currentTime + ".txt";
-	// Get full path name
-	std::string fullPath = directoryPath + filename;
-	// Initialize the log file
+	const std::string filename = "process_dump_" + currentDate + "_" + currentTime + ".txt";
+	const std::string fullPath = directoryPath + "/" + filename;
 	std::ofstream logFile(fullPath, std::ios::out | std::ios::trunc);
 
-	// Check if the log file is open
 	if (logFile.is_open()) {
-		// TODO: Get the text from the log
-		
-		// Write the text in a text file
 		logFile << CPUManager::GetInstance()->GetSnapshotLog().str();
-		
-		// Save it inside the folder
 		logFile.close();
 		std::cout << "Success: Logs exported to " << fullPath << std::endl;
 	}

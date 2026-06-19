@@ -1,6 +1,5 @@
 #include "AppConfig.h"
 #include "ParseUtils.h"
-
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -63,9 +62,9 @@ int AppConfig::ParseConfigFile(const std::string& configFilePath)
 		
 		if (iss >> name >> value) {
 			if (name == "cores") {
-				auto parsedValue = ParseUtils::ParseInt(value);
-				if (parsedValue.has_value() && parsedValue.value() > 0) {
-					return parsedValue.value();
+				int parsedValue = 0;
+				if (ParseUtils::TryParseInt(value, parsedValue) && parsedValue > 0) {
+					return parsedValue;
 				}
 			}
 		}
@@ -129,9 +128,9 @@ int AppConfig::ParseConfigFileArtificialCommandDelay(const std::string& configFi
 
 		if (iss >> name >> value) {
 			if (name == "artificial-command-delay-ms") {
-				auto parsedValue = ParseUtils::ParseInt(value);
-				if (parsedValue.has_value() && parsedValue.value() >= 0) {
-					return parsedValue.value();
+				int parsedValue = 0;
+				if (ParseUtils::TryParseInt(value, parsedValue) && parsedValue >= 0) {
+					return parsedValue;
 				}
 			}
 		}

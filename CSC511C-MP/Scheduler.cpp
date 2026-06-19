@@ -1,7 +1,5 @@
 #include "Scheduler.h"
 
-#include <iostream>
-
 Scheduler* Scheduler::instance = nullptr;
 
 Scheduler* Scheduler::GetInstance() {

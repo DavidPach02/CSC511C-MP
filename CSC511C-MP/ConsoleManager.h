@@ -23,7 +23,8 @@ public:
 	void RegisterScreen(const std::shared_ptr<BaseScreen> screen);
 	void UnregisterScreen(const std::string& name);
 	void SwitchScreen(const std::string& name);
-	
+	bool HasScreen(const std::string& name) const;
+
 	void ReturnToPreviousScreen();
 	void Exit();
 
