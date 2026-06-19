@@ -25,38 +25,37 @@ std::string ParseUtils::ToUpper(const std::string& str) {
 	return result;
 }
 
-bool ParseUtils::TryParseInt(const std::string& str, int& outValue) {
-	return TryParseInt(str.c_str(), outValue);
+std::optional<int> ParseUtils::ParseInt(const std::string& str) {
+	return ParseInt(str.c_str());
 }
 
-bool ParseUtils::TryParseInt(const char* str, int& outValue) {
+std::optional<int> ParseUtils::ParseInt(const char* str) {
 	if (str == nullptr || *str == '\0') {
-		return false;
+		return std::nullopt;
 	}
 
 	try {
-		outValue = std::stoi(str);
-		return true;
+		int value = std::stoi(str);
+		return value;
 	}
 	catch (...) {
-		return false;
+		return std::nullopt;
 	}
 }
 
-bool ParseUtils::TryParseString(const std::string& str, std::string& outValue) {
+std::optional<std::string> ParseUtils::ParseString(const std::string& str) {
 	std::string trimmed = Trim(str);
 	if (trimmed.empty()) {
-		return false;
+		return std::nullopt;
 	}
-	outValue = trimmed;
-	return true;
+	return trimmed;
 }
 
-bool ParseUtils::TryParseString(const char* str, std::string& outValue) {
+std::optional<std::string> ParseUtils::ParseString(const char* str) {
 	if (str == nullptr || *str == '\0') {
-		return false;
+		return std::nullopt;
 	}
-	return TryParseString(std::string(str), outValue);
+	return ParseString(std::string(str));
 }
 
 bool ParseUtils::EqualsIgnoreCase(const std::string& a, const std::string& b) {

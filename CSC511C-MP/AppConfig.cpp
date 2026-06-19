@@ -62,9 +62,9 @@ int AppConfig::ParseConfigFile(const std::string& configFilePath)
 		
 		if (iss >> name >> value) {
 			if (name == "cores") {
-				int parsedValue = 0;
-				if (ParseUtils::TryParseInt(value, parsedValue) && parsedValue > 0) {
-					return parsedValue;
+				auto parsedValue = ParseUtils::ParseInt(value);
+				if (parsedValue.has_value() && parsedValue.value() > 0) {
+					return parsedValue.value();
 				}
 			}
 		}
@@ -128,9 +128,9 @@ int AppConfig::ParseConfigFileArtificialCommandDelay(const std::string& configFi
 
 		if (iss >> name >> value) {
 			if (name == "artificial-command-delay-ms") {
-				int parsedValue = 0;
-				if (ParseUtils::TryParseInt(value, parsedValue) && parsedValue >= 0) {
-					return parsedValue;
+				auto parsedValue = ParseUtils::ParseInt(value);
+				if (parsedValue.has_value() && parsedValue.value() >= 0) {
+					return parsedValue.value();
 				}
 			}
 		}
