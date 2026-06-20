@@ -1,6 +1,5 @@
 #include "ConsoleManager.h"
 #include <iostream>
-#include <cstdlib>
 #include "MainConsole.h"
 
 ConsoleManager* ConsoleManager::instance = nullptr;
@@ -44,14 +43,29 @@ void ConsoleManager::SwitchScreen(const std::string& name) {
         return;
     }
 
+	// Clear the console screen using the system command.
 	#ifdef _WIN32
         std::system("cls");     // Windows
     #else
         std::system("clear");   // Linux/macOS
     #endif
+	
     this->previousConsole = currentConsole;
     this->currentConsole = screen->second; // Use .get() to convert shared_ptr to raw pointer
 	this->currentConsole->OnEnabled();
+}
+
+bool ConsoleManager::HasScreen(const std::string& name) const {
+	return screenTable.find(name) != screenTable.end();
+}
+
+void ConsoleManager::ReturnToPreviousScreen() {
+	// If the current screen is the main screen, do not return to the previous screen.
+	if (this->currentConsole != nullptr && this->currentConsole->GetName() == MAIN_CONSOLE_NAME) {
+		return;
+	}
+
+	this->SwitchScreen(MAIN_CONSOLE_NAME);
 }
 
 void ConsoleManager::RegisterScreen(const std::shared_ptr<BaseScreen> screenRef) {

@@ -1,6 +1,5 @@
 #include "AppConfig.h"
 #include "ParseUtils.h"
-
 #include <string>
 #include <fstream>
 #include <sstream>

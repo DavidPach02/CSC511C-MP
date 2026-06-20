@@ -78,6 +78,9 @@
     <ClCompile Include="CreateScreenCommand.cpp">
       <Filter>Header Files\Command</Filter>
     </ClCompile>
+    <ClCompile Include="SwitchScreenCommand.cpp">
+      <Filter>Header Files\Command</Filter>
+    </ClCompile>
     <ClCompile Include="Process.cpp">
       <Filter>Header Files\Process</Filter>
     </ClCompile>
@@ -141,6 +144,9 @@
       <Filter>Header Files\Helper</Filter>
     </ClInclude>
     <ClInclude Include="CreateScreenCommand.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="SwitchScreenCommand.h">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
     <ClInclude Include="IHelpDisplayable.h">
