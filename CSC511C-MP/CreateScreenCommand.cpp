@@ -9,11 +9,9 @@ bool CreateScreenCommand::Execute(const std::vector<std::string>& args) const
 		return true;
 	}
 
-	// TODO: Add create screen
 	const AppConfig& config = SystemState::GetConfig();
-	DummyProcessGenerator::GenerateOne(config);
-	//std::string screenName = args[1];
-	//ConsoleManager::GetInstance()->RegisterScreen(std::make_shared<BaseScreen>(screenName));
+	DummyProcessGenerator::GenerateOne(config, args[1]);
+	ConsoleManager::GetInstance()->SwitchScreen(args[1]);
 
     return true;
 }
