@@ -12,7 +12,7 @@ void SleepInstruction::Execute() {
 
 	const uint16_t resolvedDuration = sleepDuration.Resolve(process);
 	const std::uint8_t duration = static_cast<std::uint8_t>(
-		std::min(resolvedDuration, static_cast<uint16_t>(255)));
+		std::min(resolvedDuration, static_cast<uint16_t>(20)));
 
 	process->SleepForTicks(duration);
 
