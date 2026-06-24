@@ -11,7 +11,12 @@ ConsoleManager* ConsoleManager::GetInstance() {
 }
 
 void ConsoleManager::Initialize() {
-	GetInstance();
+	// Create a map of screens
+	const std::shared_ptr<MainConsole> mainConsole = std::make_shared<MainConsole>();
+
+	screenTable[MAIN_CONSOLE_NAME] = mainConsole;
+
+	this->SwitchScreen(mainConsole->GetName());
 }
 
 void ConsoleManager::Destroy() {
@@ -19,9 +24,9 @@ void ConsoleManager::Destroy() {
 	instance = nullptr;
 }
 
-void ConsoleManager::Process() {
+void ConsoleManager::Update() {
 	if (this->currentConsole != nullptr) {
-		this->currentConsole->Process();
+		this->currentConsole->Update();
 	}
 	
 }
@@ -72,7 +77,7 @@ void ConsoleManager::ReturnToPreviousScreen() {
 	this->SwitchScreen(MAIN_CONSOLE_NAME);
 }
 
-void ConsoleManager::RegisterScreen(const std::shared_ptr<BaseScreen> screenRef, bool announce) {
+void ConsoleManager::RegisterScreen(const std::shared_ptr<AConsole> screenRef, bool announce) {
 	if (this->screenTable.find(screenRef->GetName()) != this->screenTable.end()) {
 		if (announce) {
 			std::cout << "\033[31mScreen already registered: " << screenRef->GetName() << "\033[0m\n";
@@ -97,7 +102,10 @@ void ConsoleManager::UnregisterScreen(const std::string& name) {
 	}
 
 	if (currentConsole != nullptr && currentConsole->GetName() == name) {
-		SwitchScreen(MAIN_CONSOLE_NAME);
+		auto mainScreen = screenTable.find(MAIN_CONSOLE_NAME);
+		if (mainScreen != screenTable.end()) {
+			SwitchScreen(MAIN_CONSOLE_NAME);
+		}
 	}
 
 	screenTable.erase(name);
@@ -110,11 +118,4 @@ bool ConsoleManager::GetIsRunnning() const
 
 ConsoleManager::ConsoleManager() {
 	this->running = true;
-
-	// Create a map of screens
-	const std::shared_ptr<MainConsole> mainConsole = std::make_shared<MainConsole>();
-
-	screenTable[MAIN_CONSOLE_NAME] = mainConsole;
-
-	this->SwitchScreen(mainConsole->GetName());
 }

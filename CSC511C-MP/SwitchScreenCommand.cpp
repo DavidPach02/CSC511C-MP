@@ -24,7 +24,6 @@ bool SwitchScreenCommand::Execute(const std::vector<std::string>& args) const {
 	}
 
 	consoleManager->SwitchScreen(processName);
-	std::cout << "You are now on process: \033[33m" << processName << "\033[0m.\n";
 
 	return true;
 }

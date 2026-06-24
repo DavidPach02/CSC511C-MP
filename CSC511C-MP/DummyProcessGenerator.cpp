@@ -5,7 +5,11 @@
 #include "ConsoleManager.h"
 #include "BaseScreen.h"
 #include "Process.h"
-#include "PrintCommand.h"
+#include "PrintInstruction.h"
+#include "DeclareVariableInstruction.h"
+#include "AddInstruction.h"
+#include "SubtractInstruction.h"
+#include "ForInstruction.h"
 #include <memory>
 #include <random>
 #include <string>
@@ -47,12 +51,26 @@ bool DummyProcessGenerator::GenerateOne(const AppConfig& appConfig) {
 	auto process = std::make_shared<Process>(nextProcessId, processName);
 	++nextProcessId;
 
+	// TODO: Randomize instructions
 	for (int commandIndex = 0; commandIndex < commandCount; ++commandIndex) {
-		process->AddCommand(std::make_unique<PrintCommand>(*process));
+		process->AddInstruction(std::make_unique<DeclareVariableInstruction>(process, "Sample" + std::to_string(commandIndex), commandIndex));
+		process->AddInstruction(std::make_unique<AddInstruction>(process, "x", "1", "2"));
+		process->AddInstruction(std::make_unique<AddInstruction>(process, "y", "Sample" + std::to_string(commandIndex), "1"));
+		process->AddInstruction(std::make_unique<SubtractInstruction>(process, "z", "x", "y"));
+		process->AddInstruction(std::make_unique<PrintInstruction>(process, "Hello World from " + process->GetName() + "!"));
+		
+		std::vector<std::unique_ptr<Instruction>> forLoopInstructions;
+		std::unique_ptr<PrintInstruction> forPrint1 = std::make_unique<PrintInstruction>(process, "For Loop Statement A");
+		forLoopInstructions.push_back(std::move(forPrint1));
+		std::unique_ptr<PrintInstruction> forPrint2 = std::make_unique<PrintInstruction>(process, "For Loop Statement B");
+		forLoopInstructions.push_back(std::move(forPrint2));
+		
+		process->AddInstruction(std::make_unique<ForInstruction>(process, std::move(forLoopInstructions), "z"));
 	}
 
+	std::shared_ptr<BaseScreen> baseScreen = std::make_shared<BaseScreen>(process);
 	// Register the screen for the process
-	ConsoleManager::GetInstance()->RegisterScreen(std::make_shared<BaseScreen>(processName), false);
+	ConsoleManager::GetInstance()->RegisterScreen(baseScreen, false);
 	// Add the screen name to the list of created screen names
 	createdScreenNames.push_back(processName);
     // Add the process to the scheduler

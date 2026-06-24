@@ -2,19 +2,20 @@
 
 #include "ICommand.h"
 #include <string>
+#include <memory>
 
 class Process;
 
-class PrintCommand : public ICommand {
+class PrintLogsCommand : public ICommand {
 public:
-	explicit PrintCommand(const Process& process);
+	explicit PrintLogsCommand(std::shared_ptr<Process> process);
 
 	bool Execute(const std::vector<std::string>& args) const override;
 	std::string Name() const override;
 	std::string Description() const override;
 
 private:
-	const Process& process;
+	std::shared_ptr<Process> process;
 
 	void AppendToLog(const std::string& text) const;
 };

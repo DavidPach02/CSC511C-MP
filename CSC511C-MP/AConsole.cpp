@@ -2,7 +2,7 @@
 
 AConsole::AConsole(const std::string processName) : name(processName) {
 	commandDispatcher = std::make_unique<CommandDispatcher>();
-	commandDispatcher->Initialize();
+	//commandDispatcher->Initialize();
 }
 
 std::string AConsole::GetName() const {

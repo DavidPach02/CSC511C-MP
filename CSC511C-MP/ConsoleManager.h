@@ -14,13 +14,13 @@ class ConsoleManager
 {
 public:
 	static ConsoleManager* GetInstance();
-	static void Initialize();
 	static void Destroy();
 
-	void Process();
+	void Initialize();
+	void Update();
 	void Render();
 
-	void RegisterScreen(const std::shared_ptr<BaseScreen> screen, bool announce = true);
+	void RegisterScreen(const std::shared_ptr<AConsole> screen, bool announce = true);
 	void UnregisterScreen(const std::string& name);
 	void SwitchScreen(const std::string& name);
 	bool HasScreen(const std::string& name) const;

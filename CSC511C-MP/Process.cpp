@@ -24,7 +24,7 @@ std::string StatusToString(ProcessStatus status)
 
 Process::Process() : id(0), name(""), coreID(0), status(ProcessStatus::Ready),
 	startTime(""), startDate(""), endTime(""), endDate(""),
-	commandCount(0), executedCommandCount(0)
+	commandCount(0), executedCommandCount(0), logs(""), symTable(new SymbolTable())
 {
 }
 
@@ -34,6 +34,7 @@ void Process::Initialize(const int processID, const std::string& processName, co
 	name = processName;
 	this->coreID = coreID;
 	status = ProcessStatus::Ready;
+	symTable = new SymbolTable();
 	startTime = "";
 	startDate = "";
 	endTime = "";
@@ -82,7 +83,7 @@ void Process::PrintInfo() const
 	std::cout << "Process: " << name << " (ID: " << id << ", Core: " << coreID << ", Status: " << GetStatus() << ")\n";
 }
 
-void Process::AddCommand(std::unique_ptr<ICommand> command)
+void Process::AddInstruction(std::unique_ptr<Instruction> command)
 {
 	commands.push_back(std::move(command));
 	commandCount++;
@@ -110,8 +111,14 @@ bool Process::ExecuteNextCommand()
 		CPUTicker::GetInstance()->WaitUntilTick(targetTick);
 	}
 
-	commands[executedCommandCount]->Execute({});
+	commands[executedCommandCount]->Execute();
 	executedCommandCount++;
+
+	if (!HasRemainingCommands()) {
+		std::string finishText = "Finished!";
+		this->LogMessage(finishText);
+	}
+
 	return HasRemainingCommands();
 }
 
@@ -182,6 +189,16 @@ std::string Process::GetEndDate() const
 	return endDate;
 }
 
+std::string Process::GetLogs() const
+{
+	return this->logs;
+}
+
+SymbolTable* Process::GetSymbolTable() const
+{
+	return this->symTable;
+}
+
 int Process::GetCommandCount() const
 {
 	return commandCount;
@@ -190,4 +207,8 @@ int Process::GetCommandCount() const
 int Process::GetExecutedCommandCount() const
 {
 	return executedCommandCount;
+}
+
+void Process::LogMessage(std::string& message) {
+	this->logs.append(message + "\n" + this->symTable->GetTableLogs());
 }

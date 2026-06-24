@@ -9,6 +9,8 @@
 
 class CommandDispatcher : public IHelpDisplayable {
 public:
+	~CommandDispatcher() = default;
+
 	// Initializes the dispatcher with available commands. This should be called once at the start of the application.
 	void Initialize();
 	// Registers a new command with the dispatcher. The command is identified by its Name() method.
