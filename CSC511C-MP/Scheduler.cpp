@@ -60,6 +60,9 @@ void Scheduler::Stop() {
 	{
 		std::lock_guard<std::mutex> lock(queueMutex);
 		running = false;
+		while (!readyQueue.empty()) {
+			readyQueue.pop();
+		}
 	}
 	queueCondition.notify_all();
 
@@ -98,6 +101,9 @@ bool Scheduler::DequeueProcess(std::shared_ptr<Process>& process) {
 void Scheduler::RequeueProcess(std::shared_ptr<Process> process) {
 	{
 		std::lock_guard<std::mutex> lock(queueMutex);
+		if (!running) {
+			return;
+		}
 		readyQueue.push(process);
 	}
 	queueCondition.notify_one();
