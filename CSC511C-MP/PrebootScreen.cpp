@@ -1,5 +1,9 @@
 #include "PrebootScreen.h"
 
+#ifdef _WIN32
+#include <conio.h>
+#endif
+
 PrebootScreen::PrebootScreen() : AConsole("PREBOOT_SCREEN") {
 	commandDispatcher->Register(std::make_unique<InitializeCommand>());
 	//commandDispatcher->Register(std::make_unique<HelpCommand>(this->commandDispatcher));
@@ -16,7 +20,11 @@ void PrebootScreen::Update() {
 
 	if (commandDispatcher->DispatchCommand(command) && command != "initialize") {
 		std::cout << "Press any key to continue.";
+#ifdef _WIN32
 		_getch();
+#else
+		std::cin.get();
+#endif
 
 #ifdef _WIN32
 		std::system("cls");     // Windows

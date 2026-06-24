@@ -4,7 +4,6 @@
 #include "InitializeCommand.h"
 #include "ClearCommand.h"
 #include "HelpCommand.h"
-#include <conio.h>
 
 class PrebootScreen : public AConsole {
 public:

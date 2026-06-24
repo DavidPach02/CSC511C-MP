@@ -14,6 +14,7 @@
 #include <memory>
 #include <random>
 #include <string>
+#include <vector>
 
 int DummyProcessGenerator::nextProcessId = 1;
 std::vector<std::string> DummyProcessGenerator::createdScreenNames;
@@ -40,11 +41,11 @@ bool DummyProcessGenerator::GenerateOne(const AppConfig& appConfig, const std::s
 		return false;
 	}
 
-	std::random_device randomDevice;
-	std::mt19937 generator(randomDevice());
+	std::mt19937 generator(std::random_device{}());
 	std::uniform_int_distribution<int> commandCountDistribution(
-		appConfig.GetMinInstructions(),
-		appConfig.GetMaxInstructions());
+		appConfig.GetMinInstructions(), appConfig.GetMaxInstructions());
+	std::uniform_int_distribution<int> instructionTypeDistribution(0, 5);
+	std::uniform_int_distribution<int> valueDistribution(0, 20);
 
 	const int commandCount = commandCountDistribution(generator);
 	const std::string processName = customName == "" ? MakeProcessName(nextProcessId) : customName;
@@ -52,32 +53,63 @@ bool DummyProcessGenerator::GenerateOne(const AppConfig& appConfig, const std::s
 	auto process = std::make_shared<Process>(nextProcessId, processName);
 	++nextProcessId;
 
-	// TODO: Randomize instructions
+	// Variables are used to store the values of the variables declared in the process
+	std::vector<std::string> variables;
+
 	for (int commandIndex = 0; commandIndex < commandCount; ++commandIndex) {
-		process->AddInstruction(std::make_unique<DeclareVariableInstruction>(process, "Sample" + std::to_string(commandIndex), commandIndex));
-		process->AddInstruction(std::make_unique<AddInstruction>(process, "x", "1", "2"));
-		process->AddInstruction(std::make_unique<SleepInstruction>(process, 2));
-		process->AddInstruction(std::make_unique<AddInstruction>(process, "y", "Sample" + std::to_string(commandIndex), "1"));
-		process->AddInstruction(std::make_unique<SubtractInstruction>(process, "z", "x", "y"));
-		process->AddInstruction(std::make_unique<PrintInstruction>(process, "Hello World from " + process->GetName() + "!"));
-		
-		std::vector<std::unique_ptr<Instruction>> forLoopInstructions;
-		std::unique_ptr<PrintInstruction> forPrint1 = std::make_unique<PrintInstruction>(process, "For Loop Statement A");
-		forLoopInstructions.push_back(std::move(forPrint1));
-		std::unique_ptr<PrintInstruction> forPrint2 = std::make_unique<PrintInstruction>(process, "For Loop Statement B");
-		forLoopInstructions.push_back(std::move(forPrint2));
-		
-		process->AddInstruction(std::make_unique<ForInstruction>(process, std::move(forLoopInstructions), "z"));
+		const std::string variableName = "variableName" + std::to_string(commandIndex);
+		// Add the variable name to the list of variables
+		variables.push_back(variableName);
+
+		// Generate a random operand from the list of variables or a random literal
+		auto randomOperand = [&]() -> std::string {
+			// If there are variables and the random number is even, pick a random variable
+			if (!variables.empty() && valueDistribution(generator) % 2 == 0) {
+				std::uniform_int_distribution<size_t> variablePick(0, variables.size() - 1);
+				return variables[variablePick(generator)];
+			}
+			// If there are no variables or the random number is odd, pick a random literal
+			return std::to_string(valueDistribution(generator));
+		};
+
+		switch (instructionTypeDistribution(generator)) {
+		case 0:
+			process->AddInstruction(std::make_unique<DeclareVariableInstruction>(
+				process, variableName, static_cast<uint16_t>(valueDistribution(generator))));
+			break;
+		case 1:
+			process->AddInstruction(std::make_unique<AddInstruction>(
+				process, variableName, randomOperand(), randomOperand()));
+			break;
+		case 2:
+			process->AddInstruction(std::make_unique<SubtractInstruction>(
+				process, variableName, randomOperand(), randomOperand()));
+			break;
+		case 3:
+			process->AddInstruction(std::make_unique<PrintInstruction>(
+				process, "Hello world from " + process->GetName() + "!"));
+			break;
+		case 4: {
+			std::vector<std::unique_ptr<Instruction>> forBody;
+			forBody.push_back(std::make_unique<PrintInstruction>(process, "For loop Statement A"));
+			forBody.push_back(std::make_unique<PrintInstruction>(process, "For loop Statement B"));
+			process->AddInstruction(std::make_unique<ForInstruction>(
+				process, std::move(forBody), randomOperand()));
+			break;
+		}
+		case 5:
+			process->AddInstruction(std::make_unique<SleepInstruction>(process, randomOperand()));
+			break;
+		default:
+			break;
+		}
 	}
 
 	std::shared_ptr<BaseScreen> baseScreen = std::make_shared<BaseScreen>(process);
-	// Register the screen for the process
 	ConsoleManager::GetInstance()->RegisterScreen(baseScreen, false);
-	// Add the screen name to the list of created screen names
 	createdScreenNames.push_back(processName);
 	// Add the process to the scheduler
 	Scheduler::GetInstance()->AddProcess(process);
-	// Add the process to the process manager
 	ProcessManager::GetInstance()->AddProcess(process);
 
 	return true;
