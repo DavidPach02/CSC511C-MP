@@ -1,4 +1,7 @@
 #include "CreateScreenCommand.h"
+#include "ProcessManager.h"
+#include "Scheduler.h"
+#include "CPUTicker.h"
 
 bool CreateScreenCommand::Execute(const std::vector<std::string>& args) const
 {
@@ -9,9 +12,35 @@ bool CreateScreenCommand::Execute(const std::vector<std::string>& args) const
 		return true;
 	}
 
-	const AppConfig& config = SystemState::GetConfig();
-	DummyProcessGenerator::GenerateOne(config, args[1]);
-	ConsoleManager::GetInstance()->SwitchScreen(args[1]);
+	const std::string processName = args[1];
+	std::shared_ptr<Process> existingProcess = ProcessManager::GetInstance()->GetProcessByName(processName);
+
+	if (existingProcess == nullptr) {
+		const AppConfig& config = SystemState::GetConfig();
+
+		if (Scheduler::GetInstance() == nullptr) {
+			Scheduler::Initialize(
+				config.GetNumCpu(),
+				config.GetSchedulerAlgorithm(),
+				config.GetQuantumCycles());
+		}
+
+		CPUTicker::Start();
+		if (!Scheduler::GetInstance()->IsRunning()) {
+			Scheduler::GetInstance()->Start();
+		}
+
+		if (!DummyProcessGenerator::GenerateOne(config, processName)) {
+			std::cout << "\033[31mFailed to create process: " << processName << "\033[0m\n";
+			return true;
+		}
+
+		std::cout << "Process created successfully: " << processName << "\n";
+		
+		return true;
+	}
+
+	ConsoleManager::GetInstance()->SwitchScreen(processName);
 
     return true;
 }
