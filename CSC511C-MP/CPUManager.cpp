@@ -1,7 +1,9 @@
 #include "CPUManager.h"
-#include "Process.h"
+#include <iomanip>
+#include <iostream>
 
 CPUManager* CPUManager::instance = nullptr;
+
 CPUManager* CPUManager::GetInstance() {
 	if (instance == nullptr) {
 		instance = new CPUManager();
@@ -11,8 +13,9 @@ CPUManager* CPUManager::GetInstance() {
 
 void CPUManager::Initialize(int totalCores) {
 	GetInstance()->totalCores = totalCores;
-	GetInstance()->availableCores = 0;
-	GetInstance()->cpuUtilization = 100.0;
+	GetInstance()->availableCores = totalCores;
+	GetInstance()->cpuUtilization = 0.0f;
+	GetInstance()->coreBusy.assign(totalCores, false);
 }
 
 void CPUManager::Destroy() {
@@ -20,57 +23,71 @@ void CPUManager::Destroy() {
 	instance = nullptr;
 }
 
+CPUManager::CPUManager()
+	: cpuUtilization(0.0f), totalCores(0), availableCores(0) {
+}
+
+float CPUManager::GetCPUUtilization() const {
+	std::lock_guard<std::mutex> lock(coreMutex);
+	return cpuUtilization;
+}
+
+int CPUManager::GetTotalCores() const {
+	return totalCores;
+}
+
+int CPUManager::GetAvailableCores() const {
+	std::lock_guard<std::mutex> lock(coreMutex);
+	return availableCores;
+}
+
+void CPUManager::AcquireCore(int coreId) {
+	if (coreId < 0 || coreId >= totalCores) {
+		return;
+	}
+
+	std::lock_guard<std::mutex> lock(coreMutex);
+	if (!coreBusy[coreId]) {
+		coreBusy[coreId] = true;
+		--availableCores;
+		UpdateUtilization();
+	}
+}
+
+void CPUManager::ReleaseCore(int coreId) {
+	if (coreId < 0 || coreId >= totalCores) {
+		return;
+	}
+
+	std::lock_guard<std::mutex> lock(coreMutex);
+	if (coreBusy[coreId]) {
+		coreBusy[coreId] = false;
+		++availableCores;
+		UpdateUtilization();
+	}
+}
+
+void CPUManager::UpdateUtilization() {
+	if (totalCores <= 0) {
+		cpuUtilization = 0.0f;
+		return;
+	}
+
+	const int busyCores = totalCores - availableCores;
+	cpuUtilization = (static_cast<float>(busyCores) / static_cast<float>(totalCores)) * 100.0f;
+}
+
 std::stringstream CPUManager::GetSnapshotLog() const {
 	std::stringstream textLog;
+	std::lock_guard<std::mutex> lock(coreMutex);
 
-	textLog << "CPU Utilization: " << std::fixed << std::setprecision(2) << GetInstance()->cpuUtilization << "% \n"
-		<< "Total Cores: " << GetInstance()->totalCores << "\n"
-		<< "Available Cores: " << GetInstance()->availableCores << "\n";
+	textLog << "CPU Utilization: " << std::fixed << std::setprecision(2) << cpuUtilization << "%\n"
+		<< "Total Cores: " << totalCores << "\n"
+		<< "Available Cores: " << availableCores << "\n";
 
 	return textLog;
 }
 
 void CPUManager::DisplaySnapshot() const {
-	std::cout << GetInstance()->GetSnapshotLog().str();
-}
-
-// TODO: Remove default values
-CPUManager::CPUManager() {
-	processList = std::make_unique<ProcessList>();
-}
-
-void CPUManager::AddProcess(std::shared_ptr<Process> process) {
-	processList->AddProcess(process);
-}
-
-const std::vector<std::shared_ptr<Process>>& CPUManager::GetAllProcesses() const {
-	return processList->GetAllProcesses();
-}
-
-std::shared_ptr<Process> CPUManager::GetProcessByID(int processID) const {
-	return processList->GetProcessByID(processID);
-}
-
-std::shared_ptr<Process> CPUManager::GetProcessByName(const std::string& processName) const {
-	return processList->GetProcessByName(processName);
-}
-
-std::vector<std::shared_ptr<Process>> CPUManager::GetProcessesByStatus(ProcessStatus status) const {
-	return processList->GetProcessesByStatus(status);
-}
-
-std::vector<std::shared_ptr<Process>> CPUManager::GetProcessesByCoreID(int coreID) const {
-	return processList->GetProcessesByCoreID(coreID);
-}
-
-int CPUManager::GetProcessCount() const {
-	return processList->GetProcessCount();
-}
-
-int CPUManager::GetRunningProcessCount() const {
-	return processList->GetRunningProcessCount();
-}
-
-int CPUManager::GetTerminatedProcessCount() const {
-	return processList->GetTerminatedProcessCount();
+	std::cout << GetSnapshotLog().str();
 }

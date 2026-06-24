@@ -17,6 +17,15 @@ void BaseScreen::Process() {
 		ConsoleManager::GetInstance()->ReturnToPreviousScreen();
 		return;
 	}
+
+	if (command == "scheduler-start" || command == "scheduler-stop") {
+		std::cout << command << " is only available on the main menu. Type exit to return.\n";
+		return;
+	}
+
+	if (!command.empty()) {
+		std::cout << "Unknown command. Available: exit\n";
+	}
 }
 
 void BaseScreen::Display() {

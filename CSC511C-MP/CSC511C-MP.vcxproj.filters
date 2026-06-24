@@ -78,19 +78,46 @@
     <ClCompile Include="CreateScreenCommand.cpp">
       <Filter>Header Files\Command</Filter>
     </ClCompile>
+    <ClCompile Include="SystemState.cpp">
+      <Filter>Header Files\Helper</Filter>
+    </ClCompile>
     <ClCompile Include="SwitchScreenCommand.cpp">
       <Filter>Header Files\Command</Filter>
     </ClCompile>
     <ClCompile Include="Process.cpp">
       <Filter>Header Files\Process</Filter>
     </ClCompile>
+    <ClCompile Include="ProcessManager.cpp">
+      <Filter>Header Files\Process</Filter>
+    </ClCompile>
     <ClCompile Include="TimeUtility.cpp">
       <Filter>Header Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="CPUTicker.cpp">
+      <Filter>Header Files\Process</Filter>
     </ClCompile>
     <ClCompile Include="CPUManager.cpp">
       <Filter>Header Files\Process</Filter>
     </ClCompile>
+    <ClCompile Include="EITThread.cpp">
+      <Filter>Header Files\Process</Filter>
+    </ClCompile>
     <ClCompile Include="Scheduler.cpp">
+      <Filter>Header Files\Process</Filter>
+    </ClCompile>
+    <ClCompile Include="FCFSScheduler.cpp">
+      <Filter>Header Files\Process</Filter>
+    </ClCompile>
+    <ClCompile Include="RRScheduler.cpp">
+      <Filter>Header Files\Process</Filter>
+    </ClCompile>
+    <ClCompile Include="SchedulerStartCommand.cpp">
+      <Filter>Header Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="SchedulerStopCommand.cpp">
+      <Filter>Header Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="DummyProcessGenerator.cpp">
       <Filter>Header Files\Process</Filter>
     </ClCompile>
     <ClCompile Include="DisplayProcessesCommand.cpp">
@@ -101,7 +128,10 @@
     <ClInclude Include="ICommand.h">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
-    <ClInclude Include="Commands.h">
+    <ClInclude Include="SchedulerStartCommand.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="SchedulerStopCommand.h">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
     <ClInclude Include="CommandDispatcher.h">
@@ -155,17 +185,38 @@
     <ClInclude Include="Process.h">
       <Filter>Header Files\Process</Filter>
     </ClInclude>
+    <ClInclude Include="ProcessManager.h">
+      <Filter>Header Files\Process</Filter>
+    </ClInclude>
     <ClInclude Include="TimeUtility.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="CPUTicker.h">
+      <Filter>Header Files\Process</Filter>
+    </ClInclude>
     <ClInclude Include="CPUManager.h">
+      <Filter>Header Files\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="EITThread.h">
       <Filter>Header Files\Process</Filter>
     </ClInclude>
     <ClInclude Include="Scheduler.h">
       <Filter>Header Files\Process</Filter>
     </ClInclude>
+    <ClInclude Include="FCFSScheduler.h">
+      <Filter>Header Files\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="RRScheduler.h">
+      <Filter>Header Files\Process</Filter>
+    </ClInclude>
     <ClInclude Include="AppConfig.h">
       <Filter>Header Files\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemState.h">
+      <Filter>Header Files\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="DummyProcessGenerator.h">
+      <Filter>Header Files\Process</Filter>
     </ClInclude>
     <ClInclude Include="DisplayProcessesCommand.h">
       <Filter>Header Files\Command</Filter>

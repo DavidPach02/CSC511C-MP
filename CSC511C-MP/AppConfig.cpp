@@ -1,140 +1,105 @@
 #include "AppConfig.h"
 #include "ParseUtils.h"
-#include <string>
 #include <fstream>
 #include <sstream>
 
-namespace
-{
-	constexpr int DEFAULT_TOTAL_CORES = 4;
-	constexpr SchedulingAlgorithm DEFAULT_SCHEDULER_ALGORITHM = SchedulingAlgorithm::FCFS;
-	constexpr int DEFAULT_ARTIFICIAL_COMMAND_DELAY_MS = 50;
+namespace {
+	constexpr int DEFAULT_NUM_CPU = 4;
+	constexpr SchedulingAlgorithm DEFAULT_SCHEDULER = SchedulingAlgorithm::FCFS;
+	constexpr int DEFAULT_QUANTUM_CYCLES = 5;
+	constexpr int DEFAULT_BATCH_PROCESS_FREQ = 1;
+	constexpr int DEFAULT_DELAYS_PER_EXEC = 0;
+	constexpr int DEFAULT_MIN_INSTRUCTIONS = 25;
+	constexpr int DEFAULT_MAX_INSTRUCTIONS = 100;
 }
 
-int AppConfig::GetTotalCores() const
-{
-	return totalCores;
+int AppConfig::GetNumCpu() const { return numCpu; }
+SchedulingAlgorithm AppConfig::GetSchedulerAlgorithm() const { return schedulerAlgorithm; }
+int AppConfig::GetQuantumCycles() const { return quantumCycles; }
+int AppConfig::GetBatchProcessFreq() const { return batchProcessFreq; }
+int AppConfig::GetDelaysPerExec() const { return delaysPerExec; }
+int AppConfig::GetMinInstructions() const { return minInstructions; }
+int AppConfig::GetMaxInstructions() const { return maxInstructions; }
+
+AppConfig::AppConfig(
+	int numCpu,
+	SchedulingAlgorithm schedulerAlgorithm,
+	int quantumCycles,
+	int batchProcessFreq,
+	int delaysPerExec,
+	int minInstructions,
+	int maxInstructions)
+	: numCpu(numCpu),
+	  schedulerAlgorithm(schedulerAlgorithm),
+	  quantumCycles(quantumCycles),
+	  batchProcessFreq(batchProcessFreq),
+	  delaysPerExec(delaysPerExec),
+	  minInstructions(minInstructions),
+	  maxInstructions(maxInstructions) {
 }
 
-SchedulingAlgorithm AppConfig::GetSchedulerAlgorithm() const
-{
-	return schedulerAlgorithm;
+AppConfig AppConfig::FromConfigFile(const std::string& configFilePath) {
+	return ParseConfigFile(configFilePath);
 }
 
-int AppConfig::GetArtificialCommandDelayMs() const
-{
-	return artificialCommandDelayMs;
-}
+AppConfig AppConfig::ParseConfigFile(const std::string& configFilePath) {
+	int numCpu = DEFAULT_NUM_CPU;
+	SchedulingAlgorithm schedulerAlgorithm = DEFAULT_SCHEDULER;
+	int quantumCycles = DEFAULT_QUANTUM_CYCLES;
+	int batchProcessFreq = DEFAULT_BATCH_PROCESS_FREQ;
+	int delaysPerExec = DEFAULT_DELAYS_PER_EXEC;
+	int minInstructions = DEFAULT_MIN_INSTRUCTIONS;
+	int maxInstructions = DEFAULT_MAX_INSTRUCTIONS;
 
-AppConfig::AppConfig(int totalCores, SchedulingAlgorithm schedulerAlgorithm, int artificialCommandDelayMs)
-	: totalCores(totalCores), schedulerAlgorithm(schedulerAlgorithm), artificialCommandDelayMs(artificialCommandDelayMs)
-{
-}
+	std::ifstream configFile(configFilePath);
+	if (!configFile.is_open()) {
+		return AppConfig(
+			numCpu, schedulerAlgorithm, quantumCycles, batchProcessFreq,
+			delaysPerExec, minInstructions, maxInstructions);
+	}
 
-AppConfig AppConfig::FromConfigFile(const std::string& configFilePath)
-{
+	std::string line;
+	while (std::getline(configFile, line)) {
+		line = ParseUtils::Trim(line);
+		if (line.empty() || line[0] == '#') {
+			continue;
+		}
+
+		std::istringstream iss(line);
+		std::string name;
+		std::string value;
+		if (!(iss >> name >> value)) {
+			continue;
+		}
+
+		auto parsedInt = ParseUtils::ParseInt(value);
+
+		if (name == "num-cpu" && parsedInt.has_value() && parsedInt.value() > 0) {
+			numCpu = parsedInt.value();
+		} else if (name == "scheduler") {
+			if (ParseUtils::EqualsIgnoreCase(value, "fcfs")) {
+				schedulerAlgorithm = SchedulingAlgorithm::FCFS;
+			} else if (ParseUtils::EqualsIgnoreCase(value, "rr")) {
+				schedulerAlgorithm = SchedulingAlgorithm::RR;
+			}
+		} else if (name == "quantum-cycles" && parsedInt.has_value() && parsedInt.value() > 0) {
+			quantumCycles = parsedInt.value();
+		} else if (name == "batch-process-freq" && parsedInt.has_value() && parsedInt.value() > 0) {
+			batchProcessFreq = parsedInt.value();
+		} else if (name == "delays-per-exec" && parsedInt.has_value() && parsedInt.value() >= 0) {
+			delaysPerExec = parsedInt.value();
+		} else if (name == "min-ins" && parsedInt.has_value() && parsedInt.value() > 0) {
+			minInstructions = parsedInt.value();
+		} else if (name == "max-ins" && parsedInt.has_value() && parsedInt.value() > 0) {
+			maxInstructions = parsedInt.value();
+		}
+	}
+
+	if (minInstructions > maxInstructions) {
+		std::swap(minInstructions, maxInstructions);
+	}
+
 	return AppConfig(
-		ParseConfigFile(configFilePath),
-		ParseConfigFileSchedulerAlgorithm(configFilePath),
-		ParseConfigFileArtificialCommandDelay(configFilePath)
-	);
-}
-
-int AppConfig::ParseConfigFile(const std::string& configFilePath)
-{
-	std::ifstream configFile(configFilePath);
-	if (!configFile.is_open()) {
-		return DEFAULT_TOTAL_CORES;
-	}
-
-	std::string line;
-	while (std::getline(configFile, line)) {
-		line = ParseUtils::Trim(line);
-
-		// Skip comments and empty lines
-		if (line.empty() || line[0] == '#') {
-			continue;
-		}
-
-		// Parse space-separated name value format
-		std::istringstream iss(line);
-		std::string name, value;
-		
-		if (iss >> name >> value) {
-			if (name == "cores") {
-				auto parsedValue = ParseUtils::ParseInt(value);
-				if (parsedValue.has_value() && parsedValue.value() > 0) {
-					return parsedValue.value();
-				}
-			}
-		}
-	}
-
-	return DEFAULT_TOTAL_CORES;
-}
-
-SchedulingAlgorithm AppConfig::ParseConfigFileSchedulerAlgorithm(const std::string& configFilePath)
-{
-	std::ifstream configFile(configFilePath);
-	if (!configFile.is_open()) {
-		return DEFAULT_SCHEDULER_ALGORITHM;
-	}
-
-	std::string line;
-	while (std::getline(configFile, line)) {
-		line = ParseUtils::Trim(line);
-
-		// Skip comments and empty lines
-		if (line.empty() || line[0] == '#') {
-			continue;
-		}
-
-		// Parse space-separated name value format
-		std::istringstream iss(line);
-		std::string name, value;
-		
-		if (iss >> name >> value) {
-			if (name == "scheduler-algorithm") {
-				// Use case-insensitive comparison
-				if (ParseUtils::EqualsIgnoreCase(value, "fcfs")) {
-					return SchedulingAlgorithm::FCFS;
-				}
-			}
-		}
-	}
-
-	return DEFAULT_SCHEDULER_ALGORITHM;
-}
-
-int AppConfig::ParseConfigFileArtificialCommandDelay(const std::string& configFilePath)
-{
-	std::ifstream configFile(configFilePath);
-	if (!configFile.is_open()) {
-		return DEFAULT_ARTIFICIAL_COMMAND_DELAY_MS;
-	}
-
-	std::string line;
-	while (std::getline(configFile, line)) {
-		line = ParseUtils::Trim(line);
-
-		// Skip comments and empty lines
-		if (line.empty() || line[0] == '#') {
-			continue;
-		}
-
-		// Parse space-separated name value format
-		std::istringstream iss(line);
-		std::string name, value;
-
-		if (iss >> name >> value) {
-			if (name == "artificial-command-delay-ms") {
-				auto parsedValue = ParseUtils::ParseInt(value);
-				if (parsedValue.has_value() && parsedValue.value() >= 0) {
-					return parsedValue.value();
-				}
-			}
-		}
-	}
-
-	return DEFAULT_ARTIFICIAL_COMMAND_DELAY_MS;
+		numCpu, schedulerAlgorithm, quantumCycles, batchProcessFreq,
+		delaysPerExec, minInstructions, maxInstructions);
 }

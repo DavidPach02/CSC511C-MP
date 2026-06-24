@@ -1,11 +1,10 @@
 #include "Process.h"
 
 #include <iostream>
-#include <chrono>
-#include <thread>
 #include "TimeUtility.h"
+#include "CPUTicker.h"
 
-int Process::artificialCommandDelayMs = 50;
+int Process::delaysPerExec = 0;
 
 std::string StatusToString(ProcessStatus status)
 {
@@ -91,23 +90,46 @@ void Process::AddCommand(std::unique_ptr<ICommand> command)
 
 void Process::ExecuteCommands()
 {
-	for (const auto& command : commands) {
-		command->Execute({});
-		std::this_thread::sleep_for(std::chrono::milliseconds(artificialCommandDelayMs)); // Simulate time taken to execute each command.
-		executedCommandCount++;
+	while (HasRemainingCommands()) {
+		ExecuteNextCommand();
 	}
 }
 
-void Process::SetArtificialCommandDelayMs(int delayMs)
+bool Process::ExecuteNextCommand()
 {
-	if (delayMs >= 0) {
-		artificialCommandDelayMs = delayMs;
+	if (!HasRemainingCommands()) {
+		return false;
+	}
+
+	// 
+	if (delaysPerExec > 0 && executedCommandCount > 0) {
+		const uint64_t targetTick = CPUTicker::GetInstance()->GetCurrentTick()
+			+ static_cast<uint64_t>(delaysPerExec);
+
+		// Wait until the target tick is reached
+		CPUTicker::GetInstance()->WaitUntilTick(targetTick);
+	}
+
+	commands[executedCommandCount]->Execute({});
+	executedCommandCount++;
+	return HasRemainingCommands();
+}
+
+bool Process::HasRemainingCommands() const
+{
+	return executedCommandCount < commandCount;
+}
+
+void Process::SetDelaysPerExec(int delayCycles)
+{
+	if (delayCycles >= 0) {
+		delaysPerExec = delayCycles;
 	}
 }
 
-int Process::GetArtificialCommandDelayMs()
+int Process::GetDelaysPerExec()
 {
-	return artificialCommandDelayMs;
+	return delaysPerExec;
 }
 
 int Process::GetID() const
@@ -118,6 +140,11 @@ int Process::GetID() const
 int Process::GetCoreID() const
 {
 	return coreID;
+}
+
+void Process::SetCoreID(int coreId)
+{
+	coreID = coreId;
 }
 
 std::string Process::GetName() const

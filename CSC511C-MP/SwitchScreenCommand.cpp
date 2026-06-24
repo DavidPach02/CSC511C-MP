@@ -1,4 +1,6 @@
 #include "SwitchScreenCommand.h"
+#include "ProcessManager.h"
+#include "Process.h"
 
 bool SwitchScreenCommand::Execute(const std::vector<std::string>& args) const {
 	const int argsCount = static_cast<int>(args.size());
@@ -10,7 +12,12 @@ bool SwitchScreenCommand::Execute(const std::vector<std::string>& args) const {
 	const std::string processName = args[1];
 	ConsoleManager* consoleManager = ConsoleManager::GetInstance();
 
-	// TODO: Also reject finished processes when Process status is tracked in CPUManager.
+	std::shared_ptr<Process> process = ProcessManager::GetInstance()->GetProcessByName(processName);
+	if (process == nullptr || process->GetStatusEnum() == ProcessStatus::Terminated) {
+		std::cout << "Process " << processName << " not found.\n";
+		return true;
+	}
+
 	if (!consoleManager->HasScreen(processName)) {
 		std::cout << "Process " << processName << " not found.\n";
 		return true;
@@ -18,8 +25,6 @@ bool SwitchScreenCommand::Execute(const std::vector<std::string>& args) const {
 
 	consoleManager->SwitchScreen(processName);
 	std::cout << "You are now on process: \033[33m" << processName << "\033[0m.\n";
-
-	// TODO: List all processes on this screen when process tracking is implemented.
 
 	return true;
 }
