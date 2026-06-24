@@ -1,12 +1,14 @@
 #include "CommandDispatcher.h"
 #include <iostream>
-#include "Commands.h"
 #include "ExitCommand.h"
 #include "ClearCommand.h"
 #include "InitializeCommand.h"
 #include "ScreenCommand.h"
 #include "ReportUtilCommand.h"
 #include "HelpCommand.h"
+#include "SchedulerStartCommand.h"
+#include "SchedulerStopCommand.h"
+#include "SystemState.h"
 
 void CommandDispatcher::Initialize() {
 	this->Register(std::make_unique<InitializeCommand>());
@@ -60,6 +62,15 @@ bool CommandDispatcher::DispatchCommand(const std::string& input) const {
 	}
 
 	const std::string& command = tokens[0];
+
+	if (!SystemState::IsInitialized()
+		&& command != "initialize"
+		&& command != "exit"
+		&& command != "help"
+		&& command != "clear") {
+		std::cout << "Run initialize before using other commands.\n";
+		return true;
+	}
 
 	// Look up the command in the map
 	auto it = m_commands.find(command);

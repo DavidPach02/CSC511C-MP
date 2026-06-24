@@ -7,18 +7,31 @@ class AppConfig {
 public:
 	static AppConfig FromConfigFile(const std::string& configFilePath);
 
-	int GetTotalCores() const;
+	int GetNumCpu() const;
 	SchedulingAlgorithm GetSchedulerAlgorithm() const;
-	int GetArtificialCommandDelayMs() const;
+	int GetQuantumCycles() const;
+	int GetBatchProcessFreq() const;
+	int GetDelaysPerExec() const;
+	int GetMinInstructions() const;
+	int GetMaxInstructions() const;
 
 private:
-	explicit AppConfig(int totalCores, SchedulingAlgorithm schedulerAlgorithm = SchedulingAlgorithm::FCFS, int artificialCommandDelayMs = 50);
+	AppConfig(
+		int numCpu,
+		SchedulingAlgorithm schedulerAlgorithm,
+		int quantumCycles,
+		int batchProcessFreq,
+		int delaysPerExec,
+		int minInstructions,
+		int maxInstructions);
 
-	static int ParseConfigFile(const std::string& configFilePath);
-	static SchedulingAlgorithm ParseConfigFileSchedulerAlgorithm(const std::string& configFilePath);
-	static int ParseConfigFileArtificialCommandDelay(const std::string& configFilePath);
+	static AppConfig ParseConfigFile(const std::string& configFilePath);
 
-	int totalCores;
+	int numCpu;
 	SchedulingAlgorithm schedulerAlgorithm;
-	int artificialCommandDelayMs;
+	int quantumCycles;
+	int batchProcessFreq;
+	int delaysPerExec;
+	int minInstructions;
+	int maxInstructions;
 };

@@ -2,7 +2,7 @@
 
 #include "ICommand.h"
 
-class ReportUtilCommand : public ICommand {
+class SchedulerStartCommand : public ICommand {
 public:
 	bool Execute(const std::vector<std::string>& args) const override;
 	std::string Name() const override;

@@ -12,6 +12,7 @@ enum class ProcessStatus {
 	Terminated
 };
 
+// A runnable program: instruction list, status, and timing. Executes via EITThread on a core.
 class Process
 {
 public:
@@ -30,13 +31,16 @@ public:
 
 	void AddCommand(std::unique_ptr<ICommand> command);
 	void ExecuteCommands();
-	static void SetArtificialCommandDelayMs(int delayMs);
-	static int GetArtificialCommandDelayMs();
+	bool ExecuteNextCommand();
+	bool HasRemainingCommands() const;
+	static void SetDelaysPerExec(int delayCycles);
+	static int GetDelaysPerExec();
 
 	void PrintInfo() const;
 
 	int GetID() const;
 	int GetCoreID() const;
+	void SetCoreID(int coreId);
 	std::string GetName() const;
 	std::string GetStatus() const;
 	ProcessStatus GetStatusEnum() const;
@@ -59,6 +63,6 @@ private:
 	int commandCount;
 	int executedCommandCount;
 	std::vector<std::unique_ptr<ICommand>> commands;
-	static int artificialCommandDelayMs;
+	static int delaysPerExec;
 };
 

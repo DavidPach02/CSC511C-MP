@@ -20,10 +20,11 @@ public:
 	void Process();
 	void Render();
 
-	void RegisterScreen(const std::shared_ptr<BaseScreen> screen);
+	void RegisterScreen(const std::shared_ptr<BaseScreen> screen, bool announce = true);
 	void UnregisterScreen(const std::string& name);
 	void SwitchScreen(const std::string& name);
 	bool HasScreen(const std::string& name) const;
+	bool IsOnMainConsole() const;
 
 	void ReturnToPreviousScreen();
 	void Exit();

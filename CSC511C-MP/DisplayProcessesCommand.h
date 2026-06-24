@@ -1,8 +1,6 @@
 #pragma once
 
 #include "ICommand.h"
-#include "CPUManager.h"
-#include <iostream>
 
 class DisplayProcessesCommand : public ICommand {
 public:

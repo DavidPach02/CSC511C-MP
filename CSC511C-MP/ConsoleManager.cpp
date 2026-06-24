@@ -59,6 +59,10 @@ bool ConsoleManager::HasScreen(const std::string& name) const {
 	return screenTable.find(name) != screenTable.end();
 }
 
+bool ConsoleManager::IsOnMainConsole() const {
+	return currentConsole != nullptr && currentConsole->GetName() == MAIN_CONSOLE_NAME;
+}
+
 void ConsoleManager::ReturnToPreviousScreen() {
 	// If the current screen is the main screen, do not return to the previous screen.
 	if (this->currentConsole != nullptr && this->currentConsole->GetName() == MAIN_CONSOLE_NAME) {
@@ -68,15 +72,35 @@ void ConsoleManager::ReturnToPreviousScreen() {
 	this->SwitchScreen(MAIN_CONSOLE_NAME);
 }
 
-void ConsoleManager::RegisterScreen(const std::shared_ptr<BaseScreen> screenRef) {
+void ConsoleManager::RegisterScreen(const std::shared_ptr<BaseScreen> screenRef, bool announce) {
 	if (this->screenTable.find(screenRef->GetName()) != this->screenTable.end()) {
-		std::cout << "\033[31mScreen already registered: " << screenRef->GetName() << "\033[0m\n";
+		if (announce) {
+			std::cout << "\033[31mScreen already registered: " << screenRef->GetName() << "\033[0m\n";
+		}
 		return;
 	}
 
 	screenTable[screenRef->GetName()] = screenRef;
-	std::cout << "Added screen: " << screenRef->GetName() << "\n";
-	std::cout << "Current screens: " << screenTable.size() << "\n";
+	if (announce) {
+		std::cout << "Added screen: " << screenRef->GetName() << "\n";
+		std::cout << "Current screens: " << screenTable.size() << "\n";
+	}
+}
+
+void ConsoleManager::UnregisterScreen(const std::string& name) {
+	if (name == MAIN_CONSOLE_NAME) {
+		return;
+	}
+
+	if (screenTable.find(name) == screenTable.end()) {
+		return;
+	}
+
+	if (currentConsole != nullptr && currentConsole->GetName() == name) {
+		SwitchScreen(MAIN_CONSOLE_NAME);
+	}
+
+	screenTable.erase(name);
 }
 
 bool ConsoleManager::GetIsRunnning() const

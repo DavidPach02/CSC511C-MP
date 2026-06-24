@@ -1,30 +1,40 @@
 #include "Scheduler.h"
+#include "FCFSScheduler.h"
+#include "RRScheduler.h"
 
 Scheduler* Scheduler::instance = nullptr;
 
 Scheduler* Scheduler::GetInstance() {
-	if (instance == nullptr) {
-		instance = new Scheduler();
-	}
 	return instance;
 }
 
-void Scheduler::Initialize(int totalCores, SchedulingAlgorithm algorithm) {
-	GetInstance()->totalCores = totalCores;
-	GetInstance()->algorithm = algorithm;
-	GetInstance()->running = false;
+void Scheduler::Initialize(int totalCores, SchedulingAlgorithm algorithm, int quantumCommands) {
+	Destroy();
+
+	switch (algorithm) {
+	case SchedulingAlgorithm::RR:
+		instance = new RRScheduler(totalCores, quantumCommands);
+		break;
+	case SchedulingAlgorithm::FCFS:
+	default:
+		instance = new FCFSScheduler(totalCores);
+		break;
+	}
 }
 
 void Scheduler::Destroy() {
 	if (instance != nullptr) {
 		instance->Stop();
+		delete instance;
+		instance = nullptr;
 	}
-	delete instance;
-	instance = nullptr;
 }
 
-Scheduler::Scheduler() : algorithm(SchedulingAlgorithm::FCFS), totalCores(0), running(false) {
+Scheduler::Scheduler(int totalCores)
+	: totalCores(totalCores), running(false) {
 }
+
+Scheduler::~Scheduler() = default;
 
 void Scheduler::AddProcess(std::shared_ptr<Process> process) {
 	{
@@ -42,7 +52,7 @@ void Scheduler::Start() {
 	running = true;
 
 	for (int coreID = 0; coreID < totalCores; ++coreID) {
-		coreThreads.emplace_back(&Scheduler::RunCore, this, coreID);
+		coreThreads.emplace_back(&Scheduler::RunWorker, this, coreID);
 	}
 }
 
@@ -62,45 +72,33 @@ void Scheduler::Stop() {
 	coreThreads.clear();
 }
 
-void Scheduler::RunCore(int coreID) {
-	RunFCFS(coreID);
-}
-
-void Scheduler::RunFCFS(int coreID) {
-	while (true) {
-		std::shared_ptr<Process> process;
-
-		{
-			std::unique_lock<std::mutex> lock(queueMutex);
-			queueCondition.wait(lock, [this] {
-				return !readyQueue.empty() || !running;
-			});
-
-			if (!running && readyQueue.empty()) {
-				return;
-			}
-
-			process = readyQueue.front();
-			readyQueue.pop();
-            
-		}
-
-		process->Run();
-		// Execute all commands attached to the process in order
-		process->ExecuteCommands();
-
-		process->Terminate();
-	}
-}
-
-SchedulingAlgorithm Scheduler::GetAlgorithm() const {
-	return algorithm;
-}
-
-std::string Scheduler::GetAlgorithmName() const {
-	return "First Come, First Served (FCFS)";
-}
-
 bool Scheduler::IsRunning() const {
 	return running;
+}
+
+void Scheduler::RunWorker(int coreID) {
+	RunCore(coreID);
+}
+
+bool Scheduler::DequeueProcess(std::shared_ptr<Process>& process) {
+	std::unique_lock<std::mutex> lock(queueMutex);
+	queueCondition.wait(lock, [this] {
+		return !readyQueue.empty() || !running;
+	});
+
+	if (!running && readyQueue.empty()) {
+		return false;
+	}
+
+	process = readyQueue.front();
+	readyQueue.pop();
+	return true;
+}
+
+void Scheduler::RequeueProcess(std::shared_ptr<Process> process) {
+	{
+		std::lock_guard<std::mutex> lock(queueMutex);
+		readyQueue.push(process);
+	}
+	queueCondition.notify_one();
 }
