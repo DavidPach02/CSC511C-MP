@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AddInstruction.cpp" />
     <ClCompile Include="AppConfig.cpp" />
     <ClCompile Include="BaseScreen.cpp" />
     <ClCompile Include="ClearCommand.cpp" />
@@ -139,6 +140,16 @@
     <ClCompile Include="CPUTicker.cpp" />
     <ClCompile Include="CPUManager.cpp" />
     <ClCompile Include="CreateScreenCommand.cpp" />
+    <ClCompile Include="DeclareVariableInstruction.cpp" />
+    <ClCompile Include="ExitScreenCommand.cpp" />
+    <ClCompile Include="Instruction.cpp" />
+    <ClCompile Include="Operand.cpp" />
+    <ClCompile Include="ParseUtils.cpp" />
+    <ClCompile Include="PrebootScreen.cpp" />
+    <ClCompile Include="PrintInstruction.cpp" />
+    <ClCompile Include="ProcessList.cpp" />
+    <ClCompile Include="SubtractInstruction.cpp" />
+    <ClCompile Include="SymbolTable.cpp" />
     <ClCompile Include="SystemState.cpp" />
     <ClCompile Include="SwitchScreenCommand.cpp" />
     <ClCompile Include="CSC511C-MP.cpp" />
@@ -148,7 +159,7 @@
     <ClCompile Include="HelpCommand.cpp" />
     <ClCompile Include="InitializeCommand.cpp" />
     <ClCompile Include="MainConsole.cpp" />
-    <ClCompile Include="PrintCommand.cpp" />
+    <ClCompile Include="PrintLogsCommand.cpp" />
     <ClCompile Include="Process.cpp" />
     <ClCompile Include="ProcessReport.cpp" />
     <ClCompile Include="ProcessManager.cpp" />
@@ -165,17 +176,28 @@
     <ClCompile Include="TimeUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
-   <ClInclude Include="AppConfig.h" />
+    <ClInclude Include="AddInstruction.h" />
+    <ClInclude Include="AppConfig.h" />
     <ClInclude Include="AConsole.h" />
     <ClInclude Include="BaseScreen.h" />
     <ClInclude Include="ClearCommand.h" />
     <ClInclude Include="CommandDispatcher.h" />
+    <ClInclude Include="DeclareVariableInstruction.h" />
+    <ClInclude Include="ExitScreenCommand.h" />
+    <ClInclude Include="Instruction.h" />
+    <ClInclude Include="Operand.h" />
+    <ClInclude Include="ParseUtils.h" />
+    <ClInclude Include="PrebootScreen.h" />
+    <ClInclude Include="PrintInstruction.h" />
+    <ClInclude Include="ProcessList.h" />
     <ClInclude Include="SchedulerStartCommand.h" />
     <ClInclude Include="SchedulerStopCommand.h" />
     <ClInclude Include="ConsoleManager.h" />
     <ClInclude Include="CPUTicker.h" />
     <ClInclude Include="CPUManager.h" />
     <ClInclude Include="CreateScreenCommand.h" />
+    <ClInclude Include="SubtractInstruction.h" />
+    <ClInclude Include="SymbolTable.h" />
     <ClInclude Include="SystemState.h" />
     <ClInclude Include="SwitchScreenCommand.h" />
     <ClInclude Include="DummyProcessGenerator.h" />
@@ -186,7 +208,7 @@
     <ClInclude Include="IHelpDisplayable.h" />
     <ClInclude Include="InitializeCommand.h" />
     <ClInclude Include="MainConsole.h" />
-    <ClInclude Include="PrintCommand.h" />
+    <ClInclude Include="PrintLogsCommand.h" />
     <ClInclude Include="Process.h" />
     <ClInclude Include="ProcessReport.h" />
     <ClInclude Include="ProcessManager.h" />

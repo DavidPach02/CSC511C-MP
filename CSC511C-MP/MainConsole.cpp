@@ -3,6 +3,7 @@
 #include <iostream>
 
 MainConsole::MainConsole() : AConsole("MAIN_CONSOLE_NAME") {
+    commandDispatcher->Initialize();
 }
 
 MainConsole::MainConsole(const std::string processName) : AConsole(processName) {
@@ -14,7 +15,7 @@ void MainConsole::OnEnabled()
     PrintHeader();
 }
 
-void MainConsole::Process()
+void MainConsole::Update()
 {
     std::string command = "";
 	std::cout << "Enter command: ";

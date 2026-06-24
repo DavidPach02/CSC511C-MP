@@ -8,7 +8,7 @@ public:
 	MainConsole();
 	MainConsole(const std::string processName);
 	void OnEnabled() override;
-	void Process() override;
+	void Update() override;
 	void Display() override;
 
 private:

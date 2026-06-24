@@ -12,7 +12,7 @@ public:
 
 	virtual void OnEnabled() = 0;
 	virtual void Display() = 0; // Draw the screen
-	virtual void Process() = 0; // Input or process algo
+	virtual void Update() = 0; // Input or process algo
 
 protected:
 	std::unique_ptr<CommandDispatcher> commandDispatcher;
