@@ -8,7 +8,7 @@ namespace {
 	constexpr SchedulingAlgorithm DEFAULT_SCHEDULER = SchedulingAlgorithm::FCFS;
 	constexpr int DEFAULT_QUANTUM_CYCLES = 5;
 	constexpr int DEFAULT_BATCH_PROCESS_FREQ = 1;
-	constexpr int DEFAULT_DELAYS_PER_EXEC = 10;
+	constexpr int DEFAULT_DELAYS_PER_EXEC = 2;
 	constexpr int DEFAULT_MIN_INSTRUCTIONS = 25;
 	constexpr int DEFAULT_MAX_INSTRUCTIONS = 100;
 }

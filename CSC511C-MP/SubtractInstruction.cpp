@@ -9,8 +9,8 @@ void SubtractInstruction::Execute() {
 	uint16_t val2 = operand2.Resolve(process);
 
 	uint32_t result = static_cast<uint32_t>(val1) - static_cast<uint32_t>(val2);
-	if (result < 0) {
-		result = 0; // Strict clamping underflow wrap
+	if (val1 < val2) {
+		result = 0;
 	}
 
 	process->GetSymbolTable()->SetVariable(destinationVar, static_cast<uint16_t>(result));

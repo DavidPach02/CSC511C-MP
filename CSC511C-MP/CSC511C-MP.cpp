@@ -16,6 +16,7 @@ int main(int argc, char* argv[]) {
 	ConsoleManager::GetInstance()->RegisterScreen(prebootScreen, false);
 	ConsoleManager::GetInstance()->SwitchScreen(prebootScreen->GetName());
 
+	// TODO: Add exit command here and exit main
 	while (!SystemState::IsInitialized()) {
 		ConsoleManager::GetInstance()->Update();
 		ConsoleManager::GetInstance()->Render();

@@ -3,6 +3,8 @@
 #include "ICommand.h"
 #include "ConsoleManager.h"
 #include "BaseScreen.h"
+#include "DummyProcessGenerator.h"
+#include "SystemState.h"
 #include <iostream>
 
 class CreateScreenCommand : public ICommand {

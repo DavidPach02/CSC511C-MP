@@ -142,6 +142,7 @@
     <ClCompile Include="CreateScreenCommand.cpp" />
     <ClCompile Include="DeclareVariableInstruction.cpp" />
     <ClCompile Include="ExitScreenCommand.cpp" />
+    <ClCompile Include="ForInstruction.cpp" />
     <ClCompile Include="Instruction.cpp" />
     <ClCompile Include="Operand.cpp" />
     <ClCompile Include="ParseUtils.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="CommandDispatcher.h" />
     <ClInclude Include="DeclareVariableInstruction.h" />
     <ClInclude Include="ExitScreenCommand.h" />
+    <ClInclude Include="ForInstruction.h" />
     <ClInclude Include="Instruction.h" />
     <ClInclude Include="Operand.h" />
     <ClInclude Include="ParseUtils.h" />
