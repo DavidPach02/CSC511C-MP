@@ -36,7 +36,7 @@ void DummyProcessGenerator::Reset() {
 	nextProcessId = 1;
 }
 
-bool DummyProcessGenerator::GenerateOne(const AppConfig& appConfig) {
+bool DummyProcessGenerator::GenerateOne(const AppConfig& appConfig, const std::string& customName) {
 	if (Scheduler::GetInstance() == nullptr) {
 		return false;
 	}
@@ -48,7 +48,7 @@ bool DummyProcessGenerator::GenerateOne(const AppConfig& appConfig) {
 	std::uniform_int_distribution<int> valueDistribution(0, 20);
 
 	const int commandCount = commandCountDistribution(generator);
-	const std::string processName = MakeProcessName(nextProcessId);
+	const std::string processName = customName == "" ? MakeProcessName(nextProcessId) : customName;
 
 	auto process = std::make_shared<Process>(nextProcessId, processName);
 	++nextProcessId;

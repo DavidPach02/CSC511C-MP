@@ -14,12 +14,12 @@ bool SwitchScreenCommand::Execute(const std::vector<std::string>& args) const {
 
 	std::shared_ptr<Process> process = ProcessManager::GetInstance()->GetProcessByName(processName);
 	if (process == nullptr || process->GetStatusEnum() == ProcessStatus::Terminated) {
-		std::cout << "Process " << processName << " not found.\n";
+		std::cout << "\033[31mProcess " << processName << " not found.\033[0m\n";
 		return true;
 	}
 
 	if (!consoleManager->HasScreen(processName)) {
-		std::cout << "Process " << processName << " not found.\n";
+		std::cout << "\033[31mProcess " << processName << " not found.\033[0m\n";
 		return true;
 	}
 

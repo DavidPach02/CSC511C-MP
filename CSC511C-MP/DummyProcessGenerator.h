@@ -9,7 +9,7 @@ class AppConfig;
 // Builds Process + print commands, registers screen, adds to Scheduler and ProcessManager.
 class DummyProcessGenerator {
 public:
-	static bool GenerateOne(const AppConfig& appConfig);
+	static bool GenerateOne(const AppConfig& appConfig, const std::string& customName = "");
 	static void Reset();
 
 private:
