@@ -10,6 +10,7 @@
 #include "AddInstruction.h"
 #include "SubtractInstruction.h"
 #include "ForInstruction.h"
+#include "SleepInstruction.h"
 #include <memory>
 #include <random>
 #include <string>
@@ -43,7 +44,7 @@ bool DummyProcessGenerator::GenerateOne(const AppConfig& appConfig) {
 	std::mt19937 generator(std::random_device{}());
 	std::uniform_int_distribution<int> commandCountDistribution(
 		appConfig.GetMinInstructions(), appConfig.GetMaxInstructions());
-	std::uniform_int_distribution<int> instructionTypeDistribution(0, 4);
+	std::uniform_int_distribution<int> instructionTypeDistribution(0, 5);
 	std::uniform_int_distribution<int> valueDistribution(0, 20);
 
 	const int commandCount = commandCountDistribution(generator);
@@ -96,6 +97,9 @@ bool DummyProcessGenerator::GenerateOne(const AppConfig& appConfig) {
 				process, std::move(forBody), randomOperand()));
 			break;
 		}
+		case 5:
+			process->AddInstruction(std::make_unique<SleepInstruction>(process, randomOperand()));
+			break;
 		default:
 			break;
 		}
@@ -104,6 +108,7 @@ bool DummyProcessGenerator::GenerateOne(const AppConfig& appConfig) {
 	std::shared_ptr<BaseScreen> baseScreen = std::make_shared<BaseScreen>(process);
 	ConsoleManager::GetInstance()->RegisterScreen(baseScreen, false);
 	createdScreenNames.push_back(processName);
+	// Add the process to the scheduler
 	Scheduler::GetInstance()->AddProcess(process);
 	ProcessManager::GetInstance()->AddProcess(process);
 

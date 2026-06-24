@@ -20,7 +20,19 @@ void FCFSScheduler::RunCore(int coreID) {
 			return;
 		}
 
+		if (process->GetStatusEnum() == ProcessStatus::Sleeping) {
+			process->WakeIfReady();
+			if (process->GetStatusEnum() == ProcessStatus::Sleeping) {
+				RequeueProcess(process);
+				continue;
+			}
+		}
+
 		EITThread executionThread(process, coreID);
 		executionThread.RunToCompletion();
+
+		if (process->GetStatusEnum() == ProcessStatus::Sleeping) {
+			RequeueProcess(process);
+		}
 	}
 }
