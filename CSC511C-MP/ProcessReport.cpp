@@ -29,6 +29,14 @@ void ProcessReport::WriteSummary(std::ostream& output) {
 		}
 	}
 
+	output << "\nSleeping processes:\n";
+	for (const auto& process : processes) {
+		if (process->GetStatusEnum() == ProcessStatus::Sleeping) {
+			output << process->GetName() << " " << process->GetExecutedCommandCount() << " / "
+				<< process->GetCommandCount() << "\n";
+		}
+	}
+
 	output << "\nFinished processes:\n";
 	for (const auto& process : processes) {
 		if (process->GetStatusEnum() == ProcessStatus::Terminated) {

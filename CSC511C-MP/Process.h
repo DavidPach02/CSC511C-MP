@@ -2,6 +2,7 @@
 
 #include "Instruction.h"
 #include "SymbolTable.h"
+#include <cstdint>
 #include <vector>
 #include <memory>
 #include <string>
@@ -12,6 +13,7 @@ enum class ProcessStatus {
 	Ready,
 	Running,
 	Paused,
+	Sleeping,
 	Terminated
 };
 
@@ -22,8 +24,8 @@ public:
 	Process();
 	Process(const int processID, const std::string& processName, const int coreID = 0)
 		: id(processID), name(processName), coreID(coreID), status(ProcessStatus::Ready),
-		  startTime(""), startDate(""), endTime(""), endDate(""), 
-		  commandCount(0), executedCommandCount(0), symTable(new SymbolTable()) {}
+		  symTable(new SymbolTable()), startTime(""), startDate(""), endTime(""), endDate(""), 
+		  commandCount(0), executedCommandCount(0), wakeTick(0), logs("") {}
 	~Process() = default;
 
 	void Initialize(const int processID, const std::string& processName, const int coreID = 0);
@@ -56,6 +58,12 @@ public:
 
 	int GetCommandCount() const;
 	int GetExecutedCommandCount() const;
+
+	void SleepForTicks(std::uint8_t duration);
+	bool IsSleeping() const;
+	bool IsSleepComplete() const;
+	void WakeIfReady();
+	uint64_t GetWakeTick() const;
 	
 	void LogMessage(std::string& message);
 
@@ -71,6 +79,7 @@ private:
 	std::string endDate;
 	int commandCount;
 	int executedCommandCount;
+	uint64_t wakeTick;
 
 	std::vector<std::unique_ptr<Instruction>> commands;
 	static int delaysPerExec;
