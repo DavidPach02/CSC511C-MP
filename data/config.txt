@@ -1,3 +1,7 @@
-cores 4
-scheduler-algorithm fcfs
-artificial-command-delay-ms 50
+num-cpu 4
+scheduler fcfs
+quantum-cycles 5
+batch-process-freq 1
+delays-per-exec 2
+min-ins 25
+max-ins 100
