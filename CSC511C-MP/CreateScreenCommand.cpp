@@ -37,7 +37,6 @@ bool CreateScreenCommand::Execute(const std::vector<std::string>& args) const
 
 		std::cout << "Process created successfully: " << processName << "\n";
 		
-		return true;
 	}
 
 	ConsoleManager::GetInstance()->SwitchScreen(processName);
