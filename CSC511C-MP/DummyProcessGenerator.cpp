@@ -10,6 +10,7 @@
 #include "AddInstruction.h"
 #include "SubtractInstruction.h"
 #include "ForInstruction.h"
+#include "SleepInstruction.h"
 #include <memory>
 #include <random>
 #include <string>
@@ -55,6 +56,7 @@ bool DummyProcessGenerator::GenerateOne(const AppConfig& appConfig) {
 	for (int commandIndex = 0; commandIndex < commandCount; ++commandIndex) {
 		process->AddInstruction(std::make_unique<DeclareVariableInstruction>(process, "Sample" + std::to_string(commandIndex), commandIndex));
 		process->AddInstruction(std::make_unique<AddInstruction>(process, "x", "1", "2"));
+		process->AddInstruction(std::make_unique<SleepInstruction>(process, 2));
 		process->AddInstruction(std::make_unique<AddInstruction>(process, "y", "Sample" + std::to_string(commandIndex), "1"));
 		process->AddInstruction(std::make_unique<SubtractInstruction>(process, "z", "x", "y"));
 		process->AddInstruction(std::make_unique<PrintInstruction>(process, "Hello World from " + process->GetName() + "!"));
@@ -73,7 +75,7 @@ bool DummyProcessGenerator::GenerateOne(const AppConfig& appConfig) {
 	ConsoleManager::GetInstance()->RegisterScreen(baseScreen, false);
 	// Add the screen name to the list of created screen names
 	createdScreenNames.push_back(processName);
-    // Add the process to the scheduler
+	// Add the process to the scheduler
 	Scheduler::GetInstance()->AddProcess(process);
 	// Add the process to the process manager
 	ProcessManager::GetInstance()->AddProcess(process);

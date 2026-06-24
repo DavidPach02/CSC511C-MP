@@ -15,6 +15,8 @@ std::string StatusToString(ProcessStatus status)
 		return "Running";
 	case ProcessStatus::Paused:
 		return "Paused";
+	case ProcessStatus::Sleeping:
+		return "Sleeping";
 	case ProcessStatus::Terminated:
 		return "Terminated";
 	default:
@@ -23,8 +25,8 @@ std::string StatusToString(ProcessStatus status)
 }
 
 Process::Process() : id(0), name(""), coreID(0), status(ProcessStatus::Ready),
-	startTime(""), startDate(""), endTime(""), endDate(""),
-	commandCount(0), executedCommandCount(0), logs(""), symTable(new SymbolTable())
+	symTable(new SymbolTable()), startTime(""), startDate(""), endTime(""), endDate(""),
+	commandCount(0), executedCommandCount(0), wakeTick(0), logs("")
 {
 }
 
@@ -41,6 +43,7 @@ void Process::Initialize(const int processID, const std::string& processName, co
 	endDate = "";
 	commandCount = 0;
 	executedCommandCount = 0;
+	wakeTick = 0;
 	commands.clear();
 }
 
@@ -73,6 +76,7 @@ void Process::Resume()
 void Process::Terminate()
 {
 	status = ProcessStatus::Terminated;
+	wakeTick = 0;
 	// Capture end time and date on termination
 	endTime = TimeUtility::GetCurrentTimeString(false, ":");
 	endDate = TimeUtility::GetCurrentDateString("/");
@@ -209,6 +213,48 @@ int Process::GetExecutedCommandCount() const
 	return executedCommandCount;
 }
 
+void Process::SleepForTicks(std::uint8_t duration)
+{
+	if (duration == 0) {
+		return;
+	}
+
+	wakeTick = CPUTicker::GetInstance()->GetCurrentTick() + static_cast<uint64_t>(duration);
+	status = ProcessStatus::Sleeping;
+}
+
+bool Process::IsSleeping() const
+{
+	return status == ProcessStatus::Sleeping;
+}
+
+bool Process::IsSleepComplete() const
+{
+	if (!IsSleeping()) {
+		return false;
+	}
+
+	return CPUTicker::GetInstance()->GetCurrentTick() >= wakeTick;
+}
+
+void Process::WakeIfReady()
+{
+	if (!IsSleeping()) {
+		return;
+	}
+
+	if (IsSleepComplete()) {
+		status = ProcessStatus::Ready;
+		wakeTick = 0;
+	}
+}
+
+uint64_t Process::GetWakeTick() const
+{
+	return wakeTick;
+}
+
 void Process::LogMessage(std::string& message) {
-	this->logs.append(message + "\n" + this->symTable->GetTableLogs());
+	this->logs.append(message + "\n");
+	// this->logs.append(message + "\n" + this->symTable->GetTableLogs());
 }

@@ -22,6 +22,14 @@ void RRScheduler::RunCore(int coreID) {
 			return;
 		}
 
+		if (process->GetStatusEnum() == ProcessStatus::Sleeping) {
+			process->WakeIfReady();
+			if (process->GetStatusEnum() == ProcessStatus::Sleeping) {
+				RequeueProcess(process);
+				continue;
+			}
+		}
+
 		EITThread executionThread(process, coreID);
 
 		if (executionThread.ExecuteTimeSlice(quantumCommands)) {

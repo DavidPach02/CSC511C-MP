@@ -67,10 +67,33 @@ void EITThread::EnsureStarted() {
 }
 
 void EITThread::RunToCompletion() {
+	if (process->GetStatusEnum() == ProcessStatus::Sleeping) {
+		ReleaseCoreAssignment();
+		state = EITThreadState::Ready;
+		return;
+	}
+
 	EnsureStarted();
-	process->ExecuteCommands();
-	process->Terminate();
-	state = EITThreadState::Finished;
+
+	while (process->HasRemainingCommands()) {
+		const bool hasRemaining = process->ExecuteNextCommand();
+
+		if (process->GetStatusEnum() == ProcessStatus::Sleeping) {
+			ReleaseCoreAssignment();
+			state = EITThreadState::Ready;
+			return;
+		}
+
+		if (!hasRemaining) {
+			break;
+		}
+	}
+
+	if (!process->HasRemainingCommands()) {
+		process->Terminate();
+		state = EITThreadState::Finished;
+	}
+
 	ReleaseCoreAssignment();
 }
 
@@ -79,10 +102,24 @@ bool EITThread::ExecuteTimeSlice(int commandCount) {
 		return !IsFinished() && process->HasRemainingCommands();
 	}
 
+	if (process->GetStatusEnum() == ProcessStatus::Sleeping) {
+		ReleaseCoreAssignment();
+		state = EITThreadState::Ready;
+		return true;
+	}
+
 	EnsureStarted();
 
 	for (int commandIndex = 0; commandIndex < commandCount; ++commandIndex) {
-		if (!process->ExecuteNextCommand()) {
+		const bool hasRemaining = process->ExecuteNextCommand();
+
+		if (process->GetStatusEnum() == ProcessStatus::Sleeping) {
+			ReleaseCoreAssignment();
+			state = EITThreadState::Ready;
+			return true;
+		}
+
+		if (!hasRemaining) {
 			process->Terminate();
 			state = EITThreadState::Finished;
 			ReleaseCoreAssignment();
