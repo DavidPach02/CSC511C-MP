@@ -29,7 +29,11 @@ bool CreateScreenCommand::Execute(const std::vector<std::string>& args) const
 	}
 
 	const AppConfig& config = SystemState::GetConfig();
-	DummyProcessGenerator::GenerateOne(config, processName);
+	if (!DummyProcessGenerator::GenerateOne(config, processName)) {
+		std::cout << "\033[31mFailed to create process: " << processName << "\033[0m\n";
+		return true;
+	}
+
 	consoleManager->SwitchScreen(processName);
 	return true;
 }
