@@ -1,3 +1,10 @@
-cores 4
-scheduler-algorithm fcfs
-artificial-command-delay-ms 50
+# CSOPESY OS Emulator - config.txt
+# Space-separated: <parameter> <value>
+
+num-cpu 4
+scheduler rr
+quantum-cycles 5
+batch-process-freq 1
+delays-per-exec 0
+min-ins 1000
+max-ins 2000

@@ -1,19 +1,37 @@
 #include "CreateScreenCommand.h"
+#include "ProcessManager.h"
+#include <iostream>
 
 bool CreateScreenCommand::Execute(const std::vector<std::string>& args) const
 {
-	int argsCount = args.size();
-	if (argsCount <= 1 || argsCount > 2)
-	{
+	const int argsCount = static_cast<int>(args.size());
+	if (argsCount <= 1 || argsCount > 2) {
 		std::cout << "\033[31mUsage: screen -s <process_name>\033[0m\n";
 		return true;
 	}
 
-	const AppConfig& config = SystemState::GetConfig();
-	DummyProcessGenerator::GenerateOne(config, args[1]);
-	ConsoleManager::GetInstance()->SwitchScreen(args[1]);
+	if (!SystemState::IsInitialized()) {
+		std::cout << "Run initialize before creating a screen.\n";
+		return true;
+	}
 
-    return true;
+	const std::string processName = args[1];
+	ConsoleManager* consoleManager = ConsoleManager::GetInstance();
+
+	if (consoleManager->HasScreen(processName)) {
+		std::cout << "\033[31mScreen already exists: " << processName << "\033[0m\n";
+		return true;
+	}
+
+	if (ProcessManager::GetInstance()->GetProcessByName(processName) != nullptr) {
+		std::cout << "\033[31mProcess already exists: " << processName << "\033[0m\n";
+		return true;
+	}
+
+	const AppConfig& config = SystemState::GetConfig();
+	DummyProcessGenerator::GenerateOne(config, processName);
+	consoleManager->SwitchScreen(processName);
+	return true;
 }
 
 std::string CreateScreenCommand::Name() const { return "screen -s"; }

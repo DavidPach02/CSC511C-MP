@@ -4,6 +4,8 @@
 #include "CPUManager.h"
 #include "ProcessManager.h"
 #include "Process.h"
+#include "Scheduler.h"
+#include "CPUTicker.h"
 #include <iostream>
 
 bool InitializeCommand::Execute(const std::vector<std::string>& args) const {
@@ -21,6 +23,17 @@ bool InitializeCommand::Execute(const std::vector<std::string>& args) const {
 	CPUManager::Initialize(appConfig.GetNumCpu());
 	Process::SetDelaysPerExec(appConfig.GetDelaysPerExec());
 
+	Scheduler::Initialize(
+		appConfig.GetNumCpu(),
+		appConfig.GetSchedulerAlgorithm(),
+		appConfig.GetQuantumCycles());
+
+	CPUTicker::Start();
+
+	if (!Scheduler::GetInstance()->IsRunning()) {
+		Scheduler::GetInstance()->Start();
+	}
+	
 	std::cout << "Initialized CPU configuration from config.txt\n";
 	std::cout << "  num-cpu: " << appConfig.GetNumCpu() << "\n";
 	std::cout << "  scheduler: "
