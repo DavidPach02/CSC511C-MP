@@ -22,9 +22,15 @@ int main(int argc, char* argv[]) {
 	while (!SystemState::IsInitialized()) {
 		ConsoleManager::GetInstance()->Update();
 		ConsoleManager::GetInstance()->Render();
+
+		if (prebootScreen->IsExitConsole()) {
+			return 0;
+		}
 	}
 
+	// Unregister preboot screen
 	ConsoleManager::GetInstance()->UnregisterScreen(prebootScreen->GetName());
+	// Initialize window here
 	std::this_thread::sleep_for(std::chrono::seconds(2));
 	ConsoleManager::GetInstance()->Initialize();
 

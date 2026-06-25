@@ -255,6 +255,6 @@ uint64_t Process::GetWakeTick() const
 }
 
 void Process::LogMessage(std::string& message) {
-	this->logs.append(message + "\n");
-	// this->logs.append(message + "\n" + this->symTable->GetTableLogs());
+	//this->logs.append(message + "\n");
+	this->logs.append(message + "\n" + this->symTable->GetTableLogs());
 }

@@ -28,6 +28,9 @@
     <Filter Include="Header Files\Utils">
       <UniqueIdentifier>{4ce1c2df-dc47-4c06-9aba-756d7e193901}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Instruction">
+      <UniqueIdentifier>{256f4f82-6aa5-41cf-97a3-42bc8c20f3cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppConfig.cpp">
@@ -52,9 +55,6 @@
       <Filter>Header Files\Command</Filter>
     </ClCompile>
     <ClCompile Include="ReportUtilCommand.cpp">
-      <Filter>Header Files\Command</Filter>
-    </ClCompile>
-    <ClCompile Include="PrintCommand.cpp">
       <Filter>Header Files\Command</Filter>
     </ClCompile>
     <ClCompile Include="HelpCommand.cpp">
@@ -123,6 +123,51 @@
     <ClCompile Include="DisplayProcessesCommand.cpp">
       <Filter>Header Files\Command</Filter>
     </ClCompile>
+    <ClCompile Include="DeclareVariableInstruction.cpp">
+      <Filter>Header Files\Instruction</Filter>
+    </ClCompile>
+    <ClCompile Include="AddInstruction.cpp">
+      <Filter>Header Files\Instruction</Filter>
+    </ClCompile>
+    <ClCompile Include="ForInstruction.cpp">
+      <Filter>Header Files\Instruction</Filter>
+    </ClCompile>
+    <ClCompile Include="Instruction.cpp">
+      <Filter>Header Files\Instruction</Filter>
+    </ClCompile>
+    <ClCompile Include="PrintInstruction.cpp">
+      <Filter>Header Files\Instruction</Filter>
+    </ClCompile>
+    <ClCompile Include="SubtractInstruction.cpp">
+      <Filter>Header Files\Instruction</Filter>
+    </ClCompile>
+    <ClCompile Include="SleepInstruction.cpp">
+      <Filter>Header Files\Instruction</Filter>
+    </ClCompile>
+    <ClCompile Include="ExitScreenCommand.cpp">
+      <Filter>Header Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="SymbolTable.cpp">
+      <Filter>Header Files\Process</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessList.cpp">
+      <Filter>Header Files\Process</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessReport.cpp">
+      <Filter>Header Files\Process</Filter>
+    </ClCompile>
+    <ClCompile Include="ParseUtils.cpp">
+      <Filter>Header Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Operand.cpp">
+      <Filter>Header Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="PrebootScreen.cpp">
+      <Filter>Header Files\ConsoleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="PrintLogsCommand.cpp">
+      <Filter>Header Files\Command</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ICommand.h">
@@ -150,9 +195,6 @@
       <Filter>Header Files\Command</Filter>
     </ClInclude>
     <ClInclude Include="ReportUtilCommand.h">
-      <Filter>Header Files\Command</Filter>
-    </ClInclude>
-    <ClInclude Include="PrintCommand.h">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
     <ClInclude Include="HelpCommand.h">
@@ -219,6 +261,51 @@
       <Filter>Header Files\Process</Filter>
     </ClInclude>
     <ClInclude Include="DisplayProcessesCommand.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="AddInstruction.h">
+      <Filter>Header Files\Instruction</Filter>
+    </ClInclude>
+    <ClInclude Include="DeclareVariableInstruction.h">
+      <Filter>Header Files\Instruction</Filter>
+    </ClInclude>
+    <ClInclude Include="ForInstruction.h">
+      <Filter>Header Files\Instruction</Filter>
+    </ClInclude>
+    <ClInclude Include="Instruction.h">
+      <Filter>Header Files\Instruction</Filter>
+    </ClInclude>
+    <ClInclude Include="PrintInstruction.h">
+      <Filter>Header Files\Instruction</Filter>
+    </ClInclude>
+    <ClInclude Include="SubtractInstruction.h">
+      <Filter>Header Files\Instruction</Filter>
+    </ClInclude>
+    <ClInclude Include="SleepInstruction.h">
+      <Filter>Header Files\Instruction</Filter>
+    </ClInclude>
+    <ClInclude Include="ExitScreenCommand.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="SymbolTable.h">
+      <Filter>Header Files\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="ProcessReport.h">
+      <Filter>Header Files\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="ProcessList.h">
+      <Filter>Header Files\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="ParseUtils.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Operand.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="PrebootScreen.h">
+      <Filter>Header Files\ConsoleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="PrintLogsCommand.h">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
   </ItemGroup>

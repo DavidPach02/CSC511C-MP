@@ -11,8 +11,11 @@ public:
 	void OnEnabled() override;
 	void Update() override;
 	void Display() override;
+
+	bool IsExitConsole() const { return isExitConsole; }
 private:
 	void PrintPrompt() const;
 	bool refreshed = false;
+	bool isExitConsole = false;
 };
 
