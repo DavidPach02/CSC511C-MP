@@ -26,7 +26,7 @@ public:
 		: id(processID), name(processName), coreID(coreID), status(ProcessStatus::Ready),
 		  symTable(new SymbolTable()), startTime(""), startDate(""), endTime(""), endDate(""), 
 		  commandCount(0), executedCommandCount(0), wakeTick(0), logs("") {}
-	~Process() = default;
+	~Process();
 
 	void Initialize(const int processID, const std::string& processName, const int coreID = 0);
 	void Run();

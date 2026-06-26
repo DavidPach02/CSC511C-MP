@@ -64,6 +64,12 @@ make
 
 ## How to Start the Application
 
+If the user is using Visual Studio in debugging the code.
+
+1. Open VS Studio 2022 or any version higher.
+2. Find CSC511C-MP.cpp in the Solution Explorer.
+3. Press the debug button.
+
 When launched, the app opens in preboot mode.
 
 1. Type `initialize`.

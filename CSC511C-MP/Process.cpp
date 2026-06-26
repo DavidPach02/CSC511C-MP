@@ -30,6 +30,14 @@ Process::Process() : id(0), name(""), coreID(0), status(ProcessStatus::Ready),
 {
 }
 
+Process::~Process()
+{
+	if (symTable != nullptr) {
+		delete symTable;
+		symTable = nullptr;
+	}
+}
+
 void Process::Initialize(const int processID, const std::string& processName, const int coreID)
 {
 	id = processID;
