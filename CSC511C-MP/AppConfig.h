@@ -12,6 +12,7 @@ public:
 	int GetQuantumCycles() const;
 	int GetBatchProcessFreq() const;
 	int GetDelaysPerExec() const;
+	int GetTickerDelayMs() const;
 	int GetMinInstructions() const;
 	int GetMaxInstructions() const;
 
@@ -22,6 +23,7 @@ private:
 		int quantumCycles,
 		int batchProcessFreq,
 		int delaysPerExec,
+		int tickerDelayMs,
 		int minInstructions,
 		int maxInstructions);
 
@@ -32,6 +34,7 @@ private:
 	int quantumCycles;
 	int batchProcessFreq;
 	int delaysPerExec;
+	int tickerDelayMs;
 	int minInstructions;
 	int maxInstructions;
 };

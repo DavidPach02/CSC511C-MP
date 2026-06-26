@@ -9,6 +9,7 @@ namespace {
 	constexpr int DEFAULT_QUANTUM_CYCLES = 5;
 	constexpr int DEFAULT_BATCH_PROCESS_FREQ = 1;
 	constexpr int DEFAULT_DELAYS_PER_EXEC = 2;
+	constexpr int DEFAULT_TICKER_DELAY_MS = 33;
 	constexpr int DEFAULT_MIN_INSTRUCTIONS = 25;
 	constexpr int DEFAULT_MAX_INSTRUCTIONS = 100;
 }
@@ -18,6 +19,7 @@ SchedulingAlgorithm AppConfig::GetSchedulerAlgorithm() const { return schedulerA
 int AppConfig::GetQuantumCycles() const { return quantumCycles; }
 int AppConfig::GetBatchProcessFreq() const { return batchProcessFreq; }
 int AppConfig::GetDelaysPerExec() const { return delaysPerExec; }
+int AppConfig::GetTickerDelayMs() const { return tickerDelayMs; }
 int AppConfig::GetMinInstructions() const { return minInstructions; }
 int AppConfig::GetMaxInstructions() const { return maxInstructions; }
 
@@ -27,6 +29,7 @@ AppConfig::AppConfig(
 	int quantumCycles,
 	int batchProcessFreq,
 	int delaysPerExec,
+	int tickerDelayMs,
 	int minInstructions,
 	int maxInstructions)
 	: numCpu(numCpu),
@@ -34,6 +37,7 @@ AppConfig::AppConfig(
 	  quantumCycles(quantumCycles),
 	  batchProcessFreq(batchProcessFreq),
 	  delaysPerExec(delaysPerExec),
+	  tickerDelayMs(tickerDelayMs),
 	  minInstructions(minInstructions),
 	  maxInstructions(maxInstructions) {
 }
@@ -48,6 +52,7 @@ AppConfig AppConfig::ParseConfigFile(const std::string& configFilePath) {
 	int quantumCycles = DEFAULT_QUANTUM_CYCLES;
 	int batchProcessFreq = DEFAULT_BATCH_PROCESS_FREQ;
 	int delaysPerExec = DEFAULT_DELAYS_PER_EXEC;
+	int tickerDelayMs = DEFAULT_TICKER_DELAY_MS;
 	int minInstructions = DEFAULT_MIN_INSTRUCTIONS;
 	int maxInstructions = DEFAULT_MAX_INSTRUCTIONS;
 
@@ -55,7 +60,7 @@ AppConfig AppConfig::ParseConfigFile(const std::string& configFilePath) {
 	if (!configFile.is_open()) {
 		return AppConfig(
 			numCpu, schedulerAlgorithm, quantumCycles, batchProcessFreq,
-			delaysPerExec, minInstructions, maxInstructions);
+			delaysPerExec, tickerDelayMs, minInstructions, maxInstructions);
 	}
 
 	std::string line;
@@ -88,6 +93,8 @@ AppConfig AppConfig::ParseConfigFile(const std::string& configFilePath) {
 			batchProcessFreq = parsedInt.value();
 		} else if (name == "delays-per-exec" && parsedInt.has_value() && parsedInt.value() >= 0) {
 			delaysPerExec = parsedInt.value();
+		} else if (name == "ticker-delay-ms" && parsedInt.has_value() && parsedInt.value() > 0) {
+			tickerDelayMs = parsedInt.value();
 		} else if (name == "min-ins" && parsedInt.has_value() && parsedInt.value() > 0) {
 			minInstructions = parsedInt.value();
 		} else if (name == "max-ins" && parsedInt.has_value() && parsedInt.value() > 0) {
@@ -101,5 +108,5 @@ AppConfig AppConfig::ParseConfigFile(const std::string& configFilePath) {
 
 	return AppConfig(
 		numCpu, schedulerAlgorithm, quantumCycles, batchProcessFreq,
-		delaysPerExec, minInstructions, maxInstructions);
+		delaysPerExec, tickerDelayMs, minInstructions, maxInstructions);
 }

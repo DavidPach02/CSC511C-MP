@@ -15,7 +15,4 @@ void SleepInstruction::Execute() {
 		std::min(resolvedDuration, static_cast<uint16_t>(20)));
 
 	process->SleepForTicks(duration);
-
-	std::string message = "Sleeping for " + std::to_string(static_cast<int>(duration)) + " tick(s).";
-	process->LogMessage(message);
 }
