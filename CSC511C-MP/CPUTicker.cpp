@@ -86,6 +86,8 @@ void CPUTicker::OnTick() {
 
 void CPUTicker::Run() {
 	while (running) {
+		const int tickerDelayMs = SystemState::GetConfig().GetTickerDelayMs();
+
 		{
 			std::lock_guard<std::mutex> lock(tickMutex);
 			++currentTick;
@@ -95,6 +97,6 @@ void CPUTicker::Run() {
 
 		OnTick();
 
-		std::this_thread::sleep_for(std::chrono::seconds(1));
+		std::this_thread::sleep_for(std::chrono::milliseconds(tickerDelayMs));
 	}
 }
