@@ -92,7 +92,7 @@ AppConfig AppConfig::ParseConfigFile(const std::string& configFilePath) {
 		} else if (name == "batch-process-freq" && parsedInt.has_value() && parsedInt.value() > 0) {
 			batchProcessFreq = parsedInt.value();
 		} else if (name == "delays-per-exec" && parsedInt.has_value() && parsedInt.value() >= 0) {
-			delaysPerExec = parsedInt.value() + 1;
+			delaysPerExec = parsedInt.value();
 		} else if (name == "ticker-delay-ms" && parsedInt.has_value() && parsedInt.value() > 0) {
 			tickerDelayMs = parsedInt.value();
 		} else if (name == "min-ins" && parsedInt.has_value() && parsedInt.value() > 0) {
