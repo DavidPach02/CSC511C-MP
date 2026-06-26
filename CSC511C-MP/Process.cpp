@@ -81,6 +81,13 @@ void Process::Resume()
 	}
 }
 
+void Process::SetReady()
+{
+	if (status == ProcessStatus::Running || status == ProcessStatus::Paused) {
+		status = ProcessStatus::Ready;
+	}
+}
+
 void Process::Terminate()
 {
 	status = ProcessStatus::Terminated;

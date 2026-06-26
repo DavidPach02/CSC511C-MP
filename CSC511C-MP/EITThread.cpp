@@ -134,6 +134,8 @@ bool EITThread::ExecuteTimeSlice(int commandCount) {
 		return false;
 	}
 
+	process->SetReady();
+	state = EITThreadState::Ready;
 	ReleaseCoreAssignment();
 	return true;
 }
