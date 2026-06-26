@@ -32,6 +32,7 @@ public:
 	void Run();
 	void Pause();
 	void Resume();
+	void SetReady();
 	void Terminate();
 
 	void AddInstruction(std::unique_ptr<Instruction> command);
