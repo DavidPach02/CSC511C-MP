@@ -149,6 +149,7 @@
     <ClCompile Include="PrebootScreen.cpp" />
     <ClCompile Include="PrintInstruction.cpp" />
     <ClCompile Include="ProcessList.cpp" />
+    <ClCompile Include="SleepInstruction.cpp" />
     <ClCompile Include="SubtractInstruction.cpp" />
     <ClCompile Include="SymbolTable.cpp" />
     <ClCompile Include="SystemState.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="CPUTicker.h" />
     <ClInclude Include="CPUManager.h" />
     <ClInclude Include="CreateScreenCommand.h" />
+    <ClInclude Include="SleepInstruction.h" />
     <ClInclude Include="SubtractInstruction.h" />
     <ClInclude Include="SymbolTable.h" />
     <ClInclude Include="SystemState.h" />
@@ -222,6 +224,9 @@
     <ClInclude Include="ScreenCommand.h" />
     <ClInclude Include="TextColor.h" />
     <ClInclude Include="TimeUtility.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

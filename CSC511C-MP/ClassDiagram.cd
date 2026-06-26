@@ -1,0 +1,340 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ClearCommand">
+    <Position X="5.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ClearCommand.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CommandDispatcher">
+    <Position X="5.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAQAAAAIIAAAAAAABAAAAQAAAAAAABAA=</HashCode>
+      <FileName>CommandDispatcher.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ExitScreenCommand">
+    <Position X="14.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ExitScreenCommand.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SchedulerStartCommand">
+    <Position X="19" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SchedulerStartCommand.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SchedulerStopCommand">
+    <Position X="21.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SchedulerStopCommand.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CreateScreenCommand">
+    <Position X="23.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgQAQAAAAAAAQAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>CreateScreenCommand.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SwitchScreenCommand">
+    <Position X="28" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAgAAQAAAAAAAQAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>SwitchScreenCommand.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DisplayProcessesCommand">
+    <Position X="7.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAgAAQAAAAAAAQAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>DisplayProcessesCommand.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ExitCommand">
+    <Position X="12" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ExitCommand.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelpCommand">
+    <Position X="16.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAgAAQAAAAAAAQAAAAAQAAAIAAAAAAAAAA=</HashCode>
+      <FileName>HelpCommand.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ICommand">
+    <Position X="15.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAgAAQAAAAAAAQAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>ICommand.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IHelpDisplayable">
+    <Position X="3" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IHelpDisplayable.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InitializeCommand">
+    <Position X="25.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>InitializeCommand.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PrintLogsCommand">
+    <Position X="30.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAQCAAAAAAYAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PrintLogsCommand.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReportUtilCommand">
+    <Position X="9.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ReportUtilCommand.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ScreenCommand">
+    <Position X="15.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABgAAQAAAIAAAwAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ScreenCommand.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AConsole">
+    <Position X="5.25" Y="22" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAACAAAgAAAAAAQAEAAAEAAAAAAAAAAAADAA=</HashCode>
+      <FileName>AConsole.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BaseScreen">
+    <Position X="3" Y="25.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAQIAgAEAIAAAAAAAAAAACIA=</HashCode>
+      <FileName>BaseScreen.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PrebootScreen">
+    <Position X="5.25" Y="25.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAQAAAAAAAAAAAAAAAAAAQAAAAAAIAAAEAACABAACAA=</HashCode>
+      <FileName>PrebootScreen.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ConsoleManager">
+    <Position X="1" Y="22" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAACQQhAgAAEAAAABEjgAAQAIBAgAAQAAAA=</HashCode>
+      <FileName>ConsoleManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MainConsole">
+    <Position X="7.5" Y="25.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAACAAAAAAAAQAAAAAAIAAAAAAAAgAACAA=</HashCode>
+      <FileName>MainConsole.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AppConfig">
+    <Position X="33.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAEAMAAQAAAAAAAAAAAtBAAAEAgABAQAAAEAEAAA=</HashCode>
+      <FileName>AppConfig.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemState">
+    <Position X="35.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEABAAAQAIAAAAAQAAAQAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>SystemState.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TextColor" Collapsed="true">
+    <Position X="38.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>TextColor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ProcessList">
+    <Position X="26" Y="11.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AFAARYAAAACAAAAAECAAIAAAAAEAAAAAAQIAAABIAAA=</HashCode>
+      <FileName>ProcessList.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPUTicker">
+    <Position X="35.5" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAQiAAAAAAAAgAAQQABAhgCAAQIAgoQCAAAAI=</HashCode>
+      <FileName>CPUTicker.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPUManager">
+    <Position X="32" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAIAQAAAQCCAYAgAAAAACEAhCBAADAQAAAgAAAAAAA=</HashCode>
+      <FileName>CPUManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SymbolTable">
+    <Position X="21.75" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAQAAQAABAIAACAAAAAAAAAQAA=</HashCode>
+      <FileName>SymbolTable.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DummyProcessGenerator">
+    <Position X="28.5" Y="11.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAABAAAAAAAAIAAAAAAAAAACAAAAAAAgAA=</HashCode>
+      <FileName>DummyProcessGenerator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Process">
+    <Position X="23.5" Y="17" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>xMQgAbAFQAMwEQQAAmFggCBEgAFFAAAIAAKEAAgEFgY=</HashCode>
+      <FileName>Process.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ProcessManager">
+    <Position X="23.5" Y="11.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AFAARIAAAACAAUAAACAAIAAABABAAAACAQIgAABIAAE=</HashCode>
+      <FileName>ProcessManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EITThread">
+    <Position X="37.25" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BgAAAEgAAIAAAAQAIAAAAAJAAAAABAgEBAAAACBIAAE=</HashCode>
+      <FileName>EITThread.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scheduler">
+    <Position X="28" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAACAESBAAQAAAAAIQAiABkhAAAAAIAAwAEAAAAQ=</HashCode>
+      <FileName>Scheduler.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FCFSScheduler">
+    <Position X="30.5" Y="24" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAAEAAAAQ=</HashCode>
+      <FileName>FCFSScheduler.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RRScheduler">
+    <Position X="32.5" Y="24" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAEAQAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAQ=</HashCode>
+      <FileName>RRScheduler.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ParseUtils">
+    <Position X="42.25" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAgAAAAAAAAAAAACAAAAAAAQAAAAAAACA=</HashCode>
+      <FileName>ParseUtils.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TimeUtility">
+    <Position X="44" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TimeUtility.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AddInstruction">
+    <Position X="14.5" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABIAAAAAQAQAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>AddInstruction.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DeclareVariableInstruction">
+    <Position X="3.25" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACACAAAAAAAAAAQAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>DeclareVariableInstruction.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForInstruction">
+    <Position X="5.5" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAgAAAAAAAAAAAAAACAAAAAAABAA=</HashCode>
+      <FileName>ForInstruction.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Instruction">
+    <Position X="8.75" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAjAAAAQQAAAAAAAIAAAAIABAAABAAAAAAAIg=</HashCode>
+      <FileName>Instruction.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PrintInstruction">
+    <Position X="7.75" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAIAAACA=</HashCode>
+      <FileName>PrintInstruction.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SleepInstruction">
+    <Position X="10" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAACAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>SleepInstruction.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SubtractInstruction">
+    <Position X="12.25" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIBAAAAQAQAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>SubtractInstruction.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Operand">
+    <Position X="10.75" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAADAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Operand.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="ProcessStatus">
+    <Position X="26.25" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAEAAAAAAAAAAAAAAAAIAAAAAAAECAA=</HashCode>
+      <FileName>Process.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EITThreadState">
+    <Position X="37.25" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAQAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>EITThread.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SchedulingAlgorithm">
+    <Position X="30" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Scheduler.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -6,7 +6,7 @@
 
 PrebootScreen::PrebootScreen() : AConsole("PREBOOT_SCREEN") {
 	commandDispatcher->Register(std::make_unique<InitializeCommand>());
-	//commandDispatcher->Register(std::make_unique<HelpCommand>(this->commandDispatcher));
+	commandDispatcher->Register(std::make_unique<HelpCommand>(this->commandDispatcher.get()));
 }
 
 void PrebootScreen::OnEnabled() {
@@ -19,18 +19,21 @@ void PrebootScreen::Update() {
 	std::getline(std::cin, command);
 
 	if (commandDispatcher->DispatchCommand(command) && command != "initialize") {
+		if (command == "exit") {
+			std::cout << "Closing console." << std::endl;
+			isExitConsole = true;
+			return;
+		}
 		std::cout << "Press any key to continue.";
-#ifdef _WIN32
-		_getch();
-#else
-		std::cin.get();
-#endif
 
 #ifdef _WIN32
+		_getch();
 		std::system("cls");     // Windows
 #else
+		std::cin.get();
 		std::system("clear");   // Linux/macOS
 #endif
+
 		refreshed = true;
 	}
 }

@@ -42,7 +42,7 @@ private:
 
 	std::shared_ptr<AConsole> currentConsole;
 	std::shared_ptr<AConsole> previousConsole;
-	CommandDispatcher commandDispatcher;
+	//CommandDispatcher commandDispatcher;
 
 	bool running = true;
 };

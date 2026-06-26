@@ -85,10 +85,23 @@ bool DummyProcessGenerator::GenerateOne(const AppConfig& appConfig, const std::s
 			process->AddInstruction(std::make_unique<SubtractInstruction>(
 				process, variableName, randomOperand(), randomOperand()));
 			break;
-		case 3:
+		case 3: {
+			std::string message = "Hello world from " + process->GetName() + "!";
+			std::string varName = "";
+			std::uniform_int_distribution<int> randIndexGen(0, commandIndex);
+			std::uniform_int_distribution<int> randMessageGen(0, 1);
+
+			int randIndex = randIndexGen(generator);
+
+			if (randMessageGen(generator) == 1) {
+				varName = "variableName" + std::to_string(randIndex);
+				message = "Retrieved " + varName + " = %i";
+			}
+
 			process->AddInstruction(std::make_unique<PrintInstruction>(
-				process, "Hello world from " + process->GetName() + "!"));
+				process, message, varName));
 			break;
+		}
 		case 4: {
 			std::vector<std::unique_ptr<Instruction>> forBody;
 			forBody.push_back(std::make_unique<PrintInstruction>(process, "For loop Statement A"));
