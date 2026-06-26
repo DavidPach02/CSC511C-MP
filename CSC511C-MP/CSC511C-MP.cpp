@@ -24,6 +24,7 @@ int main(int argc, char* argv[]) {
 		ConsoleManager::GetInstance()->Render();
 
 		if (prebootScreen->IsExitConsole()) {
+			ConsoleManager::Destroy();
 			return 0;
 		}
 	}
