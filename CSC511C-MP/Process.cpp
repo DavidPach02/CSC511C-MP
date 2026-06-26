@@ -122,9 +122,9 @@ bool Process::ExecuteNextCommand()
 	}
 
 	// 
-	if (delaysPerExec > 0 && executedCommandCount > 0) {
+	if (executedCommandCount > 0) {
 		const uint64_t targetTick = CPUTicker::GetInstance()->GetCurrentTick()
-			+ static_cast<uint64_t>(delaysPerExec);
+			+ static_cast<uint64_t>(delaysPerExec) + 1;
 
 		// Wait until the target tick is reached
 		CPUTicker::GetInstance()->WaitUntilTick(targetTick);
