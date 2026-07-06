@@ -12,6 +12,9 @@ namespace {
 	constexpr int DEFAULT_TICKER_DELAY_MS = 33;
 	constexpr int DEFAULT_MIN_INSTRUCTIONS = 25;
 	constexpr int DEFAULT_MAX_INSTRUCTIONS = 100;
+	constexpr int DEFAULT_MAX_OVERALL_MEM = 16384;
+	constexpr int DEFAULT_MEM_PER_FRAME = 16;
+	constexpr int DEFAULT_MEM_PER_PROC = 4096;
 }
 
 int AppConfig::GetNumCpu() const { return numCpu; }
@@ -22,6 +25,9 @@ int AppConfig::GetDelaysPerExec() const { return delaysPerExec; }
 int AppConfig::GetTickerDelayMs() const { return tickerDelayMs; }
 int AppConfig::GetMinInstructions() const { return minInstructions; }
 int AppConfig::GetMaxInstructions() const { return maxInstructions; }
+int AppConfig::GetMaxOverallMemory() const { return maxOverallMemory; }
+int AppConfig::GetMemoryPerFrame() const { return memoryPerFrame; }
+int AppConfig::GetMemoryPerProcess() const { return memoryPerProcess; }
 
 AppConfig::AppConfig(
 	int numCpu,
@@ -31,7 +37,10 @@ AppConfig::AppConfig(
 	int delaysPerExec,
 	int tickerDelayMs,
 	int minInstructions,
-	int maxInstructions)
+	int maxInstructions,
+	int maxOverallMemory,
+	int memoryPerFrame,
+	int memoryPerProcess)
 	: numCpu(numCpu),
 	  schedulerAlgorithm(schedulerAlgorithm),
 	  quantumCycles(quantumCycles),
@@ -39,7 +48,10 @@ AppConfig::AppConfig(
 	  delaysPerExec(delaysPerExec),
 	  tickerDelayMs(tickerDelayMs),
 	  minInstructions(minInstructions),
-	  maxInstructions(maxInstructions) {
+	  maxInstructions(maxInstructions),
+	  maxOverallMemory(maxOverallMemory),
+	  memoryPerFrame(memoryPerFrame),
+	  memoryPerProcess(memoryPerProcess){
 }
 
 AppConfig AppConfig::FromConfigFile(const std::string& configFilePath) {
@@ -55,12 +67,16 @@ AppConfig AppConfig::ParseConfigFile(const std::string& configFilePath) {
 	int tickerDelayMs = DEFAULT_TICKER_DELAY_MS;
 	int minInstructions = DEFAULT_MIN_INSTRUCTIONS;
 	int maxInstructions = DEFAULT_MAX_INSTRUCTIONS;
+	int maxOverallMemory = DEFAULT_MAX_OVERALL_MEM;
+	int memoryPerFrame = DEFAULT_MEM_PER_FRAME;
+	int memoryPerProcess = DEFAULT_MEM_PER_PROC;
 
 	std::ifstream configFile(configFilePath);
 	if (!configFile.is_open()) {
 		return AppConfig(
 			numCpu, schedulerAlgorithm, quantumCycles, batchProcessFreq,
-			delaysPerExec, tickerDelayMs, minInstructions, maxInstructions);
+			delaysPerExec, tickerDelayMs, minInstructions, maxInstructions,
+			maxOverallMemory, memoryPerFrame, memoryPerProcess);
 	}
 
 	std::string line;
@@ -99,6 +115,12 @@ AppConfig AppConfig::ParseConfigFile(const std::string& configFilePath) {
 			minInstructions = parsedInt.value();
 		} else if (name == "max-ins" && parsedInt.has_value() && parsedInt.value() > 0) {
 			maxInstructions = parsedInt.value();
+		} else if (name == "max-overall-mem" && parsedInt.has_value() && parsedInt.value() > 0) {
+			maxOverallMemory = parsedInt.value();
+		} else if (name == "mem-per-frame" && parsedInt.has_value() && parsedInt.value() > 0) {
+			memoryPerFrame = parsedInt.value();
+		} else if (name == "mem-per-proc" && parsedInt.has_value() && parsedInt.value() > 0) {
+			memoryPerProcess = parsedInt.value();
 		}
 	}
 
@@ -108,5 +130,6 @@ AppConfig AppConfig::ParseConfigFile(const std::string& configFilePath) {
 
 	return AppConfig(
 		numCpu, schedulerAlgorithm, quantumCycles, batchProcessFreq,
-		delaysPerExec, tickerDelayMs, minInstructions, maxInstructions);
+		delaysPerExec, tickerDelayMs, minInstructions, maxInstructions,
+		maxOverallMemory, memoryPerFrame, memoryPerProcess);
 }

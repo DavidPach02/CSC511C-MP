@@ -22,13 +22,13 @@ class Process
 {
 public:
 	Process();
-	Process(const int processID, const std::string& processName, const int coreID = 0)
-		: id(processID), name(processName), coreID(coreID), status(ProcessStatus::Ready),
+	Process(const int processID, const std::string& processName, const size_t memoryRequired, const int coreID = 0)
+		: id(processID), name(processName), memoryRequired(memoryRequired), coreID(coreID), status(ProcessStatus::Ready),
 		  symTable(new SymbolTable()), startTime(""), startDate(""), endTime(""), endDate(""), 
 		  commandCount(0), executedCommandCount(0), wakeTick(0), logs("") {}
 	~Process();
 
-	void Initialize(const int processID, const std::string& processName, const int coreID = 0);
+	void Initialize(const int processID, const std::string& processName, const size_t memoryRequired, const int coreID = 0);
 	void Run();
 	void Pause();
 	void Resume();
@@ -71,6 +71,7 @@ public:
 private:
 	int id;
 	std::string name;
+	size_t memoryRequired;
 	int coreID;
 	ProcessStatus status;
 	SymbolTable* symTable;

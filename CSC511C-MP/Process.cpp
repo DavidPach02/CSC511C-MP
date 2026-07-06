@@ -24,7 +24,7 @@ std::string StatusToString(ProcessStatus status)
 	}
 }
 
-Process::Process() : id(0), name(""), coreID(0), status(ProcessStatus::Ready),
+Process::Process() : id(0), name(""), memoryRequired(0), coreID(0), status(ProcessStatus::Ready),
 	symTable(new SymbolTable()), startTime(""), startDate(""), endTime(""), endDate(""),
 	commandCount(0), executedCommandCount(0), wakeTick(0), logs("")
 {
@@ -38,10 +38,11 @@ Process::~Process()
 	}
 }
 
-void Process::Initialize(const int processID, const std::string& processName, const int coreID)
+void Process::Initialize(const int processID, const std::string& processName, const size_t memoryRequired, const int coreID)
 {
 	id = processID;
 	name = processName;
+	this->memoryRequired = memoryRequired;
 	this->coreID = coreID;
 	status = ProcessStatus::Ready;
 	symTable = new SymbolTable();

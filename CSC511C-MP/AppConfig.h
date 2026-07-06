@@ -15,6 +15,9 @@ public:
 	int GetTickerDelayMs() const;
 	int GetMinInstructions() const;
 	int GetMaxInstructions() const;
+	int GetMaxOverallMemory() const;
+	int GetMemoryPerFrame() const;
+	int GetMemoryPerProcess() const;
 
 private:
 	AppConfig(
@@ -25,7 +28,10 @@ private:
 		int delaysPerExec,
 		int tickerDelayMs,
 		int minInstructions,
-		int maxInstructions);
+		int maxInstructions,
+		int maxOverallMemory,
+		int memoryPerFrame,
+		int memoryPerProcess);
 
 	static AppConfig ParseConfigFile(const std::string& configFilePath);
 
@@ -37,4 +43,7 @@ private:
 	int tickerDelayMs;
 	int minInstructions;
 	int maxInstructions;
+	int maxOverallMemory;
+	int memoryPerFrame;
+	int memoryPerProcess;
 };

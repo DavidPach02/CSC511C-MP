@@ -50,7 +50,7 @@ bool DummyProcessGenerator::GenerateOne(const AppConfig& appConfig, const std::s
 	const int commandCount = commandCountDistribution(generator);
 	const std::string processName = customName == "" ? MakeProcessName(nextProcessId) : customName;
 
-	auto process = std::make_shared<Process>(nextProcessId, processName);
+	auto process = std::make_shared<Process>(nextProcessId, processName, appConfig.GetMemoryPerProcess());
 	++nextProcessId;
 
 	// Variables are used to store the values of the variables declared in the process

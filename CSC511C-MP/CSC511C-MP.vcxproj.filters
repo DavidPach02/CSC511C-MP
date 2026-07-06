@@ -31,6 +31,9 @@
     <Filter Include="Header Files\Instruction">
       <UniqueIdentifier>{256f4f82-6aa5-41cf-97a3-42bc8c20f3cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Memory">
+      <UniqueIdentifier>{76e5bd48-3ef6-414a-a640-8b73d0300607}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppConfig.cpp">
@@ -167,6 +170,9 @@
     </ClCompile>
     <ClCompile Include="PrintLogsCommand.cpp">
       <Filter>Header Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="FlatMemoryAllocator.cpp">
+      <Filter>Header Files\Memory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -307,6 +313,12 @@
     </ClInclude>
     <ClInclude Include="PrintLogsCommand.h">
       <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="IMemoryAllocator.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="FlatMemoryAllocator.h">
+      <Filter>Header Files\Memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
