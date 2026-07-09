@@ -39,6 +39,8 @@ protected:
 
 	bool DequeueProcess(std::shared_ptr<Process>& process);
 	void RequeueProcess(std::shared_ptr<Process> process);
+	bool PrepareProcessForExecution(const std::shared_ptr<Process>& process);
+	void FinalizeProcess(const std::shared_ptr<Process>& process);
 
 	int totalCores;
 	bool running;

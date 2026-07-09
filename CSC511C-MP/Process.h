@@ -23,7 +23,8 @@ class Process
 public:
 	Process();
 	Process(const int processID, const std::string& processName, const size_t memoryRequired, const int coreID = 0)
-		: id(processID), name(processName), memoryRequired(memoryRequired), coreID(coreID), status(ProcessStatus::Ready),
+		: id(processID), name(processName), memoryRequired(memoryRequired), memoryAddress(nullptr),
+		  coreID(coreID), status(ProcessStatus::Ready),
 		  symTable(new SymbolTable()), startTime(""), startDate(""), endTime(""), endDate(""), 
 		  commandCount(0), executedCommandCount(0), wakeTick(0), logs("") {}
 	~Process();
@@ -60,6 +61,11 @@ public:
 	int GetCommandCount() const;
 	int GetExecutedCommandCount() const;
 
+	size_t GetMemoryRequired() const;
+	void* GetMemoryAddress() const;
+	void SetMemoryAddress(void* address);
+	bool HasMemoryLoaded() const;
+
 	void SleepForTicks(std::uint8_t duration);
 	bool IsSleeping() const;
 	bool IsSleepComplete() const;
@@ -72,6 +78,7 @@ private:
 	int id;
 	std::string name;
 	size_t memoryRequired;
+	void* memoryAddress;
 	int coreID;
 	ProcessStatus status;
 	SymbolTable* symTable;

@@ -1,7 +1,7 @@
 #include "ForInstruction.h"
 
 ForInstruction::ForInstruction(std::shared_ptr<Process> process, std::vector<std::unique_ptr<Instruction>> instructions, std::string repeatCount)
-	: Instruction(process), instructions(std::move(instructions)), repeatCount{ repeatCount } {
+	: Instruction(process), repeatCount{ repeatCount }, instructions(std::move(instructions)) {
 }
 
 void ForInstruction::Execute() {

@@ -15,6 +15,8 @@ bool ReportUtilCommand::Execute(const std::vector<std::string>& args) const {
 	}
 
 	ProcessReport::WriteSummary(logFile);
+	logFile << "---------------------------------------\n";
+	ProcessReport::WriteMemoryMap(logFile);
 	logFile.close();
 
 	std::cout << "Success: Report saved to " << outputPath << "\n";

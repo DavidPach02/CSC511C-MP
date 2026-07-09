@@ -28,10 +28,17 @@ void FCFSScheduler::RunCore(int coreID) {
 			}
 		}
 
+		if (!PrepareProcessForExecution(process)) {
+			RequeueProcess(process);
+			continue;
+		}
+
 		EITThread executionThread(process, coreID);
 		executionThread.RunToCompletion();
 
-		if (process->GetStatusEnum() == ProcessStatus::Sleeping) {
+		if (process->GetStatusEnum() == ProcessStatus::Terminated) {
+			FinalizeProcess(process);
+		} else if (process->GetStatusEnum() == ProcessStatus::Sleeping) {
 			RequeueProcess(process);
 		}
 	}

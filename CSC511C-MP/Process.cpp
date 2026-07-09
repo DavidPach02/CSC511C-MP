@@ -24,7 +24,7 @@ std::string StatusToString(ProcessStatus status)
 	}
 }
 
-Process::Process() : id(0), name(""), memoryRequired(0), coreID(0), status(ProcessStatus::Ready),
+Process::Process() : id(0), name(""), memoryRequired(0), memoryAddress(nullptr), coreID(0), status(ProcessStatus::Ready),
 	symTable(new SymbolTable()), startTime(""), startDate(""), endTime(""), endDate(""),
 	commandCount(0), executedCommandCount(0), wakeTick(0), logs("")
 {
@@ -43,6 +43,7 @@ void Process::Initialize(const int processID, const std::string& processName, co
 	id = processID;
 	name = processName;
 	this->memoryRequired = memoryRequired;
+	this->memoryAddress = nullptr;
 	this->coreID = coreID;
 	status = ProcessStatus::Ready;
 	symTable = new SymbolTable();
@@ -227,6 +228,26 @@ int Process::GetCommandCount() const
 int Process::GetExecutedCommandCount() const
 {
 	return executedCommandCount;
+}
+
+size_t Process::GetMemoryRequired() const
+{
+	return memoryRequired;
+}
+
+void* Process::GetMemoryAddress() const
+{
+	return memoryAddress;
+}
+
+void Process::SetMemoryAddress(void* address)
+{
+	memoryAddress = address;
+}
+
+bool Process::HasMemoryLoaded() const
+{
+	return memoryAddress != nullptr;
 }
 
 void Process::SleepForTicks(std::uint8_t duration)

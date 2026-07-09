@@ -1,33 +1,46 @@
 #include "FlatMemoryAllocator.h"
-#include <iostream>
 
-FlatMemoryAllocator::FlatMemoryAllocator(size_t maximumSize) : maximumSize(maximumSize), allocatedSize(0) {
+FlatMemoryAllocator::FlatMemoryAllocator(size_t maximumSize)
+	: maximumSize(maximumSize), allocatedSize(0) {
 	memory.resize(maximumSize);
 	InitializeMemory();
 }
 
-FlatMemoryAllocator::~FlatMemoryAllocator() {
-	memory.clear();
-}
-
 void* FlatMemoryAllocator::Allocate(size_t size) {
-	// Find the first available block of memory that can accommodate the requested size
-	for (size_t i = 0; i < maximumSize - size + 1; ++i) {
-		if (allocationMap.count(i) == 0 && CanAllocateAt(i, size)) {
-			AllocateAt(i, size);
-			//std::cout << static_cast<void*>(&memory[i]);
-			return &memory[i];
+	if (size == 0 || size > maximumSize) {
+		return nullptr;
+	}
+
+	for (size_t index = 0; index <= maximumSize - size; ++index) {
+		if (CanAllocateAt(index, size)) {
+			AllocateAt(index, size);
+			return &memory[index];
 		}
 	}
-	
-	// No available block found, return nullptr
+
 	return nullptr;
 }
 
 void FlatMemoryAllocator::Deallocate(void* ptr) {
-	size_t index = static_cast<char*>(ptr) - &memory[0];
-	if (allocationMap[index]) {
-		DeallocateAt(index);
+	if (ptr == nullptr || memory.empty()) {
+		return;
+	}
+
+	const char* memoryStart = memory.data();
+	const char* memoryEnd = memoryStart + memory.size();
+	const char* target = static_cast<char*>(ptr);
+	if (target < memoryStart || target >= memoryEnd) {
+		return;
+	}
+
+	const size_t index = static_cast<size_t>(target - memoryStart);
+	for (auto iterator = allocationMap.begin(); iterator != allocationMap.end(); ++iterator) {
+		const size_t blockStart = iterator->first;
+		const size_t blockSize = iterator->second;
+		if (index >= blockStart && index < blockStart + blockSize) {
+			DeallocateAt(blockStart);
+			return;
+		}
 	}
 }
 
@@ -35,33 +48,45 @@ std::string FlatMemoryAllocator::GetVisualizedMemory() {
 	return std::string(memory.begin(), memory.end());
 }
 
+size_t FlatMemoryAllocator::GetMaximumSize() const {
+	return maximumSize;
+}
+
+size_t FlatMemoryAllocator::GetAllocatedSize() const {
+	return allocatedSize;
+}
+
 void FlatMemoryAllocator::InitializeMemory() {
-	std::fill(memory.begin(), memory.end(), '.'); // '.' represents free memory
-	/*for (size_t i = 0; i < maximumSize; ++i) {
-		allocationMap[i] = false;
-	}*/
+	std::fill(memory.begin(), memory.end(), '.');
 }
 
 bool FlatMemoryAllocator::CanAllocateAt(size_t index, size_t size) const {
-	return (index + size <= maximumSize);
+	if (index + size > maximumSize) {
+		return false;
+	}
+
+	const size_t requestEnd = index + size;
+	for (const auto& allocationEntry : allocationMap) {
+		const size_t blockStart = allocationEntry.first;
+		const size_t blockEnd = blockStart + allocationEntry.second;
+		const bool separated = requestEnd <= blockStart || index >= blockEnd;
+		if (!separated) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 void FlatMemoryAllocator::AllocateAt(size_t index, size_t size) {
-	std::fill(memory.begin() + index, memory.begin() + index + size, '#'); // '#' represents allocated memory
-
+	std::fill(memory.begin() + index, memory.begin() + index + size, '#');
 	allocationMap[index] = size;
 	allocatedSize += size;
 }
 
 void FlatMemoryAllocator::DeallocateAt(size_t index) {
-	// 1. Look up exactly how big this allocation was
-	size_t size = allocationMap[index];
-
-	// 2. Clear the visual memory back to periods for the entire block
+	const size_t size = allocationMap.at(index);
 	std::fill(memory.begin() + index, memory.begin() + index + size, '.');
-
-	// 3. Erase the block record from your ledger
 	allocationMap.erase(index);
-
 	allocatedSize -= size;
 }

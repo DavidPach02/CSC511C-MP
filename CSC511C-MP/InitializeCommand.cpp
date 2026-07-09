@@ -6,6 +6,7 @@
 #include "Process.h"
 #include "Scheduler.h"
 #include "CPUTicker.h"
+#include "MemoryManager.h"
 #include <iostream>
 
 bool InitializeCommand::Execute(const std::vector<std::string>& args) const {
@@ -21,6 +22,7 @@ bool InitializeCommand::Execute(const std::vector<std::string>& args) const {
 
 	ProcessManager::Initialize();
 	CPUManager::Initialize(appConfig.GetNumCpu());
+	MemoryManager::Initialize(appConfig.GetMaxOverallMemory());
 	Process::SetDelaysPerExec(appConfig.GetDelaysPerExec());
 
 	Scheduler::Initialize(
@@ -43,6 +45,9 @@ bool InitializeCommand::Execute(const std::vector<std::string>& args) const {
 	std::cout << "  delays-per-exec: " << appConfig.GetDelaysPerExec() << "\n";
 	std::cout << "  min-ins: " << appConfig.GetMinInstructions() << "\n";
 	std::cout << "  max-ins: " << appConfig.GetMaxInstructions() << "\n";
+	std::cout << "  max-overall-mem: " << appConfig.GetMaxOverallMemory() << "\n";
+	std::cout << "  mem-per-frame: " << appConfig.GetMemoryPerFrame() << "\n";
+	std::cout << "  mem-per-proc: " << appConfig.GetMemoryPerProcess() << "\n";
 
 	return true;
 }

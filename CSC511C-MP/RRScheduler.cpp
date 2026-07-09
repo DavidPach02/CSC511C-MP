@@ -17,7 +17,7 @@ void RRScheduler::RunCore(int coreID) {
 	(void)coreID;
 	while (true) {
 		std::shared_ptr<Process> process;
-		
+
 		if (!DequeueProcess(process)) {
 			return;
 		}
@@ -29,11 +29,18 @@ void RRScheduler::RunCore(int coreID) {
 				continue;
 			}
 		}
+        
+		if (!PrepareProcessForExecution(process)) {
+			RequeueProcess(process);
+			continue;
+		}
 
 		EITThread executionThread(process, coreID);
 
 		if (executionThread.ExecuteTimeSlice(quantumCommands)) {
 			RequeueProcess(process);
+		} else {
+			FinalizeProcess(process);
 		}
 	}
 }

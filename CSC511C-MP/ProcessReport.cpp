@@ -1,7 +1,10 @@
 #include "ProcessReport.h"
+#include "AppConfig.h"
 #include "CPUManager.h"
+#include "MemoryManager.h"
 #include "ProcessManager.h"
 #include "Process.h"
+#include "SystemState.h"
 #include <algorithm>
 #include <iomanip>
 #include <tuple>
@@ -41,6 +44,39 @@ namespace {
 
 		return std::make_tuple(year, month, day, hour, minute, second);
 	}
+
+	int CountProcessesInMemory(const std::vector<std::shared_ptr<Process>>& processes) {
+		int loadedCount = 0;
+		for (const auto& process : processes) {
+			if (process->HasMemoryLoaded()) {
+				++loadedCount;
+			}
+		}
+		return loadedCount;
+	}
+
+	std::string BuildFrameVisualization(const std::string& byteMap, size_t frameSize) {
+		if (frameSize == 0 || byteMap.empty()) {
+			return "";
+		}
+
+		std::string frameMap;
+		frameMap.reserve((byteMap.size() + frameSize - 1) / frameSize);
+
+		for (size_t frameStart = 0; frameStart < byteMap.size(); frameStart += frameSize) {
+			const size_t frameEnd = std::min(frameStart + frameSize, byteMap.size());
+			bool frameAllocated = false;
+			for (size_t byteIndex = frameStart; byteIndex < frameEnd; ++byteIndex) {
+				if (byteMap[byteIndex] == '#') {
+					frameAllocated = true;
+					break;
+				}
+			}
+			frameMap.push_back(frameAllocated ? '#' : '.');
+		}
+
+		return frameMap;
+	}
 }
 
 std::stringstream ProcessReport::BuildSummary() {
@@ -51,14 +87,25 @@ std::stringstream ProcessReport::BuildSummary() {
 
 void ProcessReport::WriteSummary(std::ostream& output) {
 	CPUManager* cpuManager = CPUManager::GetInstance();
+	MemoryManager* memoryManager = MemoryManager::GetInstance();
+	const auto& processes = ProcessManager::GetInstance()->GetAllProcesses();
+
 	output << "CPU Utilization: " << std::fixed << std::setprecision(2)
 		<< cpuManager->GetCPUUtilization() << "%\n";
 	output << "Cores used: " << (cpuManager->GetTotalCores() - cpuManager->GetAvailableCores()) << "\n";
 	output << "Cores available: " << cpuManager->GetAvailableCores() << "\n";
+
+	const size_t usedMemory = memoryManager->GetUsedMemory();
+	const size_t totalMemory = memoryManager->GetTotalMemory();
+	const double memoryUtilization = totalMemory > 0
+		? (static_cast<double>(usedMemory) / static_cast<double>(totalMemory)) * 100.0
+		: 0.0;
+
+	output << "Memory usage: " << usedMemory << " / " << totalMemory << " bytes ("
+		<< std::fixed << std::setprecision(2) << memoryUtilization << "%)\n";
+	output << "Processes in memory: " << CountProcessesInMemory(processes) << "\n";
 	output << "---------------------------------------\n";
 	output << "Running processes:\n";
-
-	const auto& processes = ProcessManager::GetInstance()->GetAllProcesses();
 	std::vector<std::shared_ptr<Process>> runningProcesses;
 	for (const auto& process : processes) {
 		if (process->GetStatusEnum() == ProcessStatus::Running) {
@@ -103,4 +150,22 @@ void ProcessReport::WriteSummary(std::ostream& output) {
 	}
 
 	output << "---------------------------------------\n";
+}
+
+void ProcessReport::WriteMemoryMap(std::ostream& output) {
+	if (!SystemState::IsInitialized()) {
+		return;
+	}
+
+	const AppConfig& appConfig = SystemState::GetConfig();
+	const size_t frameSize = static_cast<size_t>(appConfig.GetMemoryPerFrame());
+	const std::string byteMap = MemoryManager::GetInstance()->GetVisualizedMemory();
+	const std::string frameMap = BuildFrameVisualization(byteMap, frameSize);
+
+	output << "Memory map (first-fit, # = allocated, . = free):\n";
+	output << "Byte map (" << byteMap.size() << " bytes):\n" << byteMap << "\n";
+	if (!frameMap.empty()) {
+		output << "Frame map (" << frameMap.size() << " frames, "
+			<< frameSize << " bytes each):\n" << frameMap << "\n";
+	}
 }

@@ -5,14 +5,17 @@
 #include <unordered_map>
 #include <vector>
 
-class FlatMemoryAllocator : public IMemoryAllocator{
+class FlatMemoryAllocator : public IMemoryAllocator {
 public:
-	FlatMemoryAllocator(size_t maximumSize);
-	~FlatMemoryAllocator();
+	explicit FlatMemoryAllocator(size_t maximumSize);
+	~FlatMemoryAllocator() override = default;
 
 	void* Allocate(size_t size) override;
 	void Deallocate(void* ptr) override;
 	std::string GetVisualizedMemory() override;
+
+	size_t GetMaximumSize() const override;
+	size_t GetAllocatedSize() const override;
 
 private:
 	size_t maximumSize;
@@ -25,4 +28,3 @@ private:
 	void AllocateAt(size_t index, size_t size);
 	void DeallocateAt(size_t index);
 };
-

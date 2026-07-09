@@ -1,6 +1,7 @@
 #include "Scheduler.h"
 #include "FCFSScheduler.h"
 #include "RRScheduler.h"
+#include "MemoryManager.h"
 
 Scheduler* Scheduler::instance = nullptr;
 
@@ -107,4 +108,12 @@ void Scheduler::RequeueProcess(std::shared_ptr<Process> process) {
 		readyQueue.push(process);
 	}
 	queueCondition.notify_one();
+}
+
+bool Scheduler::PrepareProcessForExecution(const std::shared_ptr<Process>& process) {
+	return MemoryManager::GetInstance()->TryAllocateForProcess(process);
+}
+
+void Scheduler::FinalizeProcess(const std::shared_ptr<Process>& process) {
+	MemoryManager::GetInstance()->ReleaseProcessMemory(process);
 }
