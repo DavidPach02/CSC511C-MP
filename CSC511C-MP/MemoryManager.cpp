@@ -82,3 +82,21 @@ std::string MemoryManager::GetVisualizedMemory() const {
 	}
 	return allocator->GetVisualizedMemory();
 }
+
+std::optional<size_t> MemoryManager::GetAddressOffset(const void* ptr) const {
+	if (ptr == nullptr) {
+		return std::nullopt;
+	}
+
+	std::lock_guard<std::mutex> lock(memoryMutex);
+	if (allocator == nullptr) {
+		return std::nullopt;
+	}
+
+	FlatMemoryAllocator* flatAllocator = dynamic_cast<FlatMemoryAllocator*>(allocator.get());
+	if (flatAllocator == nullptr) {
+		return std::nullopt;
+	}
+
+	return flatAllocator->GetOffsetOfPointer(ptr);
+}

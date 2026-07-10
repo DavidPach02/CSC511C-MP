@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IMemoryAllocator.h"
+#include <optional>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -13,6 +14,7 @@ public:
 	void* Allocate(size_t size) override;
 	void Deallocate(void* ptr) override;
 	std::string GetVisualizedMemory() override;
+	std::optional<size_t> GetOffsetOfPointer(const void* ptr) const;
 
 	size_t GetMaximumSize() const override;
 	size_t GetAllocatedSize() const override;

@@ -5,6 +5,7 @@
 #include <cstddef>
 #include <memory>
 #include <mutex>
+#include <optional>
 #include <string>
 
 // Singleton first-fit memory manager. Allocates mem-per-proc when a process is scheduled;
@@ -21,6 +22,7 @@ public:
 	size_t GetUsedMemory() const;
 	size_t GetTotalMemory() const;
 	std::string GetVisualizedMemory() const;
+	std::optional<size_t> GetAddressOffset(const void* ptr) const;
 
 private:
 	MemoryManager();

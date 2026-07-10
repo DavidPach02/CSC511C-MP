@@ -48,6 +48,22 @@ std::string FlatMemoryAllocator::GetVisualizedMemory() {
 	return std::string(memory.begin(), memory.end());
 }
 
+std::optional<size_t> FlatMemoryAllocator::GetOffsetOfPointer(const void* ptr) const {
+	if (ptr == nullptr || memory.empty()) {
+		return std::nullopt;
+	}
+
+	const char* memoryStart = memory.data();
+	const char* memoryEnd = memoryStart + memory.size();
+	const char* target = static_cast<const char*>(ptr);
+
+	if (target < memoryStart || target >= memoryEnd) {
+		return std::nullopt;
+	}
+
+	return static_cast<size_t>(target - memoryStart);
+}
+
 size_t FlatMemoryAllocator::GetMaximumSize() const {
 	return maximumSize;
 }

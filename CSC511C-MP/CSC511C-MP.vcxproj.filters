@@ -177,6 +177,9 @@
     <ClCompile Include="MemoryManager.cpp">
       <Filter>Header Files\Memory</Filter>
     </ClCompile>
+    <ClCompile Include="MemoryLogger.cpp">
+      <Filter>Header Files\Memory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ICommand.h">
@@ -324,6 +327,9 @@
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
     <ClInclude Include="MemoryManager.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryLogger.h">
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
   </ItemGroup>

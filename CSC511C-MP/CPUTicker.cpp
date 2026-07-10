@@ -1,6 +1,7 @@
 #include "CPUTicker.h"
 #include "SystemState.h"
 #include "DummyProcessGenerator.h"
+#include "MemoryLogger.h"
 
 #include <chrono>
 #include <thread>
@@ -96,6 +97,7 @@ void CPUTicker::Run() {
 		tickCondition.notify_all();
 
 		OnTick();
+		MemoryLogger::LogTickSnapshot(currentTick.load());
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(tickerDelayMs));
 	}
