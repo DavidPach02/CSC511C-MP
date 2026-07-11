@@ -19,6 +19,11 @@ namespace {
 		size_t upperAddress;
 	};
 
+	struct RunningProcessEntry {
+		std::string processName;
+		int coreId;
+	};
+
 	size_t CalculateExternalFragmentationBytes(const std::string& memoryMap) {
 		size_t totalFreeBytes = 0;
 
@@ -59,6 +64,28 @@ namespace {
 
 		return segments;
 	}
+
+	std::vector<RunningProcessEntry> BuildRunningProcesses(const std::vector<std::shared_ptr<Process>>& processes) {
+		std::vector<RunningProcessEntry> runningProcesses;
+		runningProcesses.reserve(processes.size());
+
+		for (const auto& process : processes) {
+			if (process == nullptr || process->GetStatusEnum() != ProcessStatus::Running) {
+				continue;
+			}
+
+			runningProcesses.push_back(RunningProcessEntry{ process->GetName(), process->GetCoreID() });
+		}
+
+		std::sort(runningProcesses.begin(), runningProcesses.end(), [](const RunningProcessEntry& left, const RunningProcessEntry& right) {
+			if (left.coreId != right.coreId) {
+				return left.coreId < right.coreId;
+			}
+			return left.processName < right.processName;
+		});
+
+		return runningProcesses;
+	}
 }
 
 void MemoryLogger::LogTickSnapshot(uint64_t tick) {
@@ -72,7 +99,9 @@ void MemoryLogger::LogTickSnapshot(uint64_t tick) {
 		return;
 	}
 
-	const std::vector<MemorySegment> loadedSegments = BuildLoadedSegments(processManager->GetAllProcesses(), memoryManager);
+	const auto& allProcesses = processManager->GetAllProcesses();
+	const std::vector<MemorySegment> loadedSegments = BuildLoadedSegments(allProcesses, memoryManager);
+	const std::vector<RunningProcessEntry> runningProcesses = BuildRunningProcesses(allProcesses);
 	const std::string memoryMap = memoryManager->GetVisualizedMemory();
 	const size_t externalFragmentationBytes = CalculateExternalFragmentationBytes(memoryMap);
 	const size_t totalMemory = memoryManager->GetTotalMemory();
@@ -91,6 +120,16 @@ void MemoryLogger::LogTickSnapshot(uint64_t tick) {
 		<< " " << TimeUtility::GetCurrentTimeString(false, ":") << ")\n";
 	outputFile << "Number of processes in memory: " << loadedSegments.size() << "\n";
 	outputFile << "Total external fragmentation in bytes: " << externalFragmentationBytes << "\n\n";
+
+	outputFile << "Processes currently running in CPU: " << runningProcesses.size() << "\n";
+	if (runningProcesses.empty()) {
+		outputFile << "(none)\n\n";
+	} else {
+		for (const RunningProcessEntry& runningProcess : runningProcesses) {
+			outputFile << "- " << runningProcess.processName << " (core " << runningProcess.coreId << ")\n";
+		}
+		outputFile << "\n";
+	}
 
 	outputFile << "----end----- = " << totalMemory << "\n\n";
 	for (const MemorySegment& segment : loadedSegments) {
