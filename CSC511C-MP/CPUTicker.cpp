@@ -88,6 +88,7 @@ void CPUTicker::OnTick() {
 void CPUTicker::Run() {
 	while (running) {
 		const int tickerDelayMs = SystemState::GetConfig().GetTickerDelayMs();
+		const int quantumCycles = SystemState::GetConfig().GetQuantumCycles();
 
 		{
 			std::lock_guard<std::mutex> lock(tickMutex);
@@ -97,7 +98,11 @@ void CPUTicker::Run() {
 		tickCondition.notify_all();
 
 		OnTick();
-		MemoryLogger::LogTickSnapshot(currentTick.load());
+
+		const uint64_t tick = currentTick.load();
+		if (quantumCycles > 0 && tick > 0 && tick % static_cast<uint64_t>(quantumCycles) == 0) {
+			MemoryLogger::LogTickSnapshot(tick);
+		}
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(tickerDelayMs));
 	}
