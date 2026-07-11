@@ -7,7 +7,30 @@
 #include "Scheduler.h"
 #include "CPUTicker.h"
 #include "MemoryManager.h"
+#include <filesystem>
 #include <iostream>
+
+namespace {
+	void ClearMemoryLoggerOutputDirectory() {
+		const std::filesystem::path outputDirectory = "../output";
+		std::error_code error;
+
+		if (!std::filesystem::exists(outputDirectory, error)) {
+			std::filesystem::create_directories(outputDirectory, error);
+			return;
+		}
+
+		for (const auto& entry : std::filesystem::directory_iterator(outputDirectory, error)) {
+			if (error) {
+				break;
+			}
+			std::filesystem::remove_all(entry.path(), error);
+			if (error) {
+				break;
+			}
+		}
+	}
+}
 
 bool InitializeCommand::Execute(const std::vector<std::string>& args) const {
 	(void)args;
@@ -19,6 +42,7 @@ bool InitializeCommand::Execute(const std::vector<std::string>& args) const {
 
 	const AppConfig appConfig = AppConfig::FromConfigFile(SystemState::CONFIG_FILE_PATH);
 	SystemState::Initialize(appConfig);
+	ClearMemoryLoggerOutputDirectory();
 
 	ProcessManager::Initialize();
 	CPUManager::Initialize(appConfig.GetNumCpu());
