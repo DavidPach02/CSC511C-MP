@@ -102,7 +102,7 @@ void CPUTicker::Run() {
 		const uint64_t tick = currentTick.load();
 		if (quantumCycles > 0 && tick > 0 && tick % static_cast<uint64_t>(quantumCycles) == 0) {
 			const uint64_t quantumCycle = tick / static_cast<uint64_t>(quantumCycles);
-			MemoryLogger::LogTickSnapshot(quantumCycle);
+			//MemoryLogger::LogTickSnapshot(quantumCycle);
 		}
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(tickerDelayMs));

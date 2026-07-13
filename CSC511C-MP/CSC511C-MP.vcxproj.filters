@@ -180,6 +180,15 @@
     <ClCompile Include="MemoryLogger.cpp">
       <Filter>Header Files\Memory</Filter>
     </ClCompile>
+    <ClCompile Include="TextFormatter.cpp">
+      <Filter>Header Files\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="DisplayMemoryCommand.cpp">
+      <Filter>Header Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="DisplayVirtualMemCommand.cpp">
+      <Filter>Header Files\Command</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ICommand.h">
@@ -331,6 +340,15 @@
     </ClInclude>
     <ClInclude Include="MemoryLogger.h">
       <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="TextFormatter.h">
+      <Filter>Header Files\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="DisplayMemoryCommand.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="DisplayVirtualMemCommand.h">
+      <Filter>Header Files\Command</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

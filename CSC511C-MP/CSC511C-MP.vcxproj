@@ -141,6 +141,8 @@
     <ClCompile Include="CPUManager.cpp" />
     <ClCompile Include="CreateScreenCommand.cpp" />
     <ClCompile Include="DeclareVariableInstruction.cpp" />
+    <ClCompile Include="DisplayMemoryCommand.cpp" />
+    <ClCompile Include="DisplayVirtualMemCommand.cpp" />
     <ClCompile Include="ExitScreenCommand.cpp" />
     <ClCompile Include="FlatMemoryAllocator.cpp" />
     <ClCompile Include="ForInstruction.cpp" />
@@ -178,6 +180,7 @@
     <ClCompile Include="AConsole.cpp" />
     <ClCompile Include="ScreenCommand.cpp" />
     <ClCompile Include="TextColor.cpp" />
+    <ClCompile Include="TextFormatter.cpp" />
     <ClCompile Include="TimeUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -188,6 +191,8 @@
     <ClInclude Include="ClearCommand.h" />
     <ClInclude Include="CommandDispatcher.h" />
     <ClInclude Include="DeclareVariableInstruction.h" />
+    <ClInclude Include="DisplayMemoryCommand.h" />
+    <ClInclude Include="DisplayVirtualMemCommand.h" />
     <ClInclude Include="ExitScreenCommand.h" />
     <ClInclude Include="FlatMemoryAllocator.h" />
     <ClInclude Include="ForInstruction.h" />
@@ -230,6 +235,7 @@
     <ClInclude Include="RRScheduler.h" />
     <ClInclude Include="ScreenCommand.h" />
     <ClInclude Include="TextColor.h" />
+    <ClInclude Include="TextFormatter.h" />
     <ClInclude Include="TimeUtility.h" />
   </ItemGroup>
   <ItemGroup>

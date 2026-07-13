@@ -8,6 +8,8 @@
 #include "HelpCommand.h"
 #include "SchedulerStartCommand.h"
 #include "SchedulerStopCommand.h"
+#include "DisplayMemoryCommand.h"
+#include "DisplayVirtualMemCommand.h"
 #include "SystemState.h"
 
 void CommandDispatcher::Initialize() {
@@ -15,6 +17,8 @@ void CommandDispatcher::Initialize() {
 	this->Register(std::make_unique<ClearCommand>());
 	this->Register(std::make_unique<HelpCommand>(this));
 	this->Register(std::make_unique<ScreenCommand>());
+	this->Register(std::make_unique<DisplayMemoryCommand>());
+	this->Register(std::make_unique<DisplayVirtualMemCommand>());
 	this->Register(std::make_unique<SchedulerStartCommand>());
 	this->Register(std::make_unique<SchedulerStopCommand>());
 	this->Register(std::make_unique<ReportUtilCommand>());

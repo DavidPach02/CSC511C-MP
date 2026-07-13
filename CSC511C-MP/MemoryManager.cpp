@@ -1,5 +1,7 @@
 #include "MemoryManager.h"
 #include "FlatMemoryAllocator.h"
+#include "TextFormatter.h"
+#include "MemoryLogger.h"
 
 MemoryManager* MemoryManager::instance = nullptr;
 
@@ -75,12 +77,25 @@ size_t MemoryManager::GetTotalMemory() const {
 	return allocator->GetMaximumSize();
 }
 
+float MemoryManager::GetMemoryUtilization() const {
+	return (GetUsedMemory() / GetTotalMemory()) * 100;
+}
+
 std::string MemoryManager::GetVisualizedMemory() const {
 	std::lock_guard<std::mutex> lock(memoryMutex);
 	if (allocator == nullptr) {
 		return "";
 	}
-	return allocator->GetVisualizedMemory();
+
+	return allocator->GetVisualizedMemory();		
+}
+
+std::string MemoryManager::GetMemoryStats() const {
+	return MemoryLogger::PrintMemoryStats();
+}
+
+std::string MemoryManager::GetVirtualMemoryStats() const {
+	return MemoryLogger::PrintVirtualMemoryStats();
 }
 
 std::optional<size_t> MemoryManager::GetAddressOffset(const void* ptr) const {

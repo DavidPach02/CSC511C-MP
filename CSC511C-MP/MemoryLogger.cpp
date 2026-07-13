@@ -5,11 +5,15 @@
 #include "ProcessManager.h"
 #include "SystemState.h"
 #include "TimeUtility.h"
+#include "MemoryManager.h"
+#include "CPUTicker.h"
+#include "CPUManager.h"
+#include "TextFormatter.h"
 
 #include <algorithm>
 #include <filesystem>
 #include <fstream>
-#include <string>
+#include <sstream>
 #include <vector>
 
 namespace {
@@ -118,6 +122,7 @@ void MemoryLogger::LogTickSnapshot(uint64_t tick) {
 
 	outputFile << "Timestamp: (" << TimeUtility::GetCurrentDateString("/")
 		<< " " << TimeUtility::GetCurrentTimeString(false, ":") << ")\n";
+	outputFile << memoryManager->GetMemoryStats();
 	outputFile << "Number of processes in memory: " << loadedSegments.size() << "\n";
 	outputFile << "Total external fragmentation in bytes: " << externalFragmentationBytes << "\n\n";
 
@@ -138,4 +143,76 @@ void MemoryLogger::LogTickSnapshot(uint64_t tick) {
 		outputFile << segment.lowerAddress << "\n\n";
 	}
 	outputFile << "----start---- = 0\n";
+}
+
+std::string MemoryLogger::PrintMemoryStats() {
+	const size_t totalTableWidth = 80;
+
+	std::stringstream cpuUtilStream;
+	cpuUtilStream << std::fixed << std::setprecision(2) << CPUManager::GetInstance()->GetCPUUtilization() << "%";
+
+	std::stringstream memoryUtilStream;
+	memoryUtilStream << std::fixed << std::setprecision(2) << MemoryManager::GetInstance()->GetMemoryUtilization() << "%";
+
+	std::stringstream memoryUsageStream;
+	memoryUsageStream << MemoryManager::GetInstance()->GetUsedMemory() << " / " << MemoryManager::GetInstance()->GetTotalMemory() << " MiB";
+
+	// Print formatted table here
+	std::stringstream previewInfo;
+	previewInfo << "+" << TextFormatter::GetPrintedBorder('-', totalTableWidth) << "+\n"
+		<< "| " << TextFormatter::GetFormattedCell("PROCESS-SMI V01.01", totalTableWidth / 2 - 1)
+		<< TextFormatter::GetFormattedCell("DRIVER VERSION: 01.00", totalTableWidth / 2 - 1, TextFormatter::RIGHT) << " |\n"
+		<< "+" << TextFormatter::GetPrintedBorder('-', totalTableWidth) << "+\n"
+		<< "| " << TextFormatter::GetFormattedCell("CPU Utilization:", 25)
+		<< TextFormatter::GetFormattedCell(cpuUtilStream.str(), totalTableWidth - 27) << " |\n"
+		<< "| " << TextFormatter::GetFormattedCell("Memory Utilization:", 25)
+		<< TextFormatter::GetFormattedCell(memoryUtilStream.str(), 8)
+		<< TextFormatter::GetFormattedCell("Memory Usage:", 20, TextFormatter::RIGHT)
+		<< TextFormatter::GetFormattedCell(memoryUsageStream.str(), 25, TextFormatter::RIGHT) << " |\n"
+		<< "+" << TextFormatter::GetPrintedBorder('-', totalTableWidth) << "+\n\n";
+
+	const size_t coreIDWidth = 4;
+	const size_t processIDWidth = 5;
+	const size_t processNameWidth = 52;
+	const size_t memoryUsageWidth = 15;
+	std::stringstream processHeaderInfo;
+	processHeaderInfo << "+" << TextFormatter::GetPrintedBorder('-', totalTableWidth) << "+\n"
+		<< "| " << TextFormatter::GetFormattedCell("PROCESSES:", totalTableWidth - 2) << " |\n"
+		<< "| " << TextFormatter::GetFormattedCell("Core", coreIDWidth, TextFormatter::CENTER)
+		<< TextFormatter::GetFormattedCell("PID", processIDWidth, TextFormatter::CENTER) << " "
+		<< TextFormatter::GetFormattedCell("Process Name", processNameWidth, TextFormatter::CENTER) << " "
+		<< TextFormatter::GetFormattedCell("Memory Usage", memoryUsageWidth, TextFormatter::CENTER) << " |\n"
+		<< "|" << TextFormatter::GetPrintedBorder('=', totalTableWidth) << "|\n";
+
+
+	std::stringstream processInfo;
+	ProcessManager* processManager = ProcessManager::GetInstance();
+	const auto& allProcesses = processManager->GetAllProcesses();
+	for (const auto& process : allProcesses) {
+		if (process->GetStatusEnum() == ProcessStatus::Running) {
+			processInfo << "| " << TextFormatter::GetFormattedCell(std::to_string(process->GetCoreID()), coreIDWidth, TextFormatter::RIGHT)
+				<< TextFormatter::GetFormattedCell(std::to_string(process->GetID()), processIDWidth, TextFormatter::RIGHT) << " "
+				<< TextFormatter::GetFormattedCell(process->GetName(), processNameWidth, TextFormatter::LEFT, true) << " "
+				<< TextFormatter::GetFormattedCell(std::to_string(process->GetMemoryRequired()) + " MiB", memoryUsageWidth, TextFormatter::RIGHT) << " |\n";
+		}
+	}
+	processInfo << "+" << TextFormatter::GetPrintedBorder('-', totalTableWidth) << "+\n";
+
+	return previewInfo.str() + processHeaderInfo.str() + processInfo.str();
+}
+
+std::string MemoryLogger::PrintVirtualMemoryStats() {
+	const size_t totalTableWidth = 50;
+
+	std::stringstream virtualMemoryInfo;
+	virtualMemoryInfo << TextFormatter::GetFormattedCell(std::to_string(MemoryManager::GetInstance()->GetTotalMemory()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("MiB Total Memory", 38) << "\n"
+		<< TextFormatter::GetFormattedCell(std::to_string(MemoryManager::GetInstance()->GetUsedMemory()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("MiB Used Memory", 38) << "\n"
+		<< TextFormatter::GetFormattedCell(std::to_string(MemoryManager::GetInstance()->GetTotalMemory() - MemoryManager::GetInstance()->GetUsedMemory()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("MiB Free Memory", 38) << "\n"
+		<< TextFormatter::GetFormattedCell("0", 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Idle CPU Ticks", 38) << "\n"
+		<< TextFormatter::GetFormattedCell("0", 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Active CPU Ticks", 38) << "\n"
+		<< TextFormatter::GetFormattedCell(std::to_string(CPUTicker::GetInstance()->GetCurrentTick()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Total CPU Ticks", 38) << "\n"
+		<< TextFormatter::GetFormattedCell("0", 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Pages paged in", 38) << "\n"
+		<< TextFormatter::GetFormattedCell("0", 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Pages paged out", 38) << "\n";
+
+	return virtualMemoryInfo.str();
 }
