@@ -19,6 +19,8 @@ public:
 	bool IsGenerationEnabled() const;
 
 	uint64_t GetCurrentTick() const;
+	uint64_t GetIdleTickTime() const;
+	uint64_t GetActiveTickTime() const;
 	void WaitUntilTick(uint64_t targetTick) const;
 
 private:
@@ -36,6 +38,9 @@ private:
 	std::atomic<bool> running;
 	std::atomic<bool> generating;
 	std::atomic<uint64_t> currentTick;
+
+	std::atomic<uint64_t> idleTickTime;
+	std::atomic<uint64_t> activeTickTime;
 
 	mutable std::mutex tickMutex;
 	mutable std::condition_variable tickCondition;

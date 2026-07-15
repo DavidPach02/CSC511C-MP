@@ -14,5 +14,9 @@ public:
 	std::string Name() const override;
 	std::string Description() const override;
 	std::string Argument() const override { return "-s"; }
+
+private:
+	bool IsValidPowerOfTwo(size_t size) const;
+	bool TryParseMemorySize(const std::string& arg, size_t& outSize) const;
 };
 

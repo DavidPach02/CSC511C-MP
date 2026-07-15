@@ -36,7 +36,7 @@ void DummyProcessGenerator::Reset() {
 	nextProcessId = 1;
 }
 
-bool DummyProcessGenerator::GenerateOne(const AppConfig& appConfig, const std::string& customName) {
+bool DummyProcessGenerator::GenerateOne(const AppConfig& appConfig, const std::string& customName, const size_t memoryRequired) {
 	if (Scheduler::GetInstance() == nullptr) {
 		return false;
 	}
@@ -50,7 +50,8 @@ bool DummyProcessGenerator::GenerateOne(const AppConfig& appConfig, const std::s
 	const int commandCount = commandCountDistribution(generator);
 	const std::string processName = customName == "" ? MakeProcessName(nextProcessId) : customName;
 
-	auto process = std::make_shared<Process>(nextProcessId, processName, appConfig.GetMemoryPerProcess());
+	size_t memorySize = memoryRequired > 0 ? memoryRequired : appConfig.GetMemoryPerProcess();
+	auto process = std::make_shared<Process>(nextProcessId, processName, memorySize);
 	++nextProcessId;
 
 	// Variables are used to store the values of the variables declared in the process

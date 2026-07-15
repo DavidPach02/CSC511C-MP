@@ -22,6 +22,7 @@ public:
 
 	size_t GetUsedMemory() const;
 	size_t GetTotalMemory() const;
+	size_t GetFreeMemory() const;
 	float GetMemoryUtilization() const;
 	std::string GetVisualizedMemory() const;
 	std::string GetMemoryStats() const;

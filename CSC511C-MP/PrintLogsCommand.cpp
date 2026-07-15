@@ -15,6 +15,7 @@ bool PrintLogsCommand::Execute(const std::vector<std::string>& args) const {
 		return true;
 	}
 
+	std::cout << "Memory: " << this->process->GetMemoryRequired() << " bytes" << std::endl;
 	std::cout << "Logs:" << std::endl << this->process->GetLogs() << std::endl;
 	std::cout << "Current instruction line: " << this->process->GetExecutedCommandCount() << std::endl;
 	std::cout << "Lines of code: " << this->process->GetCommandCount() << std::endl;

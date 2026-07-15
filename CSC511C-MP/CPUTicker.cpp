@@ -2,6 +2,7 @@
 #include "SystemState.h"
 #include "DummyProcessGenerator.h"
 #include "MemoryLogger.h"
+#include "ProcessManager.h"
 
 #include <chrono>
 #include <thread>
@@ -61,6 +62,14 @@ uint64_t CPUTicker::GetCurrentTick() const {
 	return currentTick.load();
 }
 
+uint64_t CPUTicker::GetIdleTickTime() const {
+	return idleTickTime.load();
+}
+
+uint64_t CPUTicker::GetActiveTickTime() const {
+	return activeTickTime.load();
+}
+
 void CPUTicker::WaitUntilTick(uint64_t targetTick) const {
 	std::unique_lock<std::mutex> lock(tickMutex);
 	tickCondition.wait(lock, [this, targetTick] {
@@ -93,6 +102,14 @@ void CPUTicker::Run() {
 		{
 			std::lock_guard<std::mutex> lock(tickMutex);
 			++currentTick;
+
+			// Update idle and active tick times
+			if (ProcessManager::GetInstance()->GetRunningProcessCount() > 0) {
+				activeTickTime++;
+			}
+			else {
+				idleTickTime++;
+			}
 		}
  
 		tickCondition.notify_all();

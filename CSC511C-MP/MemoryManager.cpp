@@ -77,6 +77,10 @@ size_t MemoryManager::GetTotalMemory() const {
 	return allocator->GetMaximumSize();
 }
 
+size_t MemoryManager::GetFreeMemory() const {
+	return GetTotalMemory() - GetUsedMemory();
+}
+
 float MemoryManager::GetMemoryUtilization() const {
 	return (GetUsedMemory() / GetTotalMemory()) * 100;
 }
