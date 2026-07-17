@@ -25,9 +25,17 @@ std::string StatusToString(ProcessStatus status)
 }
 
 Process::Process() : id(0), name(""), memoryRequired(0), memoryAddress(nullptr), coreID(0), status(ProcessStatus::Ready),
-	symTable(new SymbolTable()), startTime(""), startDate(""), endTime(""), endDate(""),
-	commandCount(0), executedCommandCount(0), wakeTick(0), logs("")
-{
+	startTime(""), startDate(""), endTime(""), endDate(""),
+	commandCount(0), executedCommandCount(0), wakeTick(0), logs("") {
+	Initialize();
+}
+
+Process::Process(const int processID, const std::string& processName, const size_t memoryRequired, const int coreID)
+	: id(processID), name(processName), memoryRequired(memoryRequired), memoryAddress(nullptr),
+	coreID(coreID), status(ProcessStatus::Ready),
+	startTime(""), startDate(""), endTime(""), endDate(""),
+	commandCount(0), executedCommandCount(0), wakeTick(0), logs("") {
+	Initialize();
 }
 
 Process::~Process()
@@ -36,25 +44,15 @@ Process::~Process()
 		delete symTable;
 		symTable = nullptr;
 	}
+	free(memoryAddress);
 }
 
-void Process::Initialize(const int processID, const std::string& processName, const size_t memoryRequired, const int coreID)
-{
-	id = processID;
-	name = processName;
-	this->memoryRequired = memoryRequired;
-	this->memoryAddress = nullptr;
-	this->coreID = coreID;
-	status = ProcessStatus::Ready;
-	symTable = new SymbolTable();
-	startTime = "";
-	startDate = "";
-	endTime = "";
-	endDate = "";
-	commandCount = 0;
-	executedCommandCount = 0;
-	wakeTick = 0;
-	commands.clear();
+void Process::Initialize() {
+	memoryAddress = malloc(memoryRequired);
+	// TODO: Change 0 here to the offset of the memory. Memory should have a pointer to the next available offset.
+	// EX: 0 [p01] 63 -- 64 [p02] 127 -- 128 <-- pointer to next memory
+	// So if p03 comes in, we can allocate it in the RAM and the symbol table will be offset by that.
+	symTable = new SymbolTable(memoryAddress, 0, 32);
 }
 
 void Process::Run()

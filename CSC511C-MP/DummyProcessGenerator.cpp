@@ -140,7 +140,8 @@ bool DummyProcessGenerator::GenerateOneWithInstruction(
 	size_t memorySize = memoryRequired > 0 ? memoryRequired : appConfig.GetMemoryPerProcess();
 	auto process = std::make_shared<Process>(nextProcessId, processName, memorySize);
 
-	// TEST: screen -c p01 64 "DECLARE varA 10; DECLARE varB 5; ADD varA varA varB; WRITE 0x500 varA; READ varC 0x500; SLEEP 4; FOR(5, PRINT('Hello, World'), ADD varA varA varB); PRINT('Result: %i', varA); PRINT('Result: %i', varC);"
+	// TEST-FULL: screen -c p01 64 "DECLARE varA 10; DECLARE varB 5; ADD varA varA varB; WRITE 0x500 varA; READ varC 0x500; SLEEP 4; FOR(5, PRINT('Hello, World'), ADD varA varA varB); PRINT('Result: %i', varA); PRINT('Result: %i', varC);"
+	// TEST-A: screen -c p01 64 "DECLARE varA 10; DECLARE varB 5; ADD varA varA varB; FOR(5, PRINT('varA: %i', varA), ADD varA varA varB);"
 	if (!InstructionBuilder::BuildInstructionsFromString(instructionsArgument, process)){
 		return false;
 	}
