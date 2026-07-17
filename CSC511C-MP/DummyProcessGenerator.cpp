@@ -11,6 +11,7 @@
 #include "SubtractInstruction.h"
 #include "ForInstruction.h"
 #include "SleepInstruction.h"
+#include "InstructionBuilder.h"
 #include <memory>
 #include <random>
 #include <string>
@@ -57,6 +58,7 @@ bool DummyProcessGenerator::GenerateOne(const AppConfig& appConfig, const std::s
 	// Variables are used to store the values of the variables declared in the process
 	std::vector<std::string> variables;
 
+	// TODO: Add READ and WRITE instructions here and handle randomization of access and retrieval
 	for (int commandIndex = 0; commandIndex < commandCount; ++commandIndex) {
 		const std::string variableName = "variableName" + std::to_string(commandIndex);
 		// Add the variable name to the list of variables
@@ -128,3 +130,29 @@ bool DummyProcessGenerator::GenerateOne(const AppConfig& appConfig, const std::s
 
 	return true;
 }
+
+bool DummyProcessGenerator::GenerateOneWithInstruction(
+	const AppConfig& appConfig, const std::string& customName, 
+	const size_t memoryRequired, const std::string& instructionsArgument) {
+
+	const std::string processName = customName == "" ? MakeProcessName(nextProcessId) : customName;
+
+	size_t memorySize = memoryRequired > 0 ? memoryRequired : appConfig.GetMemoryPerProcess();
+	auto process = std::make_shared<Process>(nextProcessId, processName, memorySize);
+
+	// TEST: screen -c p01 64 "DECLARE varA 10; DECLARE varB 5; ADD varA varA varB; WRITE 0x500 varA; READ varC 0x500; SLEEP 4; FOR(5, PRINT('Hello, World'), ADD varA varA varB); PRINT('Result: %i', varA); PRINT('Result: %i', varC);"
+	if (!InstructionBuilder::BuildInstructionsFromString(instructionsArgument, process)){
+		return false;
+	}
+
+	std::shared_ptr<BaseScreen> baseScreen = std::make_shared<BaseScreen>(process);
+	ConsoleManager::GetInstance()->RegisterScreen(baseScreen, false);
+	createdScreenNames.push_back(processName);
+	// Add the process to the scheduler
+	Scheduler::GetInstance()->AddProcess(process);
+	ProcessManager::GetInstance()->AddProcess(process);
+
+	return true;
+}
+
+

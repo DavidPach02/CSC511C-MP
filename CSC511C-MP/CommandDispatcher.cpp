@@ -45,12 +45,42 @@ std::vector<std::string> CommandDispatcher::Tokenize(const std::string& input) c
 		}
 		if (index >= length) break;
 
-		// Find the end of the token
-		size_t start = index;
-		while (index < length && !std::isspace(input[index])) {
-			++index;
+
+		// Check if this token starts with a double quote
+		if (input[index] == '"') {
+			++index; // Move past the opening quote
+			size_t start = index;
+			bool escaped = false;
+
+			// Scan forward until we find the closing unescaped quote
+			while (index < length) {
+				if (escaped) {
+					escaped = false; // Reset escape flag and skip checking this character
+				}
+				else if (input[index] == '\\') {
+					escaped = true;  // Mark that the next character is escaped (like \")
+				}
+				else if (input[index] == '"') {
+					break;           // Found the matching closing quote!
+				}
+				++index;
+			}
+
+			// Extract the inside of the quotes and push it as a single token
+			tokens.push_back(input.substr(start, index - start));
+
+			if (index < length) {
+				++index; // Move past the closing quote
+			}
 		}
-		tokens.push_back(input.substr(start, index - start));
+		else {
+			// Standard space-delimited token parsing (your original code)
+			size_t start = index;
+			while (index < length && !std::isspace(static_cast<unsigned char>(input[index]))) {
+				++index;
+			}
+			tokens.push_back(input.substr(start, index - start));
+		}
 	}
 
 	return tokens;

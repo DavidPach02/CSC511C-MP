@@ -6,6 +6,7 @@
 #include "SwitchScreenCommand.h"
 #include "HelpCommand.h"
 #include "DisplayProcessesCommand.h"
+#include "CreateProcessInstructionCommand.h"
 #include <iostream>
 #include <string>
 #include <unordered_map>

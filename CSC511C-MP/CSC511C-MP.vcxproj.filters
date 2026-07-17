@@ -189,6 +189,21 @@
     <ClCompile Include="DisplayVirtualMemCommand.cpp">
       <Filter>Header Files\Command</Filter>
     </ClCompile>
+    <ClCompile Include="CreateProcessInstructionCommand.cpp">
+      <Filter>Header Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandUtils.cpp">
+      <Filter>Header Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="InstructionBuilder.cpp">
+      <Filter>Header Files\Instruction</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadInstruction.cpp">
+      <Filter>Header Files\Instruction</Filter>
+    </ClCompile>
+    <ClCompile Include="WriteInstruction.cpp">
+      <Filter>Header Files\Instruction</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ICommand.h">
@@ -349,6 +364,21 @@
     </ClInclude>
     <ClInclude Include="DisplayVirtualMemCommand.h">
       <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateProcessInstructionCommand.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandUtils.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="InstructionBuilder.h">
+      <Filter>Header Files\Instruction</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadInstruction.h">
+      <Filter>Header Files\Instruction</Filter>
+    </ClInclude>
+    <ClInclude Include="WriteInstruction.h">
+      <Filter>Header Files\Instruction</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

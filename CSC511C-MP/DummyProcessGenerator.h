@@ -10,6 +10,7 @@ class AppConfig;
 class DummyProcessGenerator {
 public:
 	static bool GenerateOne(const AppConfig& appConfig, const std::string& customName = "", const size_t memoryRequired = 0);
+	static bool GenerateOneWithInstruction(const AppConfig& appConfig, const std::string& customName, const size_t memoryRequired, const std::string& instructionsArgument);
 	static void Reset();
 
 private:

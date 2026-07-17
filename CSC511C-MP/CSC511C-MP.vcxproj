@@ -136,9 +136,11 @@
     <ClCompile Include="BaseScreen.cpp" />
     <ClCompile Include="ClearCommand.cpp" />
     <ClCompile Include="CommandDispatcher.cpp" />
+    <ClCompile Include="CommandUtils.cpp" />
     <ClCompile Include="ConsoleManager.cpp" />
     <ClCompile Include="CPUTicker.cpp" />
     <ClCompile Include="CPUManager.cpp" />
+    <ClCompile Include="CreateProcessInstructionCommand.cpp" />
     <ClCompile Include="CreateScreenCommand.cpp" />
     <ClCompile Include="DeclareVariableInstruction.cpp" />
     <ClCompile Include="DisplayMemoryCommand.cpp" />
@@ -147,11 +149,13 @@
     <ClCompile Include="FlatMemoryAllocator.cpp" />
     <ClCompile Include="ForInstruction.cpp" />
     <ClCompile Include="Instruction.cpp" />
+    <ClCompile Include="InstructionBuilder.cpp" />
     <ClCompile Include="Operand.cpp" />
     <ClCompile Include="ParseUtils.cpp" />
     <ClCompile Include="PrebootScreen.cpp" />
     <ClCompile Include="PrintInstruction.cpp" />
     <ClCompile Include="ProcessList.cpp" />
+    <ClCompile Include="ReadInstruction.cpp" />
     <ClCompile Include="SleepInstruction.cpp" />
     <ClCompile Include="SubtractInstruction.cpp" />
     <ClCompile Include="SymbolTable.cpp" />
@@ -182,6 +186,7 @@
     <ClCompile Include="TextColor.cpp" />
     <ClCompile Include="TextFormatter.cpp" />
     <ClCompile Include="TimeUtility.cpp" />
+    <ClCompile Include="WriteInstruction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddInstruction.h" />
@@ -190,6 +195,8 @@
     <ClInclude Include="BaseScreen.h" />
     <ClInclude Include="ClearCommand.h" />
     <ClInclude Include="CommandDispatcher.h" />
+    <ClInclude Include="CommandUtils.h" />
+    <ClInclude Include="CreateProcessInstructionCommand.h" />
     <ClInclude Include="DeclareVariableInstruction.h" />
     <ClInclude Include="DisplayMemoryCommand.h" />
     <ClInclude Include="DisplayVirtualMemCommand.h" />
@@ -198,11 +205,13 @@
     <ClInclude Include="ForInstruction.h" />
     <ClInclude Include="IMemoryAllocator.h" />
     <ClInclude Include="Instruction.h" />
+    <ClInclude Include="InstructionBuilder.h" />
     <ClInclude Include="Operand.h" />
     <ClInclude Include="ParseUtils.h" />
     <ClInclude Include="PrebootScreen.h" />
     <ClInclude Include="PrintInstruction.h" />
     <ClInclude Include="ProcessList.h" />
+    <ClInclude Include="ReadInstruction.h" />
     <ClInclude Include="SchedulerStartCommand.h" />
     <ClInclude Include="SchedulerStopCommand.h" />
     <ClInclude Include="ConsoleManager.h" />
@@ -237,6 +246,7 @@
     <ClInclude Include="TextColor.h" />
     <ClInclude Include="TextFormatter.h" />
     <ClInclude Include="TimeUtility.h" />
+    <ClInclude Include="WriteInstruction.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

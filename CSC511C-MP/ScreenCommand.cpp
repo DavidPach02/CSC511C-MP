@@ -13,6 +13,9 @@ ScreenCommand::ScreenCommand() {
 
 	std::unique_ptr<ICommand> switchScreenCMD = std::make_unique<SwitchScreenCommand>();
 	this->subcommands.emplace(switchScreenCMD->Argument(), std::move(switchScreenCMD));
+
+	std::unique_ptr<ICommand> createProcessInstructionCMD = std::make_unique<CreateProcessInstructionCommand>();
+	this->subcommands.emplace(createProcessInstructionCMD->Argument(), std::move(createProcessInstructionCMD));
 }
 
 bool ScreenCommand::Execute(const std::vector<std::string>& args) const {
