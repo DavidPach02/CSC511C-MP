@@ -46,7 +46,7 @@ bool InitializeCommand::Execute(const std::vector<std::string>& args) const {
 
 	ProcessManager::Initialize();
 	CPUManager::Initialize(appConfig.GetNumCpu());
-	MemoryManager::Initialize(appConfig.GetMaxOverallMemory());
+	MemoryManager::Initialize(appConfig.GetMaxOverallMemory(), appConfig.GetMemoryPerFrame());
 	Process::SetDelaysPerExec(appConfig.GetDelaysPerExec());
 
 	Scheduler::Initialize(

@@ -108,7 +108,7 @@ std::unique_ptr<Instruction> InstructionBuilder::CreateInstruction(ParsedInstruc
 	}
 	else if (parsed.command == "WRITE") {
 		if (parsed.args.size() != 2) {
-			std::cout << "\033[31mInvalid WRITE instruction format.Expected: READ <memory_address> <default_value>\033[0m\n";
+			std::cout << "\033[31mInvalid WRITE instruction format.Expected: WRITE <memory_address> <value_or_var>\033[0m\n";
 			return nullptr;
 		}
 		return std::make_unique<WriteInstruction>(process, parsed.args[0], parsed.args[1]);

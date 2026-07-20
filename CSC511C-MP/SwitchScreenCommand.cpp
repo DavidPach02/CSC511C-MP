@@ -13,8 +13,20 @@ bool SwitchScreenCommand::Execute(const std::vector<std::string>& args) const {
 	ConsoleManager* consoleManager = ConsoleManager::GetInstance();
 
 	std::shared_ptr<Process> process = ProcessManager::GetInstance()->GetProcessByName(processName);
-	if (process == nullptr || process->GetStatusEnum() == ProcessStatus::Terminated) {
+	if (process == nullptr) {
 		std::cout << "\033[31mProcess " << processName << " not found.\033[0m\n";
+		return true;
+	}
+
+	if (process->GetStatusEnum() == ProcessStatus::Terminated) {
+		if (process->HasMemoryAccessViolation()) {
+			std::cout << "\033[31mProcess " << processName
+				<< " shut down due to memory access violation error that occurred at "
+				<< process->GetMemoryAccessViolationTime() << " - "
+				<< process->GetMemoryAccessViolationAddress() << " invalid.\033[0m\n";
+		} else {
+			std::cout << "\033[31mProcess " << processName << " not found.\033[0m\n";
+		}
 		return true;
 	}
 

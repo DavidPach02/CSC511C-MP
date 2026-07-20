@@ -1,4 +1,5 @@
 #include "CommandUtils.h"
+#include <limits>
 #include <stdexcept>
 
 bool CommandUtils::IsValidPowerOfTwo(size_t size) {

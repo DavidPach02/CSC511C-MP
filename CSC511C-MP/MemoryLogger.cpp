@@ -211,8 +211,8 @@ std::string MemoryLogger::PrintVirtualMemoryStats() {
 		<< TextFormatter::GetFormattedCell(std::to_string(CPUTicker::GetInstance()->GetIdleTickTime()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Idle CPU Ticks", 38) << "\n"
 		<< TextFormatter::GetFormattedCell(std::to_string(CPUTicker::GetInstance()->GetActiveTickTime()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Active CPU Ticks", 38) << "\n"
 		<< TextFormatter::GetFormattedCell(std::to_string(CPUTicker::GetInstance()->GetCurrentTick()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Total CPU Ticks", 38) << "\n"
-		<< TextFormatter::GetFormattedCell("0", 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Pages paged in", 38) << "\n"
-		<< TextFormatter::GetFormattedCell("0", 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Pages paged out", 38) << "\n";
+		<< TextFormatter::GetFormattedCell(std::to_string(MemoryManager::GetInstance()->GetPagesPagedIn()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Pages paged in", 38) << "\n"
+		<< TextFormatter::GetFormattedCell(std::to_string(MemoryManager::GetInstance()->GetPagesPagedOut()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Pages paged out", 38) << "\n";
 
 	return virtualMemoryInfo.str();
 }

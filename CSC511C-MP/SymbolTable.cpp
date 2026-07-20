@@ -1,5 +1,7 @@
 #include "SymbolTable.h"
 
+#include <algorithm>
+
 SymbolTable::SymbolTable(void* baseMemoryAddress, uint16_t lowerAddress, uint16_t allocatedMemory)
 	: baseMemoryAddress(baseMemoryAddress), lowerAddress(lowerAddress){
 	this->higherAddress = lowerAddress + allocatedMemory - 1;
@@ -11,6 +13,7 @@ SymbolTable::SymbolTable(void* baseMemoryAddress, uint16_t lowerAddress, uint16_
 }
 
 bool SymbolTable::SetVariable(const std::string& name, int value) {
+	const uint16_t clampedValue = static_cast<uint16_t>(std::clamp(value, 0, 65535));
 	DeclaredSymbol* symbol = FindVariable(name);
 	//std::cout << "Finding variable" << std::endl;
 
@@ -18,14 +21,14 @@ bool SymbolTable::SetVariable(const std::string& name, int value) {
 	if (symbol) {
 		//std::cout << name << " found in symbol table." << std::endl;
 		// Just set the value
-		symbol->value = value;
+		symbol->value = clampedValue;
 
 		// Find the virtual address of this symbol to write it physically
 		for (auto& [address, sym] : this->table) {
 			if (&sym == symbol) {
 				void* physicalDest = GetPhysicalAddress(address);
 				if (physicalDest) {
-					*static_cast<uint16_t*>(physicalDest) = static_cast<uint16_t>(value);
+					*static_cast<uint16_t*>(physicalDest) = clampedValue;
 				}
 				break;
 			}
@@ -43,12 +46,12 @@ bool SymbolTable::SetVariable(const std::string& name, int value) {
 		uint16_t freeMemoryAddress = GetFreeMemory();
 		// If there's free memory
 		if (freeMemoryAddress != 0xFFFF) {
-			this->table[freeMemoryAddress] = DeclaredSymbol(name, value);
+			this->table[freeMemoryAddress] = DeclaredSymbol(name, clampedValue);
 
 			// Write the value to physical host RAM
 			void* physicalDest = GetPhysicalAddress(freeMemoryAddress);
 			if (physicalDest) {
-				*static_cast<uint16_t*>(physicalDest) = static_cast<uint16_t>(value);
+				*static_cast<uint16_t*>(physicalDest) = clampedValue;
 			}
 			return true;
 		}
@@ -133,6 +136,10 @@ DeclaredSymbol* SymbolTable::FindVariable(const std::string& name) {
 void* SymbolTable::GetPhysicalAddress(uint16_t virtualAddress) const {
 	if (virtualAddress < lowerAddress || virtualAddress > higherAddress) {
 		return nullptr; // Out of bounds safety check
+	}
+
+	if (baseMemoryAddress == nullptr) {
+		return nullptr;
 	}
 
 	// Calculate byte offset: (virtual address - base virtual offset) * 2 bytes per variable

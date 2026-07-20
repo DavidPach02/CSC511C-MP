@@ -67,6 +67,11 @@ public:
 	bool IsSleepComplete() const;
 	void WakeIfReady();
 	uint64_t GetWakeTick() const;
+
+	void TerminateDueToMemoryAccessViolation(const std::string& rawAddress);
+	bool HasMemoryAccessViolation() const;
+	std::string GetMemoryAccessViolationTime() const;
+	std::string GetMemoryAccessViolationAddress() const;
 	
 	void LogMessage(std::string& message);
 
@@ -75,6 +80,7 @@ private:
 	std::string name;
 	size_t memoryRequired;
 	void* memoryAddress;
+	void* symbolMemoryAddress;
 	int coreID;
 	ProcessStatus status;
 	SymbolTable* symTable;
@@ -88,6 +94,10 @@ private:
 
 	std::vector<std::unique_ptr<Instruction>> commands;
 	static int delaysPerExec;
+
+	bool memoryAccessViolation;
+	std::string memoryAccessViolationTime;
+	std::string memoryAccessViolationAddress;
 
 	std::string logs;
 };
