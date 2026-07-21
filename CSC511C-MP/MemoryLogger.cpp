@@ -208,6 +208,8 @@ std::string MemoryLogger::PrintVirtualMemoryStats() {
 	virtualMemoryInfo << TextFormatter::GetFormattedCell(std::to_string(MemoryManager::GetInstance()->GetTotalMemory()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("MiB Total Memory", 38) << "\n"
 		<< TextFormatter::GetFormattedCell(std::to_string(MemoryManager::GetInstance()->GetUsedMemory()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("MiB Used Memory", 38) << "\n"
 		<< TextFormatter::GetFormattedCell(std::to_string(MemoryManager::GetInstance()->GetFreeMemory()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("MiB Free Memory", 38) << "\n"
+		<< TextFormatter::GetFormattedCell(std::to_string(ProcessManager::GetInstance()->GetRunningProcessCount()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Active Processes", 38) << "\n"
+		<< TextFormatter::GetFormattedCell(std::to_string(ProcessManager::GetInstance()->GetInactiveProcessCount()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Inactive Processes", 38) << "\n"
 		<< TextFormatter::GetFormattedCell(std::to_string(CPUTicker::GetInstance()->GetIdleTickTime()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Idle CPU Ticks", 38) << "\n"
 		<< TextFormatter::GetFormattedCell(std::to_string(CPUTicker::GetInstance()->GetActiveTickTime()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Active CPU Ticks", 38) << "\n"
 		<< TextFormatter::GetFormattedCell(std::to_string(CPUTicker::GetInstance()->GetCurrentTick()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Total CPU Ticks", 38) << "\n"

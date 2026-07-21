@@ -96,6 +96,16 @@ int ProcessList::GetRunningProcessCount() const {
 	return count;
 }
 
+int ProcessList::GetInactiveProcessCount() const {
+	int count = 0;
+	for (const auto& process : processes) {
+		if (process->GetStatusEnum() == ProcessStatus::Ready) {
+			count++;
+		}
+	}
+	return count;
+}
+
 int ProcessList::GetTerminatedProcessCount() const {
 	int count = 0;
 	for (const auto& process : processes) {

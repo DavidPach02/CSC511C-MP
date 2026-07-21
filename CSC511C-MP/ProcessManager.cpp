@@ -68,6 +68,10 @@ int ProcessManager::GetRunningProcessCount() const {
 	return processList->GetRunningProcessCount();
 }
 
+int ProcessManager::GetInactiveProcessCount() const {
+	return processList->GetInactiveProcessCount();
+}
+
 int ProcessManager::GetTerminatedProcessCount() const {
 	return processList->GetTerminatedProcessCount();
 }

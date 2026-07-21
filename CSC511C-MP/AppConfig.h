@@ -18,6 +18,7 @@ public:
 	int GetMaxOverallMemory() const;
 	int GetMemoryPerFrame() const;
 	int GetMemoryPerProcess() const;
+	int GetMaxCustomInstructions() const;
 
 private:
 	AppConfig(
@@ -31,7 +32,8 @@ private:
 		int maxInstructions,
 		int maxOverallMemory,
 		int memoryPerFrame,
-		int memoryPerProcess);
+		int memoryPerProcess,
+		int maxCustomInstructions);
 
 	static AppConfig ParseConfigFile(const std::string& configFilePath);
 
@@ -46,4 +48,5 @@ private:
 	int maxOverallMemory;
 	int memoryPerFrame;
 	int memoryPerProcess;
+	int maxCustomInstructions;
 };

@@ -15,6 +15,7 @@ namespace {
 	constexpr int DEFAULT_MAX_OVERALL_MEM = 16384;
 	constexpr int DEFAULT_MEM_PER_FRAME = 16;
 	constexpr int DEFAULT_MEM_PER_PROC = 4096;
+	constexpr int DEFAULT_MAX_CUSTOM_INSTRUCTIONS = 50;
 }
 
 int AppConfig::GetNumCpu() const { return numCpu; }
@@ -28,6 +29,7 @@ int AppConfig::GetMaxInstructions() const { return maxInstructions; }
 int AppConfig::GetMaxOverallMemory() const { return maxOverallMemory; }
 int AppConfig::GetMemoryPerFrame() const { return memoryPerFrame; }
 int AppConfig::GetMemoryPerProcess() const { return memoryPerProcess; }
+int AppConfig::GetMaxCustomInstructions() const { return maxCustomInstructions; }
 
 AppConfig::AppConfig(
 	int numCpu,
@@ -40,7 +42,8 @@ AppConfig::AppConfig(
 	int maxInstructions,
 	int maxOverallMemory,
 	int memoryPerFrame,
-	int memoryPerProcess)
+	int memoryPerProcess,
+	int maxCustomInstructions)
 	: numCpu(numCpu),
 	  schedulerAlgorithm(schedulerAlgorithm),
 	  quantumCycles(quantumCycles),
@@ -51,7 +54,8 @@ AppConfig::AppConfig(
 	  maxInstructions(maxInstructions),
 	  maxOverallMemory(maxOverallMemory),
 	  memoryPerFrame(memoryPerFrame),
-	  memoryPerProcess(memoryPerProcess){
+	  memoryPerProcess(memoryPerProcess),
+	  maxCustomInstructions(maxCustomInstructions){
 }
 
 AppConfig AppConfig::FromConfigFile(const std::string& configFilePath) {
@@ -70,13 +74,14 @@ AppConfig AppConfig::ParseConfigFile(const std::string& configFilePath) {
 	int maxOverallMemory = DEFAULT_MAX_OVERALL_MEM;
 	int memoryPerFrame = DEFAULT_MEM_PER_FRAME;
 	int memoryPerProcess = DEFAULT_MEM_PER_PROC;
+	int maxCustomInstructions = DEFAULT_MAX_CUSTOM_INSTRUCTIONS;
 
 	std::ifstream configFile(configFilePath);
 	if (!configFile.is_open()) {
 		return AppConfig(
 			numCpu, schedulerAlgorithm, quantumCycles, batchProcessFreq,
 			delaysPerExec, tickerDelayMs, minInstructions, maxInstructions,
-			maxOverallMemory, memoryPerFrame, memoryPerProcess);
+			maxOverallMemory, memoryPerFrame, memoryPerProcess, maxCustomInstructions);
 	}
 
 	std::string line;
@@ -131,5 +136,5 @@ AppConfig AppConfig::ParseConfigFile(const std::string& configFilePath) {
 	return AppConfig(
 		numCpu, schedulerAlgorithm, quantumCycles, batchProcessFreq,
 		delaysPerExec, tickerDelayMs, minInstructions, maxInstructions,
-		maxOverallMemory, memoryPerFrame, memoryPerProcess);
+		maxOverallMemory, memoryPerFrame, memoryPerProcess, maxCustomInstructions);
 }

@@ -22,7 +22,7 @@ bool CreateScreenCommand::Execute(const std::vector<std::string>& args) const {
 	}
 
 	if (!CommandUtils::IsValidPowerOfTwo(requestedMemorySize)) {
-		std::cout << "\033[31mMemory size must be a power of two between 2^6 (64) and 2^16 (65536) bytes.\033[0m\n";
+		std::cout << "\033[31mInvalid memory size: Memory size must be a power of two between 2^6 (64) and 2^16 (65536) bytes.\033[0m\n";
 		return true;
 	}
 

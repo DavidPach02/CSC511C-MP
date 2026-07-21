@@ -7,6 +7,8 @@
 #include "SleepInstruction.h"
 #include "ReadInstruction.h"
 #include "WriteInstruction.h"
+#include "SystemState.h"
+#include "AppConfig.h"
 
 ParsedInstruction InstructionBuilder::ParseInstruction(const std::string& instruction) {
 	ParsedInstruction result;
@@ -50,6 +52,9 @@ ParsedInstruction InstructionBuilder::ParseInstruction(const std::string& instru
 
 bool InstructionBuilder::BuildInstructionsFromString(const std::string& instructionString, std::shared_ptr<Process> process) {
 	std::vector<std::string> instructionLines = SplitBy(instructionString, ';', true);
+	if (instructionLines.size() > SystemState::GetConfig().GetMaxCustomInstructions() || instructionLines.size() <= 0) {
+		return false;
+	}
 
 	for (const std::string& line : instructionLines) {
 		ParsedInstruction parsed = ParseInstruction(line);

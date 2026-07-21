@@ -26,6 +26,7 @@ public:
 	// Size and information
 	int GetProcessCount() const;
 	int GetRunningProcessCount() const;
+	int GetInactiveProcessCount() const;
 	int GetTerminatedProcessCount() const;
 
 private:
