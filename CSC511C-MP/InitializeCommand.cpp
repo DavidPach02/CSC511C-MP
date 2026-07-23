@@ -71,7 +71,8 @@ bool InitializeCommand::Execute(const std::vector<std::string>& args) const {
 	std::cout << "  max-ins: " << appConfig.GetMaxInstructions() << "\n";
 	std::cout << "  max-overall-mem: " << appConfig.GetMaxOverallMemory() << "\n";
 	std::cout << "  mem-per-frame: " << appConfig.GetMemoryPerFrame() << "\n";
-	std::cout << "  mem-per-proc: " << appConfig.GetMemoryPerProcess() << "\n";
+	std::cout << "  min-mem-per-proc: " << appConfig.GetMinMemoryPerProcess() << "\n";
+	std::cout << "  max-mem-per-proc: " << appConfig.GetMaxMemoryPerProcess() << "\n";
 
 	return true;
 }

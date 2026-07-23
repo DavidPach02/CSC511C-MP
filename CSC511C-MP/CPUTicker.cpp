@@ -1,10 +1,9 @@
 #include "CPUTicker.h"
 #include "SystemState.h"
 #include "DummyProcessGenerator.h"
-#include "MemoryLogger.h"
 #include "ProcessManager.h"
-
 #include <chrono>
+#include <mutex>
 #include <thread>
 
 CPUTicker* CPUTicker::instance = nullptr;

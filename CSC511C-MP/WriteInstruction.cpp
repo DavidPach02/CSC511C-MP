@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <limits>
+#include <string>
 
 namespace {
 	bool TryParseAddress(const std::string& rawAddress, uint16_t& outAddress) {
@@ -75,7 +76,11 @@ void WriteInstruction::Execute() {
 		return;
 	}
 
-	if (!memoryManager->WriteProcessMemory(process, address, value)) {
+	const MemoryAccessResult accessResult = memoryManager->WriteProcessMemory(process, address, value);
+	if (accessResult == MemoryAccessResult::PageFaultRetry) {
+		return;
+	}
+	if (accessResult == MemoryAccessResult::AccessViolation) {
 		std::string error = "Memory access violation: WRITE at address " + memoryAddress + ". Process terminated.";
 		process->LogMessage(error);
 		process->TerminateDueToMemoryAccessViolation(memoryAddress);

@@ -15,4 +15,3 @@ void AddInstruction::Execute() {
 
 	process->GetSymbolTable()->SetVariable(destinationVar, static_cast<uint16_t>(result));
 }
-

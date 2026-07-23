@@ -84,12 +84,17 @@ void EITThread::RunToCompletion() {
 			return;
 		}
 
+		if (process->GetStatusEnum() == ProcessStatus::Terminated) {
+			state = EITThreadState::Finished;
+			break;
+		}
+
 		if (!hasRemaining) {
 			break;
 		}
 	}
 
-	if (!process->HasRemainingCommands()) {
+	if (process->GetStatusEnum() != ProcessStatus::Terminated && !process->HasRemainingCommands()) {
 		process->Terminate();
 		state = EITThreadState::Finished;
 	}
@@ -119,16 +124,26 @@ bool EITThread::ExecuteTimeSlice(int commandCount) {
 			return true;
 		}
 
+		if (process->GetStatusEnum() == ProcessStatus::Terminated) {
+			state = EITThreadState::Finished;
+			ReleaseCoreAssignment();
+			return false;
+		}
+
 		if (!hasRemaining) {
-			process->Terminate();
+			if (process->GetStatusEnum() != ProcessStatus::Terminated) {
+				process->Terminate();
+			}
 			state = EITThreadState::Finished;
 			ReleaseCoreAssignment();
 			return false;
 		}
 	}
 
-	if (!process->HasRemainingCommands()) {
-		process->Terminate();
+	if (process->GetStatusEnum() == ProcessStatus::Terminated || !process->HasRemainingCommands()) {
+		if (process->GetStatusEnum() != ProcessStatus::Terminated) {
+			process->Terminate();
+		}
 		state = EITThreadState::Finished;
 		ReleaseCoreAssignment();
 		return false;

@@ -1,6 +1,7 @@
 #include "SwitchScreenCommand.h"
 #include "ProcessManager.h"
 #include "Process.h"
+#include <iostream>
 
 bool SwitchScreenCommand::Execute(const std::vector<std::string>& args) const {
 	const int argsCount = static_cast<int>(args.size());

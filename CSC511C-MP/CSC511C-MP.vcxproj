@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="AddInstruction.cpp" />
     <ClCompile Include="AppConfig.cpp" />
+    <ClCompile Include="BackingStore.cpp" />
     <ClCompile Include="BaseScreen.cpp" />
     <ClCompile Include="ClearCommand.cpp" />
     <ClCompile Include="CommandDispatcher.cpp" />
@@ -146,7 +147,6 @@
     <ClCompile Include="DisplayMemoryCommand.cpp" />
     <ClCompile Include="DisplayVirtualMemCommand.cpp" />
     <ClCompile Include="ExitScreenCommand.cpp" />
-    <ClCompile Include="FlatMemoryAllocator.cpp" />
     <ClCompile Include="ForInstruction.cpp" />
     <ClCompile Include="Instruction.cpp" />
     <ClCompile Include="InstructionBuilder.cpp" />
@@ -191,6 +191,7 @@
   <ItemGroup>
     <ClInclude Include="AddInstruction.h" />
     <ClInclude Include="AppConfig.h" />
+    <ClInclude Include="BackingStore.h" />
     <ClInclude Include="AConsole.h" />
     <ClInclude Include="BaseScreen.h" />
     <ClInclude Include="ClearCommand.h" />
@@ -201,9 +202,7 @@
     <ClInclude Include="DisplayMemoryCommand.h" />
     <ClInclude Include="DisplayVirtualMemCommand.h" />
     <ClInclude Include="ExitScreenCommand.h" />
-    <ClInclude Include="FlatMemoryAllocator.h" />
     <ClInclude Include="ForInstruction.h" />
-    <ClInclude Include="IMemoryAllocator.h" />
     <ClInclude Include="Instruction.h" />
     <ClInclude Include="InstructionBuilder.h" />
     <ClInclude Include="Operand.h" />

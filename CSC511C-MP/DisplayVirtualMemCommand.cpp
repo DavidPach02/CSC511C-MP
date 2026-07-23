@@ -1,5 +1,6 @@
 #include "DisplayVirtualMemCommand.h"
 #include "MemoryManager.h"
+#include <iostream>
 
 bool DisplayVirtualMemCommand::Execute(const std::vector<std::string>& args) const {
 	(void)args;

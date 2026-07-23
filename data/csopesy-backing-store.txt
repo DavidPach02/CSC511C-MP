@@ -1,0 +1,3 @@
+# csopesy-backing-store.txt
+# Format: <process_id> <virtual_page> <hex_bytes>
+# Updated when pages are paged out to backing store.
