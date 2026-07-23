@@ -24,9 +24,7 @@ public:
 	std::vector<std::shared_ptr<Process>> GetProcessesByCoreID(int coreID) const;
 
 	int GetProcessCount() const;
-	int GetRunningProcessCount() const;
-	int GetInactiveProcessCount() const;
-	int GetTerminatedProcessCount() const;
+	int GetProcessesCountByStatus(ProcessStatus status) const;
 
 private:
 	ProcessManager();

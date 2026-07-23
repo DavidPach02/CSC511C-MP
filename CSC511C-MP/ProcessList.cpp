@@ -86,32 +86,6 @@ int ProcessList::GetProcessCount() const {
 	return static_cast<int>(processes.size());
 }
 
-int ProcessList::GetRunningProcessCount() const {
-	int count = 0;
-	for (const auto& process : processes) {
-		if (process->GetStatusEnum() == ProcessStatus::Running) {
-			count++;
-		}
-	}
-	return count;
-}
-
-int ProcessList::GetInactiveProcessCount() const {
-	int count = 0;
-	for (const auto& process : processes) {
-		if (process->GetStatusEnum() == ProcessStatus::Ready) {
-			count++;
-		}
-	}
-	return count;
-}
-
-int ProcessList::GetTerminatedProcessCount() const {
-	int count = 0;
-	for (const auto& process : processes) {
-		if (process->GetStatusEnum() == ProcessStatus::Terminated) {
-			count++;
-		}
-	}
-	return count;
+int ProcessList::GetProcessesCountByStatus(ProcessStatus status) {
+	return GetProcessesByStatus(status).size();
 }

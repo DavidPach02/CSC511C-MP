@@ -146,6 +146,8 @@ bool DummyProcessGenerator::GenerateOneWithInstruction(
 		return false;
 	}
 
+	// If successfully created increment the next process ID
+	++nextProcessId;
 	std::shared_ptr<BaseScreen> baseScreen = std::make_shared<BaseScreen>(process);
 	ConsoleManager::GetInstance()->RegisterScreen(baseScreen, false);
 	createdScreenNames.push_back(processName);
