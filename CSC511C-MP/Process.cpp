@@ -163,7 +163,7 @@ bool Process::ExecuteNextCommand()
 
 	for (int attempt = 0; attempt < maxPageFaultRetries; ++attempt) {
 		if (memoryManager != nullptr) {
-			memoryManager->ResetPageFaultRetryFlag(GetID());
+			memoryManager->ResetPageFaultRetryFlag(GetID()); 
 		}
 
 		commands[executedCommandCount]->Execute();

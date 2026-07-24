@@ -177,6 +177,12 @@
     <ClCompile Include="MemoryManager.cpp">
       <Filter>Header Files\Memory</Filter>
     </ClCompile>
+    <ClCompile Include="DemandPager.cpp">
+      <Filter>Header Files\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="FIFOPageReplacement.cpp">
+      <Filter>Header Files\Memory</Filter>
+    </ClCompile>
     <ClCompile Include="MemoryLogger.cpp">
       <Filter>Header Files\Memory</Filter>
     </ClCompile>
@@ -348,6 +354,15 @@
       <Filter>Header Files\Command</Filter>
     </ClInclude>
     <ClInclude Include="MemoryManager.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="DemandPager.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="FIFOPageReplacement.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="PagingTypes.h">
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
     <ClInclude Include="MemoryLogger.h">
