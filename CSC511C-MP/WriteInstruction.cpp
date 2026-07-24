@@ -1,8 +1,8 @@
 #include "WriteInstruction.h"
 
 #include "MemoryManager.h"
+#include "Operand.h"
 
-#include <algorithm>
 #include <limits>
 
 namespace {
@@ -22,28 +22,6 @@ namespace {
 			return false;
 		}
 	}
-
-	bool TryResolveValueOperand(const std::shared_ptr<Process>& process, const std::string& rawValue, uint16_t& outValue) {
-		try {
-			size_t parsedChars = 0;
-			const unsigned long parsedValue = std::stoul(rawValue, &parsedChars, 0);
-			if (parsedChars == rawValue.size()) {
-				const unsigned long clamped = std::min<unsigned long>(parsedValue, std::numeric_limits<uint16_t>::max());
-				outValue = static_cast<uint16_t>(clamped);
-				return true;
-			}
-		} catch (...) {
-		}
-
-		if (process == nullptr || process->GetSymbolTable() == nullptr) {
-			return false;
-		}
-
-		const int symbolValue = process->GetSymbolTable()->GetVariable(rawValue);
-		const int clamped = std::clamp(symbolValue, 0, 65535);
-		outValue = static_cast<uint16_t>(clamped);
-		return true;
-	}
 }
 
 WriteInstruction::WriteInstruction(std::shared_ptr<Process> process, std::string memoryAddress, std::string defaultValue) 
@@ -59,13 +37,8 @@ void WriteInstruction::Execute() {
 		return;
 	}
 
-	uint16_t value = 0;
-	if (!TryResolveValueOperand(process, defaultValue, value)) {
-		std::string error = "Memory access violation: invalid WRITE value operand '" + defaultValue + "'. Process terminated.";
-		process->LogMessage(error);
-		process->Terminate();
-		return;
-	}
+	Operand valueOperand{ defaultValue };
+	const uint16_t value = valueOperand.Resolve(process);
 
 	MemoryManager* memoryManager = MemoryManager::GetInstance();
 	if (memoryManager == nullptr) {
