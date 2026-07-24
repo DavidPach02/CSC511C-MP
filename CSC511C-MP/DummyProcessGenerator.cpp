@@ -170,7 +170,6 @@ bool DummyProcessGenerator::GenerateOneWithInstruction(
 		? memoryRequired
 		: static_cast<size_t>(appConfig.GetMinMemoryPerProcess());
 	auto process = std::make_shared<Process>(nextProcessId, processName, memorySize);
-	++nextProcessId;
 
 	// TEST-FULL: screen -c p01 64 "DECLARE varA 10; DECLARE varB 5; ADD varA varA varB; WRITE 0x500 varA; READ varC 0x500; SLEEP 4; FOR(5, PRINT('Hello, World'), ADD varA varA varB); PRINT('Result: %i', varA); PRINT('Result: %i', varC);"
 	// TEST-A: screen -c p01 64 "DECLARE varA 10; DECLARE varB 5; ADD varA varA varB; FOR(5, PRINT('varA: %i', varA), ADD varA varA varB);"
@@ -178,9 +177,11 @@ bool DummyProcessGenerator::GenerateOneWithInstruction(
 		return false;
 	}
 
+	// If successfully created increment the next process ID
+	++nextProcessId;
+
 	MemoryManager::GetInstance()->RegisterProcess(process->GetID(), memorySize); // Register the process with the memory manager
 	process->InitializeSymbolTable(process); // Initialize the symbol table for the process
-
 	std::shared_ptr<BaseScreen> baseScreen = std::make_shared<BaseScreen>(process);
 	ConsoleManager::GetInstance()->RegisterScreen(baseScreen, false);
 	createdScreenNames.push_back(processName);
