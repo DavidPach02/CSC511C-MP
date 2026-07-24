@@ -25,9 +25,7 @@ public:
 
 	// Size and information
 	int GetProcessCount() const;
-	int GetRunningProcessCount() const;
-	int GetInactiveProcessCount() const;
-	int GetTerminatedProcessCount() const;
+	int GetProcessesCountByStatus(ProcessStatus status);
 
 private:
 	std::vector<std::shared_ptr<Process>> processes;

@@ -64,14 +64,6 @@ int ProcessManager::GetProcessCount() const {
 	return processList->GetProcessCount();
 }
 
-int ProcessManager::GetRunningProcessCount() const {
-	return processList->GetRunningProcessCount();
-}
-
-int ProcessManager::GetInactiveProcessCount() const {
-	return processList->GetInactiveProcessCount();
-}
-
-int ProcessManager::GetTerminatedProcessCount() const {
-	return processList->GetTerminatedProcessCount();
+int ProcessManager::GetProcessesCountByStatus(ProcessStatus status) const {
+	return processList->GetProcessesCountByStatus(status);
 }
