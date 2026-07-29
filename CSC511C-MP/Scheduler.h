@@ -35,7 +35,7 @@ public:
 protected:
 	explicit Scheduler(int totalCores);
 
-	virtual void RunCore(int coreID) = 0;
+	virtual bool ExecuteProcessOnCore(std::shared_ptr<Process>& process, int coreID) = 0;
 
 	bool DequeueProcess(std::shared_ptr<Process>& process);
 	void RequeueProcess(std::shared_ptr<Process> process);
@@ -55,6 +55,7 @@ private:
 	Scheduler& operator=(const Scheduler&) = delete;
 
 	void RunWorker(int coreID);
+	void RunCore(int coreID);
 
 	static Scheduler* instance;
 };

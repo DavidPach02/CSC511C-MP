@@ -1,4 +1,6 @@
 #include "ExitCommand.h"
+#include <chrono>
+#include <iostream>
 #include <thread>
 
 bool ExitCommand::Execute(const std::vector<std::string>& args) const {

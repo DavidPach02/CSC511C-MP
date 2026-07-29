@@ -2,6 +2,7 @@
 #include "FCFSScheduler.h"
 #include "RRScheduler.h"
 #include "MemoryManager.h"
+#include <mutex>
 
 Scheduler* Scheduler::instance = nullptr;
 
@@ -84,6 +85,36 @@ void Scheduler::RunWorker(int coreID) {
 	RunCore(coreID);
 }
 
+// MO2: shared worker loop — memory registration check, execution, and ReleaseProcessMemory on exit.
+void Scheduler::RunCore(int coreID) {
+	while (true) {
+		std::shared_ptr<Process> process;
+		if (!DequeueProcess(process)) {
+			return;
+		}
+
+		if (process->GetStatusEnum() == ProcessStatus::Sleeping) {
+			process->WakeIfReady();
+			if (process->GetStatusEnum() == ProcessStatus::Sleeping) {
+				RequeueProcess(process);
+				continue;
+			}
+		}
+
+		if (!PrepareProcessForExecution(process)) {
+			RequeueProcess(process);
+			continue;
+		}
+
+		const bool shouldRequeue = ExecuteProcessOnCore(process, coreID);
+		if (shouldRequeue) {
+			RequeueProcess(process);
+		} else {
+			FinalizeProcess(process);
+		}
+	}
+}
+
 bool Scheduler::DequeueProcess(std::shared_ptr<Process>& process) {
 	std::unique_lock<std::mutex> lock(queueMutex);
 	queueCondition.wait(lock, [this] {
@@ -111,7 +142,10 @@ void Scheduler::RequeueProcess(std::shared_ptr<Process> process) {
 }
 
 bool Scheduler::PrepareProcessForExecution(const std::shared_ptr<Process>& process) {
-	return MemoryManager::GetInstance()->TryAllocateForProcess(process);
+	if (process == nullptr) {
+		return false;
+	}
+	return MemoryManager::GetInstance()->IsProcessRegistered(process->GetID());
 }
 
 void Scheduler::FinalizeProcess(const std::shared_ptr<Process>& process) {

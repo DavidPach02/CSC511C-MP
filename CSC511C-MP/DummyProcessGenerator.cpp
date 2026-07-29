@@ -11,9 +11,13 @@
 #include "SubtractInstruction.h"
 #include "ForInstruction.h"
 #include "SleepInstruction.h"
+#include "ReadInstruction.h"
+#include "WriteInstruction.h"
 #include "InstructionBuilder.h"
+#include "MemoryManager.h"
 #include <memory>
 #include <random>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -45,20 +49,37 @@ bool DummyProcessGenerator::GenerateOne(const AppConfig& appConfig, const std::s
 	std::mt19937 generator(std::random_device{}());
 	std::uniform_int_distribution<int> commandCountDistribution(
 		appConfig.GetMinInstructions(), appConfig.GetMaxInstructions());
-	std::uniform_int_distribution<int> instructionTypeDistribution(0, 5);
+	std::uniform_int_distribution<int> instructionTypeDistribution(0, 7);
 	std::uniform_int_distribution<int> valueDistribution(0, 20);
 
 	const int commandCount = commandCountDistribution(generator);
 	const std::string processName = customName == "" ? MakeProcessName(nextProcessId) : customName;
 
-	size_t memorySize = memoryRequired > 0 ? memoryRequired : appConfig.GetMemoryPerProcess();
+	const size_t memorySize = memoryRequired > 0
+		? memoryRequired
+		: appConfig.RollSchedulerProcessMemory();
 	auto process = std::make_shared<Process>(nextProcessId, processName, memorySize);
 	++nextProcessId;
+	MemoryManager::GetInstance()->RegisterProcess(process->GetID(), memorySize);
+	process->InitializeSymbolTable(process);
 
 	// Variables are used to store the values of the variables declared in the process
 	std::vector<std::string> variables;
 
-	// TODO: Add READ and WRITE instructions here and handle randomization of access and retrieval
+	auto randomMemoryAddress = [&]() -> std::string {
+		if (memorySize < 2) {
+			return "0x0";
+		}
+
+		const size_t maxAddress = memorySize - 2;
+		std::uniform_int_distribution<size_t> addressDistribution(0, maxAddress);
+		const size_t address = addressDistribution(generator);
+
+		std::ostringstream addressBuilder;
+		addressBuilder << "0x" << std::hex << std::uppercase << address;
+		return addressBuilder.str();
+	};
+
 	for (int commandIndex = 0; commandIndex < commandCount; ++commandIndex) {
 		const std::string variableName = "variableName" + std::to_string(commandIndex);
 		// Add the variable name to the list of variables
@@ -116,6 +137,14 @@ bool DummyProcessGenerator::GenerateOne(const AppConfig& appConfig, const std::s
 		case 5:
 			process->AddInstruction(std::make_unique<SleepInstruction>(process, randomOperand()));
 			break;
+		case 6:
+			process->AddInstruction(std::make_unique<WriteInstruction>(
+				process, randomMemoryAddress(), randomOperand()));
+			break;
+		case 7:
+			process->AddInstruction(std::make_unique<ReadInstruction>(
+				process, variableName, randomMemoryAddress()));
+			break;
 		default:
 			break;
 		}
@@ -137,7 +166,9 @@ bool DummyProcessGenerator::GenerateOneWithInstruction(
 
 	const std::string processName = customName == "" ? MakeProcessName(nextProcessId) : customName;
 
-	size_t memorySize = memoryRequired > 0 ? memoryRequired : appConfig.GetMemoryPerProcess();
+	const size_t memorySize = memoryRequired > 0
+		? memoryRequired
+		: static_cast<size_t>(appConfig.GetMinMemoryPerProcess());
 	auto process = std::make_shared<Process>(nextProcessId, processName, memorySize);
 
 	// TEST-FULL: screen -c p01 64 "DECLARE varA 10; DECLARE varB 5; ADD varA varA varB; WRITE 0x500 varA; READ varC 0x500; SLEEP 4; FOR(5, PRINT('Hello, World'), ADD varA varA varB); PRINT('Result: %i', varA); PRINT('Result: %i', varC);"
@@ -148,6 +179,9 @@ bool DummyProcessGenerator::GenerateOneWithInstruction(
 
 	// If successfully created increment the next process ID
 	++nextProcessId;
+
+	MemoryManager::GetInstance()->RegisterProcess(process->GetID(), memorySize); // Register the process with the memory manager
+	process->InitializeSymbolTable(process); // Initialize the symbol table for the process
 	std::shared_ptr<BaseScreen> baseScreen = std::make_shared<BaseScreen>(process);
 	ConsoleManager::GetInstance()->RegisterScreen(baseScreen, false);
 	createdScreenNames.push_back(processName);

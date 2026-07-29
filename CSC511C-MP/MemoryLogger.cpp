@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <filesystem>
 #include <fstream>
+#include <iomanip>
 #include <sstream>
 #include <vector>
 
@@ -45,18 +46,14 @@ namespace {
 		segments.reserve(processes.size());
 
 		for (const auto& process : processes) {
-			if (process == nullptr || !process->HasMemoryLoaded()) {
+			if (process == nullptr || !memoryManager->IsProcessRegistered(process->GetID())) {
 				continue;
 			}
 
-			const auto memoryOffset = memoryManager->GetAddressOffset(process->GetMemoryAddress());
-			if (!memoryOffset.has_value()) {
-				continue;
-			}
-
-			const size_t lowerAddress = memoryOffset.value();
-			const size_t upperAddress = lowerAddress + process->GetMemoryRequired();
-			segments.push_back(MemorySegment{ process->GetName(), lowerAddress, upperAddress });
+			segments.push_back(MemorySegment{
+				process->GetName(),
+				0,
+				process->GetMemoryRequired() });
 		}
 
 		std::sort(segments.begin(), segments.end(), [](const MemorySegment& left, const MemorySegment& right) {

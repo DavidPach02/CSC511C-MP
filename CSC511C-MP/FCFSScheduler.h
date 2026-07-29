@@ -11,5 +11,5 @@ public:
 	std::string GetAlgorithmName() const override;
 
 protected:
-	void RunCore(int coreID) override;
+	bool ExecuteProcessOnCore(std::shared_ptr<Process>& process, int coreID) override;
 };

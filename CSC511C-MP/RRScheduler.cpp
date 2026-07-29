@@ -13,34 +13,7 @@ std::string RRScheduler::GetAlgorithmName() const {
 	return "Round Robin (RR)";
 }
 
-void RRScheduler::RunCore(int coreID) {
-	(void)coreID;
-	while (true) {
-		std::shared_ptr<Process> process;
-
-		if (!DequeueProcess(process)) {
-			return;
-		}
-
-		if (process->GetStatusEnum() == ProcessStatus::Sleeping) {
-			process->WakeIfReady();
-			if (process->GetStatusEnum() == ProcessStatus::Sleeping) {
-				RequeueProcess(process);
-				continue;
-			}
-		}
-        
-		if (!PrepareProcessForExecution(process)) {
-			RequeueProcess(process);
-			continue;
-		}
-
-		EITThread executionThread(process, coreID);
-
-		if (executionThread.ExecuteTimeSlice(quantumCommands)) {
-			RequeueProcess(process);
-		} else {
-			FinalizeProcess(process);
-		}
-	}
+bool RRScheduler::ExecuteProcessOnCore(std::shared_ptr<Process>& process, int coreID) {
+	EITThread executionThread(process, coreID);
+	return executionThread.ExecuteTimeSlice(quantumCommands);
 }

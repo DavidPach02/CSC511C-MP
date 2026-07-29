@@ -1,4 +1,5 @@
 #include "ScreenCommand.h"
+#include <iostream>
 
 ScreenCommand::ScreenCommand() {
 	//CreateScreenCommand createScreenCMD = CreateScreenCommand();

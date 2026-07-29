@@ -1,7 +1,10 @@
 #include "AppConfig.h"
 #include "ParseUtils.h"
+#include <algorithm>
 #include <fstream>
+#include <random>
 #include <sstream>
+#include <vector>
 
 namespace {
 	constexpr int DEFAULT_NUM_CPU = 4;
@@ -14,8 +17,70 @@ namespace {
 	constexpr int DEFAULT_MAX_INSTRUCTIONS = 100;
 	constexpr int DEFAULT_MAX_OVERALL_MEM = 16384;
 	constexpr int DEFAULT_MEM_PER_FRAME = 16;
-	constexpr int DEFAULT_MEM_PER_PROC = 4096;
+	constexpr int DEFAULT_MIN_MEM_PER_PROC = 64;
+	constexpr int DEFAULT_MAX_MEM_PER_PROC = 4096;
 	constexpr int DEFAULT_MAX_CUSTOM_INSTRUCTIONS = 50;
+	constexpr int MIN_PROCESS_MEMORY = 1 << 6;   // 64 bytes
+	constexpr int MAX_PROCESS_MEMORY = 1 << 16;  // 65536 bytes
+
+	bool IsValidProcessMemorySize(int size) {
+		return size >= MIN_PROCESS_MEMORY
+			&& size <= MAX_PROCESS_MEMORY
+			&& (size & (size - 1)) == 0;
+	}
+
+	bool IsValidPhysicalMemorySize(int size) {
+		return size >= MIN_PROCESS_MEMORY
+			&& size <= MAX_PROCESS_MEMORY
+			&& (size & (size - 1)) == 0;
+	}
+
+	void NormalizePhysicalMemoryConfig(int& maxOverallMemory, int& memoryPerFrame) {
+		if (!IsValidPhysicalMemorySize(maxOverallMemory)) {
+			maxOverallMemory = DEFAULT_MAX_OVERALL_MEM;
+		}
+
+		if (!IsValidPhysicalMemorySize(memoryPerFrame)) {
+			memoryPerFrame = DEFAULT_MEM_PER_FRAME;
+		}
+
+		if (memoryPerFrame > maxOverallMemory) {
+			memoryPerFrame = DEFAULT_MEM_PER_FRAME;
+		}
+
+		if (maxOverallMemory % memoryPerFrame != 0) {
+			maxOverallMemory = (maxOverallMemory / memoryPerFrame) * memoryPerFrame;
+			if (maxOverallMemory < memoryPerFrame) {
+				maxOverallMemory = DEFAULT_MAX_OVERALL_MEM;
+				memoryPerFrame = DEFAULT_MEM_PER_FRAME;
+			}
+		}
+	}
+
+	bool TryApplyProcessMemorySize(int candidate, int& minMemoryPerProcess, int& maxMemoryPerProcess) {
+		if (!IsValidProcessMemorySize(candidate)) {
+			return false;
+		}
+
+		minMemoryPerProcess = candidate;
+		maxMemoryPerProcess = candidate;
+		return true;
+	}
+
+	std::vector<int> BuildValidProcessMemorySizes(int minMemoryPerProcess, int maxMemoryPerProcess) {
+		std::vector<int> validSizes;
+		for (int candidate = MIN_PROCESS_MEMORY; candidate <= MAX_PROCESS_MEMORY; candidate <<= 1) {
+			if (candidate >= minMemoryPerProcess && candidate <= maxMemoryPerProcess) {
+				validSizes.push_back(candidate);
+			}
+		}
+
+		if (validSizes.empty()) {
+			validSizes.push_back(DEFAULT_MIN_MEM_PER_PROC);
+		}
+
+		return validSizes;
+	}
 }
 
 int AppConfig::GetNumCpu() const { return numCpu; }
@@ -28,8 +93,16 @@ int AppConfig::GetMinInstructions() const { return minInstructions; }
 int AppConfig::GetMaxInstructions() const { return maxInstructions; }
 int AppConfig::GetMaxOverallMemory() const { return maxOverallMemory; }
 int AppConfig::GetMemoryPerFrame() const { return memoryPerFrame; }
-int AppConfig::GetMemoryPerProcess() const { return memoryPerProcess; }
+int AppConfig::GetMinMemoryPerProcess() const { return minMemoryPerProcess; }
+int AppConfig::GetMaxMemoryPerProcess() const { return maxMemoryPerProcess; }
 int AppConfig::GetMaxCustomInstructions() const { return maxCustomInstructions; }
+
+size_t AppConfig::RollSchedulerProcessMemory() const {
+	const std::vector<int> validSizes = BuildValidProcessMemorySizes(minMemoryPerProcess, maxMemoryPerProcess);
+	std::mt19937 generator(std::random_device{}());
+	std::uniform_int_distribution<size_t> sizePick(0, validSizes.size() - 1);
+	return static_cast<size_t>(validSizes[sizePick(generator)]);
+}
 
 AppConfig::AppConfig(
 	int numCpu,
@@ -42,7 +115,8 @@ AppConfig::AppConfig(
 	int maxInstructions,
 	int maxOverallMemory,
 	int memoryPerFrame,
-	int memoryPerProcess,
+	int minMemoryPerProcess,
+	int maxMemoryPerProcess,
 	int maxCustomInstructions)
 	: numCpu(numCpu),
 	  schedulerAlgorithm(schedulerAlgorithm),
@@ -54,8 +128,9 @@ AppConfig::AppConfig(
 	  maxInstructions(maxInstructions),
 	  maxOverallMemory(maxOverallMemory),
 	  memoryPerFrame(memoryPerFrame),
-	  memoryPerProcess(memoryPerProcess),
-	  maxCustomInstructions(maxCustomInstructions){
+	  minMemoryPerProcess(minMemoryPerProcess),
+	  maxMemoryPerProcess(maxMemoryPerProcess),
+	  maxCustomInstructions(maxCustomInstructions) {
 }
 
 AppConfig AppConfig::FromConfigFile(const std::string& configFilePath) {
@@ -73,7 +148,8 @@ AppConfig AppConfig::ParseConfigFile(const std::string& configFilePath) {
 	int maxInstructions = DEFAULT_MAX_INSTRUCTIONS;
 	int maxOverallMemory = DEFAULT_MAX_OVERALL_MEM;
 	int memoryPerFrame = DEFAULT_MEM_PER_FRAME;
-	int memoryPerProcess = DEFAULT_MEM_PER_PROC;
+	int minMemoryPerProcess = DEFAULT_MIN_MEM_PER_PROC;
+	int maxMemoryPerProcess = DEFAULT_MAX_MEM_PER_PROC;
 	int maxCustomInstructions = DEFAULT_MAX_CUSTOM_INSTRUCTIONS;
 
 	std::ifstream configFile(configFilePath);
@@ -81,7 +157,8 @@ AppConfig AppConfig::ParseConfigFile(const std::string& configFilePath) {
 		return AppConfig(
 			numCpu, schedulerAlgorithm, quantumCycles, batchProcessFreq,
 			delaysPerExec, tickerDelayMs, minInstructions, maxInstructions,
-			maxOverallMemory, memoryPerFrame, memoryPerProcess, maxCustomInstructions);
+			maxOverallMemory, memoryPerFrame, minMemoryPerProcess, maxMemoryPerProcess,
+			maxCustomInstructions);
 	}
 
 	std::string line;
@@ -124,8 +201,16 @@ AppConfig AppConfig::ParseConfigFile(const std::string& configFilePath) {
 			maxOverallMemory = parsedInt.value();
 		} else if (name == "mem-per-frame" && parsedInt.has_value() && parsedInt.value() > 0) {
 			memoryPerFrame = parsedInt.value();
-		} else if (name == "mem-per-proc" && parsedInt.has_value() && parsedInt.value() > 0) {
-			memoryPerProcess = parsedInt.value();
+		} else if (name == "min-mem-per-proc" && parsedInt.has_value()) {
+			if (IsValidProcessMemorySize(parsedInt.value())) {
+				minMemoryPerProcess = parsedInt.value();
+			}
+		} else if (name == "max-mem-per-proc" && parsedInt.has_value()) {
+			if (IsValidProcessMemorySize(parsedInt.value())) {
+				maxMemoryPerProcess = parsedInt.value();
+			}
+		} else if (name == "mem-per-proc" && parsedInt.has_value()) {
+			TryApplyProcessMemorySize(parsedInt.value(), minMemoryPerProcess, maxMemoryPerProcess);
 		}
 	}
 
@@ -133,8 +218,27 @@ AppConfig AppConfig::ParseConfigFile(const std::string& configFilePath) {
 		std::swap(minInstructions, maxInstructions);
 	}
 
+	if (minMemoryPerProcess > maxMemoryPerProcess) {
+		std::swap(minMemoryPerProcess, maxMemoryPerProcess);
+	}
+
+	if (!IsValidProcessMemorySize(minMemoryPerProcess)) {
+		minMemoryPerProcess = DEFAULT_MIN_MEM_PER_PROC;
+	}
+
+	if (!IsValidProcessMemorySize(maxMemoryPerProcess)) {
+		maxMemoryPerProcess = DEFAULT_MAX_MEM_PER_PROC;
+	}
+
+	if (minMemoryPerProcess > maxMemoryPerProcess) {
+		std::swap(minMemoryPerProcess, maxMemoryPerProcess);
+	}
+
+	NormalizePhysicalMemoryConfig(maxOverallMemory, memoryPerFrame);
+
 	return AppConfig(
 		numCpu, schedulerAlgorithm, quantumCycles, batchProcessFreq,
 		delaysPerExec, tickerDelayMs, minInstructions, maxInstructions,
-		maxOverallMemory, memoryPerFrame, memoryPerProcess, maxCustomInstructions);
+		maxOverallMemory, memoryPerFrame, minMemoryPerProcess, maxMemoryPerProcess,
+		maxCustomInstructions);
 }

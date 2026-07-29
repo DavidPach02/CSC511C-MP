@@ -26,6 +26,7 @@ public:
 	~Process();
 
 	void Initialize();
+	void InitializeSymbolTable(const std::shared_ptr<Process>& self);
 	void Run();
 	void Pause();
 	void Resume();
@@ -80,7 +81,6 @@ private:
 	std::string name;
 	size_t memoryRequired;
 	void* memoryAddress;
-	void* symbolMemoryAddress;
 	int coreID;
 	ProcessStatus status;
 	SymbolTable* symTable;

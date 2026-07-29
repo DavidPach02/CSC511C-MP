@@ -3,6 +3,7 @@
 #include "MemoryManager.h"
 
 #include <limits>
+#include <string>
 
 namespace {
 	bool TryParseAddress(const std::string& rawAddress, uint16_t& outAddress) {
@@ -45,7 +46,11 @@ void ReadInstruction::Execute(){
 	}
 
 	uint16_t value = 0;
-	if (!memoryManager->ReadProcessMemory(process, address, value)) {
+	const MemoryAccessResult accessResult = memoryManager->ReadProcessMemory(process, address, value);
+	if (accessResult == MemoryAccessResult::PageFaultRetry) {
+		return;
+	}
+	if (accessResult == MemoryAccessResult::AccessViolation) {
 		std::string error = "Memory access violation: READ at address " + memoryAddress + ". Process terminated.";
 		process->LogMessage(error);
 		process->TerminateDueToMemoryAccessViolation(memoryAddress);

@@ -12,34 +12,13 @@ std::string FCFSScheduler::GetAlgorithmName() const {
 	return "First Come, First Served (FCFS)";
 }
 
-void FCFSScheduler::RunCore(int coreID) {
-	(void)coreID;
-	while (true) {
-		std::shared_ptr<Process> process;
-		if (!DequeueProcess(process)) {
-			return;
-		}
+bool FCFSScheduler::ExecuteProcessOnCore(std::shared_ptr<Process>& process, int coreID) {
+	EITThread executionThread(process, coreID);
+	executionThread.RunToCompletion();
 
-		if (process->GetStatusEnum() == ProcessStatus::Sleeping) {
-			process->WakeIfReady();
-			if (process->GetStatusEnum() == ProcessStatus::Sleeping) {
-				RequeueProcess(process);
-				continue;
-			}
-		}
-
-		if (!PrepareProcessForExecution(process)) {
-			RequeueProcess(process);
-			continue;
-		}
-
-		EITThread executionThread(process, coreID);
-		executionThread.RunToCompletion();
-
-		if (process->GetStatusEnum() == ProcessStatus::Terminated) {
-			FinalizeProcess(process);
-		} else if (process->GetStatusEnum() == ProcessStatus::Sleeping) {
-			RequeueProcess(process);
-		}
+	if (process->GetStatusEnum() == ProcessStatus::Terminated) {
+		return false;
 	}
+
+	return process->GetStatusEnum() == ProcessStatus::Sleeping;
 }

@@ -1,5 +1,6 @@
 #include "DisplayMemoryCommand.h"
 #include "MemoryManager.h"
+#include <iostream>
 
 bool DisplayMemoryCommand::Execute(const std::vector<std::string>& args) const {
 	(void)args;

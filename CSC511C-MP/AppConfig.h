@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstddef>
 #include <string>
 #include "Scheduler.h"
 
@@ -17,8 +18,12 @@ public:
 	int GetMaxInstructions() const;
 	int GetMaxOverallMemory() const;
 	int GetMemoryPerFrame() const;
-	int GetMemoryPerProcess() const;
+	int GetMinMemoryPerProcess() const;
+	int GetMaxMemoryPerProcess() const;
 	int GetMaxCustomInstructions() const;
+
+	// Rolls a random power-of-2 process size in [min-mem-per-proc, max-mem-per-proc] for scheduler-start.
+	size_t RollSchedulerProcessMemory() const;
 
 private:
 	AppConfig(
@@ -32,7 +37,8 @@ private:
 		int maxInstructions,
 		int maxOverallMemory,
 		int memoryPerFrame,
-		int memoryPerProcess,
+		int minMemoryPerProcess,
+		int maxMemoryPerProcess,
 		int maxCustomInstructions);
 
 	static AppConfig ParseConfigFile(const std::string& configFilePath);
@@ -47,6 +53,7 @@ private:
 	int maxInstructions;
 	int maxOverallMemory;
 	int memoryPerFrame;
-	int memoryPerProcess;
+	int minMemoryPerProcess;
+	int maxMemoryPerProcess;
 	int maxCustomInstructions;
 };

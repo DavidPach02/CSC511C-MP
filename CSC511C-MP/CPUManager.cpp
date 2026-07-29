@@ -1,6 +1,7 @@
 #include "CPUManager.h"
 #include <iomanip>
 #include <iostream>
+#include <mutex>
 
 CPUManager* CPUManager::instance = nullptr;
 

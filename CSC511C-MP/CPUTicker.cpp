@@ -2,9 +2,10 @@
 #include "SystemState.h"
 #include "DummyProcessGenerator.h"
 #include "MemoryLogger.h"
+#include "Process.h"
 #include "ProcessManager.h"
-
 #include <chrono>
+#include <mutex>
 #include <thread>
 
 CPUTicker* CPUTicker::instance = nullptr;
@@ -104,7 +105,7 @@ void CPUTicker::Run() {
 			++currentTick;
 
 			// Update idle and active tick times
-			if (ProcessManager::GetInstance()->GetRunningProcessCount() > 0) {
+			if (ProcessManager::GetInstance()->GetProcessesCountByStatus(ProcessStatus::Running) > 0) {
 				activeTickTime++;
 			}
 			else {
@@ -118,8 +119,7 @@ void CPUTicker::Run() {
 
 		const uint64_t tick = currentTick.load();
 		if (quantumCycles > 0 && tick > 0 && tick % static_cast<uint64_t>(quantumCycles) == 0) {
-			const uint64_t quantumCycle = tick / static_cast<uint64_t>(quantumCycles);
-			//MemoryLogger::LogTickSnapshot(quantumCycle);
+			// MemoryLogger::LogTickSnapshot(tick / static_cast<uint64_t>(quantumCycles));
 		}
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(tickerDelayMs));

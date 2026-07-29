@@ -3,8 +3,10 @@
 #include <iostream>
 #include <limits>
 #include <sstream>
+#include <string>
 #include "TimeUtility.h"
 #include "CPUTicker.h"
+#include "MemoryManager.h"
 
 int Process::delaysPerExec = 0;
 
@@ -44,7 +46,7 @@ std::string StatusToString(ProcessStatus status)
 	}
 }
 
-Process::Process() : id(0), name(""), memoryRequired(0), memoryAddress(nullptr), symbolMemoryAddress(nullptr), coreID(0), status(ProcessStatus::Ready),
+Process::Process() : id(0), name(""), memoryRequired(0), memoryAddress(nullptr), coreID(0), status(ProcessStatus::Ready),
 	startTime(""), startDate(""), endTime(""), endDate(""),
 	commandCount(0), executedCommandCount(0), wakeTick(0),
 	memoryAccessViolation(false), memoryAccessViolationTime(""), memoryAccessViolationAddress(""),
@@ -53,7 +55,7 @@ Process::Process() : id(0), name(""), memoryRequired(0), memoryAddress(nullptr),
 }
 
 Process::Process(const int processID, const std::string& processName, const size_t memoryRequired, const int coreID)
-	: id(processID), name(processName), memoryRequired(memoryRequired), memoryAddress(nullptr), symbolMemoryAddress(nullptr),
+	: id(processID), name(processName), memoryRequired(memoryRequired), memoryAddress(nullptr),
 	coreID(coreID), status(ProcessStatus::Ready),
 	startTime(""), startDate(""), endTime(""), endDate(""),
 	commandCount(0), executedCommandCount(0), wakeTick(0),
@@ -68,16 +70,19 @@ Process::~Process()
 		delete symTable;
 		symTable = nullptr;
 	}
-	if (symbolMemoryAddress != nullptr) {
-		free(symbolMemoryAddress);
-		symbolMemoryAddress = nullptr;
-	}
 }
 
 void Process::Initialize() {
 	memoryAddress = nullptr;
-	symbolMemoryAddress = malloc(static_cast<size_t>(32) * sizeof(uint16_t));
-	symTable = new SymbolTable(symbolMemoryAddress, 0, 32);
+	symTable = nullptr;
+}
+
+void Process::InitializeSymbolTable(const std::shared_ptr<Process>& self) {
+	if (symTable != nullptr) {
+		delete symTable;
+		symTable = nullptr;
+	}
+	symTable = new SymbolTable(self);
 }
 
 void Process::Run()
@@ -146,16 +151,32 @@ bool Process::ExecuteNextCommand()
 		return false;
 	}
 
-	// 
 	if (executedCommandCount > 0) {
 		const uint64_t targetTick = CPUTicker::GetInstance()->GetCurrentTick()
 			+ static_cast<uint64_t>(delaysPerExec) + 1;
 
-		// Wait until the target tick is reached
 		CPUTicker::GetInstance()->WaitUntilTick(targetTick);
 	}
 
-	commands[executedCommandCount]->Execute();
+	MemoryManager* memoryManager = MemoryManager::GetInstance();
+	constexpr int maxPageFaultRetries = 256;
+
+	for (int attempt = 0; attempt < maxPageFaultRetries; ++attempt) {
+		if (memoryManager != nullptr) {
+			memoryManager->ResetPageFaultRetryFlag(GetID()); 
+		}
+
+		commands[executedCommandCount]->Execute();
+
+		if (HasMemoryAccessViolation()) {
+			return false;
+		}
+
+		if (memoryManager == nullptr || !memoryManager->ConsumePageFaultRetryFlag(GetID())) {
+			break;
+		}
+	}
+
 	executedCommandCount++;
 
 	if (!HasRemainingCommands()) {
@@ -270,7 +291,7 @@ void Process::SetMemoryAddress(void* address)
 
 bool Process::HasMemoryLoaded() const
 {
-	return memoryAddress != nullptr;
+	return symTable != nullptr;
 }
 
 void Process::SleepForTicks(std::uint8_t duration)

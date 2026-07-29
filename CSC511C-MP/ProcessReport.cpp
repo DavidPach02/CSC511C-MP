@@ -46,36 +46,14 @@ namespace {
 	}
 
 	int CountProcessesInMemory(const std::vector<std::shared_ptr<Process>>& processes) {
+		MemoryManager* memoryManager = MemoryManager::GetInstance();
 		int loadedCount = 0;
 		for (const auto& process : processes) {
-			if (process->HasMemoryLoaded()) {
+			if (process != nullptr && memoryManager->IsProcessRegistered(process->GetID())) {
 				++loadedCount;
 			}
 		}
 		return loadedCount;
-	}
-
-	std::string BuildFrameVisualization(const std::string& byteMap, size_t frameSize) {
-		if (frameSize == 0 || byteMap.empty()) {
-			return "";
-		}
-
-		std::string frameMap;
-		frameMap.reserve((byteMap.size() + frameSize - 1) / frameSize);
-
-		for (size_t frameStart = 0; frameStart < byteMap.size(); frameStart += frameSize) {
-			const size_t frameEnd = std::min(frameStart + frameSize, byteMap.size());
-			bool frameAllocated = false;
-			for (size_t byteIndex = frameStart; byteIndex < frameEnd; ++byteIndex) {
-				if (byteMap[byteIndex] == '#') {
-					frameAllocated = true;
-					break;
-				}
-			}
-			frameMap.push_back(frameAllocated ? '#' : '.');
-		}
-
-		return frameMap;
 	}
 }
 
@@ -159,10 +137,18 @@ void ProcessReport::WriteMemoryMap(std::ostream& output) {
 
 	const AppConfig& appConfig = SystemState::GetConfig();
 	const size_t frameSize = static_cast<size_t>(appConfig.GetMemoryPerFrame());
-	const std::string byteMap = MemoryManager::GetInstance()->GetVisualizedMemory();
-	const std::string frameMap = BuildFrameVisualization(byteMap, frameSize);
+	MemoryManager* memoryManager = MemoryManager::GetInstance();
+	const std::string frameMap = memoryManager->GetFrameMapVisualization();
 
-	output << "Memory map (first-fit, # = allocated, . = free):\n";
+	std::string byteMap;
+	if (frameSize > 0) {
+		byteMap.reserve(frameMap.size() * frameSize);
+		for (const char frameCell : frameMap) {
+			byteMap.append(frameSize, frameCell);
+		}
+	}
+
+	output << "Memory map (frame pool, # = occupied frame, . = free frame):\n";
 	output << "Byte map (" << byteMap.size() << " bytes):\n" << byteMap << "\n";
 	if (!frameMap.empty()) {
 		output << "Frame map (" << frameMap.size() << " frames, "

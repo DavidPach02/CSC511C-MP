@@ -1,160 +1,145 @@
 #include "SymbolTable.h"
+#include "MemoryManager.h"
+#include "Process.h"
 
 #include <algorithm>
 
-SymbolTable::SymbolTable(void* baseMemoryAddress, uint16_t lowerAddress, uint16_t allocatedMemory)
-	: baseMemoryAddress(baseMemoryAddress), lowerAddress(lowerAddress){
-	this->higherAddress = lowerAddress + allocatedMemory - 1;
-
-	for (uint16_t address = this->lowerAddress; address <= this->higherAddress; address++) {
+SymbolTable::SymbolTable(const std::shared_ptr<Process>& process)
+	: processRef(process), lowerAddress(0), higherAddress(31) {
+	for (uint16_t address = lowerAddress; address <= higherAddress; ++address) {
 		table.emplace(address, DeclaredSymbol("", 0));
 	}
-	//std::cout << GetTableLogs();
+}
+
+uint16_t SymbolTable::GetByteAddressForSlot(uint16_t slotIndex) const {
+	return static_cast<uint16_t>(slotIndex * sizeof(uint16_t));
+}
+
+bool SymbolTable::ReadSlotValue(uint16_t slotIndex, uint16_t& outValue) const {
+	const std::shared_ptr<Process> process = processRef.lock();
+	if (process == nullptr) {
+		return false;
+	}
+
+	const MemoryAccessResult accessResult = MemoryManager::GetInstance()->ReadProcessMemory(
+		process, GetByteAddressForSlot(slotIndex), outValue);
+	return accessResult == MemoryAccessResult::Success;
+}
+
+bool SymbolTable::WriteSlotValue(uint16_t slotIndex, uint16_t value) {
+	const std::shared_ptr<Process> process = processRef.lock();
+	if (process == nullptr) {
+		return false;
+	}
+
+	const MemoryAccessResult accessResult = MemoryManager::GetInstance()->WriteProcessMemory(
+		process, GetByteAddressForSlot(slotIndex), value);
+	return accessResult == MemoryAccessResult::Success;
 }
 
 bool SymbolTable::SetVariable(const std::string& name, int value) {
 	const uint16_t clampedValue = static_cast<uint16_t>(std::clamp(value, 0, 65535));
 	DeclaredSymbol* symbol = FindVariable(name);
-	//std::cout << "Finding variable" << std::endl;
 
-	// If we found an existing symbol
-	if (symbol) {
-		//std::cout << name << " found in symbol table." << std::endl;
-		// Just set the value
+	if (symbol != nullptr) {
 		symbol->value = clampedValue;
-
-		// Find the virtual address of this symbol to write it physically
-		for (auto& [address, sym] : this->table) {
-			if (&sym == symbol) {
-				void* physicalDest = GetPhysicalAddress(address);
-				if (physicalDest) {
-					*static_cast<uint16_t*>(physicalDest) = clampedValue;
+		for (auto& [slotIndex, entry] : table) {
+			if (&entry == symbol) {
+				if (!WriteSlotValue(slotIndex, clampedValue)) {
+					return false;
 				}
 				break;
 			}
 		}
 		return true;
 	}
-	else {
-		// If the symbol table is full, ignore setting
-		if (IsFull()) {
-			return true;
-		}
 
-		//std::cout << name << " not found. Finding a free memory space." << std::endl;
-		// If we don't find an existing symbol, find a free memory
-		uint16_t freeMemoryAddress = GetFreeMemory();
-		// If there's free memory
-		if (freeMemoryAddress != 0xFFFF) {
-			this->table[freeMemoryAddress] = DeclaredSymbol(name, clampedValue);
-
-			// Write the value to physical host RAM
-			void* physicalDest = GetPhysicalAddress(freeMemoryAddress);
-			if (physicalDest) {
-				*static_cast<uint16_t*>(physicalDest) = clampedValue;
-			}
-			return true;
-		}
-	}
-
-	// If we can't set it, then a memory access violation happened.
-	return false;
-}
-
-bool SymbolTable::SetVariable(const uint16_t memoryAddress, const std::string& name, uint16_t value) {
-	auto it = this->table.find(memoryAddress);
-
-	// Found the memory address within the symbol table
-	if (it != table.end()) {
-		DeclaredSymbol& symbol = it->second;
-		symbol.name = name;
-		symbol.value = value;
-
-		// Write the value to physical host RAM
-		void* physicalDest = GetPhysicalAddress(memoryAddress);
-		if (physicalDest) {
-			*static_cast<uint16_t*>(physicalDest) = value;
-		}
-
+	if (IsFull()) {
 		return true;
 	}
 
-	// Memory out of bounds --> memory access violation
-	return false;
+	const uint16_t freeSlotIndex = GetFreeMemory();
+	if (freeSlotIndex == 0xFFFF) {
+		return false;
+	}
+
+	table[freeSlotIndex] = DeclaredSymbol(name, clampedValue);
+	return WriteSlotValue(freeSlotIndex, clampedValue);
+}
+
+bool SymbolTable::SetVariable(const uint16_t memoryAddress, const std::string& name, uint16_t value) {
+	auto slotIt = table.find(memoryAddress);
+	if (slotIt == table.end()) {
+		return false;
+	}
+
+	slotIt->second.name = name;
+	slotIt->second.value = value;
+	return WriteSlotValue(memoryAddress, value);
 }
 
 int SymbolTable::GetVariable(const std::string& name) {
-	DeclaredSymbol* symbol = FindVariable(name);
-
-	if (symbol != nullptr) {
-		return symbol->value;
+	for (auto& [slotIndex, entry] : table) {
+		if (entry.name == name) {
+			uint16_t storedValue = 0;
+			if (ReadSlotValue(slotIndex, storedValue)) {
+				entry.value = storedValue;
+				return storedValue;
+			}
+			return entry.value;
+		}
 	}
 	return 0;
 }
 
 int SymbolTable::GetVariable(const uint16_t memoryAddress) {
-	if (memoryAddress >= lowerAddress && memoryAddress <= higherAddress) {
-		void* physicalSrc = GetPhysicalAddress(memoryAddress);
-		if (physicalSrc != nullptr) {
-			// Read the 2-byte value directly from memory
-			return *static_cast<uint16_t*>(physicalSrc);
-		}
+	if (memoryAddress < lowerAddress || memoryAddress > higherAddress) {
+		return 0;
+	}
+
+	uint16_t storedValue = 0;
+	if (ReadSlotValue(memoryAddress, storedValue)) {
+		return storedValue;
 	}
 	return 0;
 }
 
 bool SymbolTable::HasVariable(const std::string& name) {
-	return FindVariable(name);
+	return FindVariable(name) != nullptr;
 }
 
 bool SymbolTable::IsFull() const {
-	size_t activeVariables = 0;
-	for (const auto& [address, symbol] : this->table) {
-		if (symbol.name == "") return false;
+	for (const auto& [address, symbol] : table) {
+		if (symbol.name.empty()) {
+			return false;
+		}
 	}
 	return true;
 }
 
 std::string SymbolTable::GetTableLogs() const {
-	std::string logs = "";
-
+	std::string logs;
 	for (const auto& pair : table) {
-		logs += "  [ \033[33m" + std::to_string(pair.first) + "\033[0m ] " + pair.second.name + ": " + std::to_string(pair.second.value) + "\n";
+		logs += "  [ \033[33m" + std::to_string(pair.first) + "\033[0m ] "
+			+ pair.second.name + ": " + std::to_string(pair.second.value) + "\n";
 	}
 	return logs;
 }
 
 DeclaredSymbol* SymbolTable::FindVariable(const std::string& name) {
-	for (auto& [address, symbol] : this->table) {
+	for (auto& [address, symbol] : table) {
 		if (symbol.name == name) {
-			return &symbol; // Return a pointer to the symbol in the map
+			return &symbol;
 		}
 	}
-	return nullptr; // Return nullptr if not found
-}
-
-void* SymbolTable::GetPhysicalAddress(uint16_t virtualAddress) const {
-	if (virtualAddress < lowerAddress || virtualAddress > higherAddress) {
-		return nullptr; // Out of bounds safety check
-	}
-
-	if (baseMemoryAddress == nullptr) {
-		return nullptr;
-	}
-
-	// Calculate byte offset: (virtual address - base virtual offset) * 2 bytes per variable
-	uint16_t offset = (virtualAddress - lowerAddress) * sizeof(uint16_t);
-
-	// Cast void* to char* to perform byte-wise pointer arithmetic, then offset it
-	return static_cast<char*>(this->baseMemoryAddress) + offset;
+	return nullptr;
 }
 
 uint16_t SymbolTable::GetFreeMemory() const {
-	for (const auto& [address, symbol] : this->table) {
-		if (symbol.name == "") {
+	for (const auto& [address, symbol] : table) {
+		if (symbol.name.empty()) {
 			return address;
 		}
 	}
-
 	return 0xFFFF;
 }

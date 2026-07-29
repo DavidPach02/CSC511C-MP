@@ -1,26 +1,36 @@
 #pragma once
 
-#include "IMemoryAllocator.h"
+#include "DemandPager.h"
+#include "FIFOPageReplacement.h"
+#include "PagingTypes.h"
 #include "Process.h"
+
 #include <cstddef>
 #include <cstdint>
-#include <unordered_map>
-#include <vector>
 #include <memory>
 #include <mutex>
 #include <optional>
 #include <string>
-#include <sstream>
+#include <unordered_map>
+#include <vector>
 
-// Singleton first-fit memory manager. Allocates mem-per-proc when a process is scheduled;
-// memory is held until the process finishes execution.
+// MO2 memory facade: pre-allocated frame pool, demand paging, and FIFO page replacement.
 class MemoryManager {
 public:
+	static constexpr size_t SYMBOL_TABLE_SEGMENT_BYTES = 64;
+	static constexpr uint16_t SYMBOL_TABLE_SEGMENT_END = 64;
+	static constexpr size_t MAX_PROCESS_VIRTUAL_BYTES = DemandPager::MAX_PROCESS_VIRTUAL_BYTES;
+
 	static MemoryManager* GetInstance();
 	static void Initialize(int maxOverallMemory, int memoryPerFrame = 16);
 	static void Destroy();
 
-	bool TryAllocateForProcess(const std::shared_ptr<Process>& process);
+	void RegisterProcess(int processId, size_t memoryBytes);
+	void UnregisterProcess(int processId);
+	bool IsProcessRegistered(int processId) const;
+	size_t GetPageCountForProcess(size_t memoryBytes) const;
+	size_t GetRegisteredProcessMemoryBytes(int processId) const;
+
 	void ReleaseProcessMemory(const std::shared_ptr<Process>& process);
 
 	size_t GetUsedMemory() const;
@@ -32,11 +42,21 @@ public:
 	std::string GetVirtualMemoryStats() const;
 	std::optional<size_t> GetAddressOffset(const void* ptr) const;
 
-	bool ReadProcessMemory(const std::shared_ptr<Process>& process, uint16_t address, uint16_t& outValue);
-	bool WriteProcessMemory(const std::shared_ptr<Process>& process, uint16_t address, uint16_t value);
+	void ResetPageFaultRetryFlag(int processId);
+	bool ConsumePageFaultRetryFlag(int processId);
+
+	MemoryAccessResult ReadProcessMemory(const std::shared_ptr<Process>& process, uint16_t address, uint16_t& outValue);
+	MemoryAccessResult WriteProcessMemory(const std::shared_ptr<Process>& process, uint16_t address, uint16_t value);
 
 	size_t GetPagesPagedIn() const;
 	size_t GetPagesPagedOut() const;
+
+	size_t GetFrameCount() const;
+	size_t GetFrameSizeBytes() const;
+	size_t GetOccupiedFrameCount() const;
+	size_t GetFreeFrameCount() const;
+	size_t GetResidentPageCount(int processId) const;
+	std::string GetFrameMapVisualization() const;
 
 private:
 	MemoryManager();
@@ -46,29 +66,19 @@ private:
 
 	static MemoryManager* instance;
 
-	struct PageFrame {
-		bool occupied;
-		int processId;
-		uint32_t virtualPage;
-		uint64_t loadedAt;
-		std::vector<uint8_t> bytes;
-	};
-
 	mutable std::mutex memoryMutex;
-	std::unique_ptr<IMemoryAllocator> allocator;
 
-	size_t frameSizeBytes;
-	size_t frameCount;
-	uint64_t frameClock;
+	size_t totalMemoryBytes;
 	size_t pagesPagedIn;
 	size_t pagesPagedOut;
-	std::vector<PageFrame> frames;
-	std::unordered_map<int, std::unordered_map<uint32_t, size_t>> residentPages;
-	std::unordered_map<int, std::unordered_map<uint32_t, std::vector<uint8_t>>> backingStore;
 
-	bool EnsurePageLoadedLocked(int processId, uint32_t virtualPage);
-	bool ReadByteLocked(int processId, uint16_t address, uint8_t& outByte);
-	bool WriteByteLocked(int processId, uint16_t address, uint8_t value);
-	size_t SelectEvictionFrameLocked() const;
-	void RemoveProcessPagesLocked(int processId);
+	std::vector<PageFrame> frames;
+	std::unordered_map<int, ProcessPageTable> pageTables;
+	std::unordered_map<int, std::unordered_map<uint32_t, size_t>> residentPages;
+	std::unordered_map<int, bool> instructionRetryPending;
+
+	FIFOPageReplacement pageReplacement;
+	DemandPager demandPager;
+
+	size_t CountOccupiedFramesLocked() const;
 };

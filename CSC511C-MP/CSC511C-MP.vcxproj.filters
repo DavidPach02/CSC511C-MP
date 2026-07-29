@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -37,6 +37,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppConfig.cpp">
+      <Filter>Header Files\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="BackingStore.cpp">
       <Filter>Header Files\Helper</Filter>
     </ClCompile>
     <ClCompile Include="CSC511C-MP.cpp">
@@ -171,10 +174,13 @@
     <ClCompile Include="PrintLogsCommand.cpp">
       <Filter>Header Files\Command</Filter>
     </ClCompile>
-    <ClCompile Include="FlatMemoryAllocator.cpp">
+    <ClCompile Include="MemoryManager.cpp">
       <Filter>Header Files\Memory</Filter>
     </ClCompile>
-    <ClCompile Include="MemoryManager.cpp">
+    <ClCompile Include="DemandPager.cpp">
+      <Filter>Header Files\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="FIFOPageReplacement.cpp">
       <Filter>Header Files\Memory</Filter>
     </ClCompile>
     <ClCompile Include="MemoryLogger.cpp">
@@ -290,6 +296,9 @@
     <ClInclude Include="AppConfig.h">
       <Filter>Header Files\Helper</Filter>
     </ClInclude>
+    <ClInclude Include="BackingStore.h">
+      <Filter>Header Files\Helper</Filter>
+    </ClInclude>
     <ClInclude Include="SystemState.h">
       <Filter>Header Files\Helper</Filter>
     </ClInclude>
@@ -344,13 +353,16 @@
     <ClInclude Include="PrintLogsCommand.h">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
-    <ClInclude Include="IMemoryAllocator.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="FlatMemoryAllocator.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
     <ClInclude Include="MemoryManager.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="DemandPager.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="FIFOPageReplacement.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="PagingTypes.h">
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
     <ClInclude Include="MemoryLogger.h">

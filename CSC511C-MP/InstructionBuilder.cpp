@@ -9,6 +9,7 @@
 #include "WriteInstruction.h"
 #include "SystemState.h"
 #include "AppConfig.h"
+#include <iostream>
 
 ParsedInstruction InstructionBuilder::ParseInstruction(const std::string& instruction) {
 	ParsedInstruction result;
