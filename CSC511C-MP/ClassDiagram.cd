@@ -136,7 +136,7 @@
   <Class Name="ConsoleManager">
     <Position X="1" Y="22" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAACQQhAgAAEAAAABEjgAAQAIBAgAAQAAAA=</HashCode>
+      <HashCode>AAQAAAAAAAACQQBAgAAEAAAABEjgAAQAIBAgAAQAAAA=</HashCode>
       <FileName>ConsoleManager.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -148,21 +148,21 @@
     </TypeIdentifier>
   </Class>
   <Class Name="AppConfig">
-    <Position X="33.75" Y="11.75" Width="1.5" />
+    <Position X="44.75" Y="16.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>CAAAAEAMAAQAAAAAAAAAAAtBAAAEAgABAQAAAEAEAAA=</HashCode>
+      <HashCode>CAACCEAMABYAAAxAAAAggEtBAACEAhABAQAAAEAEAAQ=</HashCode>
       <FileName>AppConfig.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SystemState">
-    <Position X="35.5" Y="11.75" Width="1.5" />
+    <Position X="46.5" Y="16.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAEABAAAQAIAAAAAQAAAQAAAAAAAAAABAAAAAA=</HashCode>
       <FileName>SystemState.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TextColor" Collapsed="true">
-    <Position X="38.5" Y="0.5" Width="1.5" />
+  <Class Name="TextColor">
+    <Position X="50.25" Y="11.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
       <FileName>TextColor.h</FileName>
@@ -171,19 +171,19 @@
   <Class Name="ProcessList">
     <Position X="26" Y="11.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AFAARYAAAACAAAAAECAAIAAAAAEAAAAAAQIAAABIAAA=</HashCode>
+      <HashCode>AFAAQYAAAACAAAAAECAAIAAAAAEAAEAAAQIAAABAAAA=</HashCode>
       <FileName>ProcessList.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CPUTicker">
-    <Position X="35.5" Y="14.5" Width="1.5" />
+    <Position X="46.5" Y="19" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAgAAAAAQiAAAAAAAAgAAQQABAhgCAAQIAgoQCAAAAI=</HashCode>
+      <HashCode>hAgAAAAAQiAAAAAAAAgAAQRABAhgCAASIAgoQCAAAAI=</HashCode>
       <FileName>CPUTicker.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CPUManager">
-    <Position X="32" Y="13.75" Width="1.5" />
+    <Position X="43" Y="18.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AQAIAQAAAQCCAYAgAAAAACEAhCBAADAQAAAgAAAAAAA=</HashCode>
       <FileName>CPUManager.h</FileName>
@@ -192,68 +192,68 @@
   <Class Name="SymbolTable">
     <Position X="21.75" Y="15.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAABAAAAQAAQAABAIAACAAAAAAAAAQAA=</HashCode>
+      <HashCode>AAAMAAAAAAAAAAJAAAAQAAQAADQIAQCIIAAAACAAQAA=</HashCode>
       <FileName>SymbolTable.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="DummyProcessGenerator">
     <Position X="28.5" Y="11.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAABAAAABAAAAAAAAIAAAAAAAAAACAAAAAAAgAA=</HashCode>
+      <HashCode>AAAAAAABAAgABAAAAAAAAIAAAAAAAAAACAAAAAAAgAA=</HashCode>
       <FileName>DummyProcessGenerator.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Process">
     <Position X="23.5" Y="17" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>xMQgAbAFQAMwEQQAAmFggCBEgAFFAAAIAAKEAAgEFgY=</HashCode>
+      <HashCode>xNYgAbAFQAMwERwAAmFgwCBEgAFVAAAIiAKEFAhEFgY=</HashCode>
       <FileName>Process.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ProcessManager">
     <Position X="23.5" Y="11.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AFAARIAAAACAAUAAACAAIAAABABAAAACAQIgAABIAAE=</HashCode>
+      <HashCode>AFAAQIAAAACAAUAAACAAIAAABABAAEACAQIgAABAAAE=</HashCode>
       <FileName>ProcessManager.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="EITThread">
-    <Position X="37.25" Y="16.5" Width="1.5" />
+    <Position X="48.25" Y="21" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BgAAAEgAAIAAAAQAIAAAAAJAAAAABAgEBAAAACBIAAE=</HashCode>
       <FileName>EITThread.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Scheduler">
-    <Position X="28" Y="20.75" Width="1.5" />
+    <Position X="33.75" Y="24.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AEAAAACAESBAAQAAAAAIQAiABkhAAAAAIAAwAEAAAAQ=</HashCode>
+      <HashCode>AEAAAACAESBAAQAAAAEIQAiABkhAABAAIAAwAEAAAAQ=</HashCode>
       <FileName>Scheduler.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FCFSScheduler">
-    <Position X="30.5" Y="24" Width="1.5" />
+    <Position X="36.25" Y="27.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAAEAAAAQ=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAABAAAAAAAEAAAAQ=</HashCode>
       <FileName>FCFSScheduler.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="RRScheduler">
-    <Position X="32.5" Y="24" Width="1.5" />
+    <Position X="38.25" Y="27.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAIAAAAEAQAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAQ=</HashCode>
+      <HashCode>AAAIAAAAAAQAAAAAAAAAAAAAAAAAABAAAAAAAEAAAAQ=</HashCode>
       <FileName>RRScheduler.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ParseUtils">
-    <Position X="42.25" Y="11.75" Width="1.5" />
+    <Position X="52" Y="11.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAgAAAAAAAAgAAAAAAAAAAAACAAAAAAAQAAAAAAACA=</HashCode>
       <FileName>ParseUtils.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TimeUtility">
-    <Position X="44" Y="11.75" Width="1.5" />
+    <Position X="53.75" Y="11.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAQAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>TimeUtility.h</FileName>
@@ -308,11 +308,158 @@
       <FileName>SubtractInstruction.h</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="CreateProcessInstructionCommand">
+    <Position X="21.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAQAAAAAAAQAAAAAAAAAIAAAAIAAAAA=</HashCode>
+      <FileName>CreateProcessInstructionCommand.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DisplayMemoryCommand">
+    <Position X="24" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAQAgAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DisplayMemoryCommand.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DisplayVirtualMemCommand">
+    <Position X="19.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAQAAAAAAAQAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>DisplayVirtualMemCommand.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BackingStore">
+    <Position X="43.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAQQA=</HashCode>
+      <FileName>BackingStore.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TextFormatter">
+    <Position X="29" Y="7" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="TextFormatter::Alignment" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>TextFormatter.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>TextFormatter.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CommandUtils">
+    <Position X="27" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAAA=</HashCode>
+      <FileName>CommandUtils.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InstructionBuilder">
+    <Position X="30.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAgAAAAAQAAAAAAAAAAAAAAAAgAACAAAA=</HashCode>
+      <FileName>InstructionBuilder.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReadInstruction">
+    <Position X="1.25" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAQAAAAAAAAAAAAAAAIAAAAABAAAAAA=</HashCode>
+      <FileName>ReadInstruction.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WriteInstruction">
+    <Position X="16.75" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAQAAABAAAAAA=</HashCode>
+      <FileName>WriteInstruction.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DemandPager">
+    <Position X="42" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAQCACAAIABwBIBAIAEEAAhIBAAAJEAkQAQQAUAAEAA=</HashCode>
+      <FileName>DemandPager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FIFOPageReplacement">
+    <Position X="40.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACUBAEAAAEAAAAAAAAAAAAAAAAAAQAAAIA=</HashCode>
+      <FileName>FIFOPageReplacement.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MemoryManager">
+    <Position X="35.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgQAACQAAAAwAUEVAgHMBolJBJlUJCAAAAAiISACAAA=</HashCode>
+      <FileName>MemoryManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MemoryLogger">
+    <Position X="34" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAACAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MemoryLogger.h</FileName>
+    </TypeIdentifier>
+  </Class>
   <Struct Name="Operand">
     <Position X="10.75" Y="15.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAADAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Operand.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="DeclaredSymbol">
+    <Position X="20" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAAAAAAAEACAAAAAAAAAAAAA=</HashCode>
+      <FileName>SymbolTable.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="ParsedInstruction">
+    <Position X="30.75" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIQAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>InstructionBuilder.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="PageFrame">
+    <Position X="43.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAIAAAAAAAAAAQAAAAAAgAAAEAAAAAAAA=</HashCode>
+      <FileName>PagingTypes.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="ProcessPageTable">
+    <Position X="40.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>PagingTypes.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="`anonymous-namespace'::BackingStoreState">
+    <Position X="45.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAiAAAAAAAEAAAAAAAAAAAAAAAABAGAAAIAA=</HashCode>
+      <FileName>BackingStore.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="`anonymous-namespace'::MemorySegment">
+    <Position X="37.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAABA=</HashCode>
+      <FileName>MemoryLogger.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="`anonymous-namespace'::RunningProcessEntry">
+    <Position X="21.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MemoryLogger.cpp</FileName>
     </TypeIdentifier>
   </Struct>
   <Enum Name="ProcessStatus">
@@ -323,17 +470,24 @@
     </TypeIdentifier>
   </Enum>
   <Enum Name="EITThreadState">
-    <Position X="37.25" Y="14.5" Width="1.5" />
+    <Position X="48.25" Y="19" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAEAAAQAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
       <FileName>EITThread.h</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="SchedulingAlgorithm">
-    <Position X="30" Y="20.75" Width="1.5" />
+    <Position X="35.75" Y="24.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAABAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Scheduler.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MemoryAccessResult">
+    <Position X="34" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAACAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PagingTypes.h</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Segoe UI" Size="9" />

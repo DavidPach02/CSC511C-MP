@@ -152,7 +152,7 @@ std::string MemoryLogger::PrintMemoryStats() {
 	memoryUtilStream << std::fixed << std::setprecision(2) << MemoryManager::GetInstance()->GetMemoryUtilization() << "%";
 
 	std::stringstream memoryUsageStream;
-	memoryUsageStream << MemoryManager::GetInstance()->GetUsedMemory() << " / " << MemoryManager::GetInstance()->GetTotalMemory() << " MiB";
+	memoryUsageStream << MemoryManager::GetInstance()->GetUsedMemory() << " / " << MemoryManager::GetInstance()->GetTotalMemory() << " bytes";
 
 	// Print formatted table here
 	std::stringstream previewInfo;
@@ -202,18 +202,18 @@ std::string MemoryLogger::PrintVirtualMemoryStats() {
 	const size_t totalTableWidth = 50;
 
 	std::stringstream virtualMemoryInfo;
-	virtualMemoryInfo << TextFormatter::GetFormattedCell(std::to_string(MemoryManager::GetInstance()->GetTotalMemory()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("bytes Total Memory", 38) << "\n"
-		<< TextFormatter::GetFormattedCell(std::to_string(MemoryManager::GetInstance()->GetUsedMemory()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("bytes Used Memory", 38) << "\n"
-		<< TextFormatter::GetFormattedCell(std::to_string(MemoryManager::GetInstance()->GetFreeMemory()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("bytes Free Memory", 38) << "\n"
-		<< TextFormatter::GetFormattedCell(std::to_string(ProcessManager::GetInstance()->GetProcessesCountByStatus(ProcessStatus::Running)), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Active Processes", 38) << "\n"
-		<< TextFormatter::GetFormattedCell(std::to_string(ProcessManager::GetInstance()->GetProcessesCountByStatus(ProcessStatus::Ready)), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Inactive Processes", 38) << "\n"
-		<< TextFormatter::GetFormattedCell(std::to_string(ProcessManager::GetInstance()->GetProcessesCountByStatus(ProcessStatus::Terminated)), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Terminated Processes", 38) << "\n"
-		<< TextFormatter::GetFormattedCell(std::to_string(ProcessManager::GetInstance()->GetProcessesCountByStatus(ProcessStatus::Sleeping)), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Sleeping Processes", 38) << "\n"
-		<< TextFormatter::GetFormattedCell(std::to_string(CPUTicker::GetInstance()->GetIdleTickTime()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Idle CPU Ticks", 38) << "\n"
-		<< TextFormatter::GetFormattedCell(std::to_string(CPUTicker::GetInstance()->GetActiveTickTime()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Active CPU Ticks", 38) << "\n"
-		<< TextFormatter::GetFormattedCell(std::to_string(CPUTicker::GetInstance()->GetCurrentTick()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Total CPU Ticks", 38) << "\n"
-		<< TextFormatter::GetFormattedCell(std::to_string(MemoryManager::GetInstance()->GetPagesPagedIn()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Pages paged in", 38) << "\n"
-		<< TextFormatter::GetFormattedCell(std::to_string(MemoryManager::GetInstance()->GetPagesPagedOut()), 12, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Pages paged out", 38) << "\n";
+	virtualMemoryInfo << TextFormatter::GetFormattedCell(std::to_string(MemoryManager::GetInstance()->GetTotalMemory()), 20, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("bytes Total Memory", 38) << "\n"
+		<< TextFormatter::GetFormattedCell(std::to_string(MemoryManager::GetInstance()->GetUsedMemory()), 20, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("bytes Used Memory", 38) << "\n"
+		<< TextFormatter::GetFormattedCell(std::to_string(MemoryManager::GetInstance()->GetFreeMemory()), 20, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("bytes Free Memory", 38) << "\n"
+		<< TextFormatter::GetFormattedCell(std::to_string(ProcessManager::GetInstance()->GetProcessesCountByStatus(ProcessStatus::Running)), 20, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Active Processes", 38) << "\n"
+		<< TextFormatter::GetFormattedCell(std::to_string(ProcessManager::GetInstance()->GetProcessesCountByStatus(ProcessStatus::Ready)), 20, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Inactive Processes", 38) << "\n"
+		<< TextFormatter::GetFormattedCell(std::to_string(ProcessManager::GetInstance()->GetProcessesCountByStatus(ProcessStatus::Terminated)), 20, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Terminated Processes", 38) << "\n"
+		<< TextFormatter::GetFormattedCell(std::to_string(ProcessManager::GetInstance()->GetProcessesCountByStatus(ProcessStatus::Sleeping)), 20, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Sleeping Processes", 38) << "\n"
+		<< TextFormatter::GetFormattedCell(std::to_string(CPUTicker::GetInstance()->GetIdleTickTime()), 20, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Idle CPU Ticks", 38) << "\n"
+		<< TextFormatter::GetFormattedCell(std::to_string(CPUTicker::GetInstance()->GetActiveTickTime()), 20, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Active CPU Ticks", 38) << "\n"
+		<< TextFormatter::GetFormattedCell(std::to_string(CPUTicker::GetInstance()->GetCurrentTick()), 20, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Total CPU Ticks", 38) << "\n"
+		<< TextFormatter::GetFormattedCell(std::to_string(MemoryManager::GetInstance()->GetPagesPagedIn()), 20, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Pages paged in", 38) << "\n"
+		<< TextFormatter::GetFormattedCell(std::to_string(MemoryManager::GetInstance()->GetPagesPagedOut()), 20, TextFormatter::RIGHT) << " " << TextFormatter::GetFormattedCell("Pages paged out", 38) << "\n";
 
 	return virtualMemoryInfo.str();
 }

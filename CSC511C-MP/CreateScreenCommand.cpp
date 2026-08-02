@@ -40,7 +40,8 @@ bool CreateScreenCommand::Execute(const std::vector<std::string>& args) const {
 		return true;
 	}
 
-	consoleManager->SwitchScreen(processName);
+	std::cout << "Successfully created process: " << processName << " [" << requestedMemorySize << " bytes]\n";
+	//consoleManager->SwitchScreen(processName);
 	return true;
 }
 

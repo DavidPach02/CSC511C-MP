@@ -43,7 +43,8 @@ bool CreateProcessInstructionCommand::Execute(const std::vector<std::string>& ar
 		return true;
 	}
 
-	consoleManager->SwitchScreen(processName);
+	std::cout << "Successfully created process with instructions: " << processName << " [" << requestedMemorySize << " bytes]\n";
+	//consoleManager->SwitchScreen(processName);
 	return true;
 }
 
