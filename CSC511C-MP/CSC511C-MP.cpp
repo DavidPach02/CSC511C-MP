@@ -7,8 +7,24 @@
 #include "CPUManager.h"
 #include "ProcessManager.h"
 #include "MemoryManager.h"
+#include "BackingStore.h"
+#include "Process.h"
 #include "SystemState.h"
 #include "PrebootScreen.h"
+
+namespace {
+	// Safe only once the scheduler's workers are joined and no process is mid-instruction.
+	void FinalizeUnfinishedProcesses() {
+		for (const std::shared_ptr<Process>& process : ProcessManager::GetInstance()->GetAllProcesses()) {
+			if (process != nullptr && process->GetStatusEnum() != ProcessStatus::Terminated) {
+				process->Terminate();
+			}
+		}
+
+		// Cleared in one pass; releasing per process rewrites the whole store file each time.
+		BackingStore::ResetStore();
+	}
+}
 
 int main(int argc, char* argv[]) {
 	(void)argc;
@@ -41,6 +57,7 @@ int main(int argc, char* argv[]) {
 
 	CPUTicker::Stop();
 	Scheduler::Destroy();
+	FinalizeUnfinishedProcesses();
 	ConsoleManager::Destroy();
 	CPUManager::Destroy();
 	MemoryManager::Destroy();

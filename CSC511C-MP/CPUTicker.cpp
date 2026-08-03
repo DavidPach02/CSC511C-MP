@@ -30,8 +30,13 @@ void CPUTicker::Stop() {
 		return;
 	}
 
-	instance->running = false;
-	instance->generating = false;
+	{
+		// Must be set under tickMutex: WaitUntilTick reads running in its predicate,
+		// so an unlocked update here can be missed and park that waiter forever.
+		std::lock_guard<std::mutex> lock(instance->tickMutex);
+		instance->running = false;
+		instance->generating = false;
+	}
 	instance->tickCondition.notify_all();
 
 	if (instance->tickerThread.joinable()) {

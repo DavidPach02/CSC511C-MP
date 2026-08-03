@@ -1,5 +1,13 @@
 #include "EITThread.h"
 #include "CPUManager.h"
+#include "Scheduler.h"
+
+namespace {
+	bool IsSchedulerStopping() {
+		const Scheduler* scheduler = Scheduler::GetInstance();
+		return scheduler != nullptr && !scheduler->IsRunning();
+	}
+}
 
 int EITThread::GenerateThreadId() {
 	static int nextThreadId = 1;
@@ -87,6 +95,12 @@ void EITThread::RunToCompletion() {
 		if (process->GetStatusEnum() == ProcessStatus::Terminated) {
 			state = EITThreadState::Finished;
 			break;
+		}
+
+		if (IsSchedulerStopping()) {
+			ReleaseCoreAssignment();
+			state = EITThreadState::Ready;
+			return;
 		}
 
 		if (!hasRemaining) {

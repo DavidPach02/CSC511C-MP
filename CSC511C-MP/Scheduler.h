@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Process.h"
+#include <atomic>
 #include <memory>
 #include <vector>
 #include <queue>
@@ -43,7 +44,7 @@ protected:
 	void FinalizeProcess(const std::shared_ptr<Process>& process);
 
 	int totalCores;
-	bool running;
+	std::atomic<bool> running;
 
 	std::queue<std::shared_ptr<Process>> readyQueue;
 	std::vector<std::thread> coreThreads;
