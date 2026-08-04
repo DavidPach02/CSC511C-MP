@@ -1,4 +1,5 @@
 #include "CreateScreenCommand.h"
+#include "MemoryManager.h"
 #include "ProcessManager.h"
 #include "CommandUtils.h"
 #include <iostream>
@@ -31,6 +32,11 @@ bool CreateScreenCommand::Execute(const std::vector<std::string>& args) const {
 
 	if (ProcessManager::GetInstance()->GetProcessByName(processName) != nullptr) {
 		std::cout << "\033[31mProcess already exists: " << processName << "\033[0m\n";
+		return true;
+	}
+
+	if (!MemoryManager::GetInstance()->IsValidProcessMemoryAllocation(requestedMemorySize)) {
+		std::cout << "invalid memory allocation\n";
 		return true;
 	}
 

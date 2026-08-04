@@ -73,9 +73,19 @@ bool MemoryManager::ConsumePageFaultRetryFlag(int processId) {
 	return true;
 }
 
-void MemoryManager::RegisterProcess(int processId, size_t memoryBytes) {
+bool MemoryManager::IsValidProcessMemoryAllocation(size_t memoryBytes) const {
 	std::lock_guard<std::mutex> lock(memoryMutex);
+	return memoryBytes > 0 && memoryBytes <= totalMemoryBytes;
+}
+
+bool MemoryManager::RegisterProcess(int processId, size_t memoryBytes) {
+	std::lock_guard<std::mutex> lock(memoryMutex);
+	if (memoryBytes == 0 || memoryBytes > totalMemoryBytes) {
+		return false;
+	}
+
 	demandPager.RegisterProcess(processId, memoryBytes);
+	return pageTables.find(processId) != pageTables.end();
 }
 
 void MemoryManager::UnregisterProcess(int processId) {

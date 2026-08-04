@@ -2,6 +2,7 @@
 #include "SystemState.h"
 #include "CommandUtils.h"
 #include "ConsoleManager.h"
+#include "MemoryManager.h"
 #include "ProcessManager.h"
 #include "DummyProcessGenerator.h"
 #include <iostream>
@@ -34,6 +35,11 @@ bool CreateProcessInstructionCommand::Execute(const std::vector<std::string>& ar
 
 	if (ProcessManager::GetInstance()->GetProcessByName(processName) != nullptr) {
 		std::cout << "\033[31mProcess already exists: " << processName << "\033[0m\n";
+		return true;
+	}
+
+	if (!MemoryManager::GetInstance()->IsValidProcessMemoryAllocation(requestedMemorySize)) {
+		std::cout << "invalid memory allocation\n";
 		return true;
 	}
 

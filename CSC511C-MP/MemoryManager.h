@@ -25,7 +25,8 @@ public:
 	static void Initialize(int maxOverallMemory, int memoryPerFrame = 16);
 	static void Destroy();
 
-	void RegisterProcess(int processId, size_t memoryBytes);
+	bool RegisterProcess(int processId, size_t memoryBytes);
+	bool IsValidProcessMemoryAllocation(size_t memoryBytes) const;
 	void UnregisterProcess(int processId);
 	bool IsProcessRegistered(int processId) const;
 	size_t GetPageCountForProcess(size_t memoryBytes) const;

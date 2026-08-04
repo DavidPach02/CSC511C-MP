@@ -58,9 +58,16 @@ bool DummyProcessGenerator::GenerateOne(const AppConfig& appConfig, const std::s
 	const size_t memorySize = memoryRequired > 0
 		? memoryRequired
 		: appConfig.RollSchedulerProcessMemory();
+	MemoryManager* memoryManager = MemoryManager::GetInstance();
+	if (!memoryManager->IsValidProcessMemoryAllocation(memorySize)) {
+		return false;
+	}
+
 	auto process = std::make_shared<Process>(nextProcessId, processName, memorySize);
+	if (!memoryManager->RegisterProcess(process->GetID(), memorySize)) {
+		return false;
+	}
 	++nextProcessId;
-	MemoryManager::GetInstance()->RegisterProcess(process->GetID(), memorySize);
 	process->InitializeSymbolTable(process);
 
 	// Variables are used to store the values of the variables declared in the process
@@ -169,6 +176,11 @@ bool DummyProcessGenerator::GenerateOneWithInstruction(
 	const size_t memorySize = memoryRequired > 0
 		? memoryRequired
 		: static_cast<size_t>(appConfig.GetMinMemoryPerProcess());
+	MemoryManager* memoryManager = MemoryManager::GetInstance();
+	if (!memoryManager->IsValidProcessMemoryAllocation(memorySize)) {
+		return false;
+	}
+
 	auto process = std::make_shared<Process>(nextProcessId, processName, memorySize);
 
 	// TEST-FULL: screen -c p01 64 "DECLARE varA 10; DECLARE varB 5; ADD varA varA varB; WRITE 0x500 varA; READ varC 0x500; SLEEP 4; FOR(5, PRINT('Hello, World'), ADD varA varA varB); PRINT('Result: %i', varA); PRINT('Result: %i', varC);"
@@ -177,11 +189,12 @@ bool DummyProcessGenerator::GenerateOneWithInstruction(
 		return false;
 	}
 
-	// If successfully created increment the next process ID
-	++nextProcessId;
+	if (!memoryManager->RegisterProcess(process->GetID(), memorySize)) {
+		return false;
+	}
 
-	MemoryManager::GetInstance()->RegisterProcess(process->GetID(), memorySize); // Register the process with the memory manager
-	process->InitializeSymbolTable(process); // Initialize the symbol table for the process
+	++nextProcessId;
+	process->InitializeSymbolTable(process);
 	std::shared_ptr<BaseScreen> baseScreen = std::make_shared<BaseScreen>(process);
 	ConsoleManager::GetInstance()->RegisterScreen(baseScreen, false);
 	createdScreenNames.push_back(processName);
